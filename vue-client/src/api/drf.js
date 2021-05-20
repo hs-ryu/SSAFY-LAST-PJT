@@ -5,8 +5,8 @@ export default {
   URL,
   KOFIC_API_KEY,
   ROUTES: {
-    getAllMovies: '/getmovies/',
-    getPopularMovies: '/getpopularmovies/',
-    getNowShowing: '/getnowshowing/',
+    getAllMovies: '/movies/getmovies/',
+    getPopularMovies: '/movies/getpopularmovies/',
+    getNowShowing: '/movies/getnowshowing/',
   }
 }

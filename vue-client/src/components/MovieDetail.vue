@@ -1,8 +1,9 @@
 <template>
   <div>
-    <img :src="movie.poster_path" :alt="movie.title">
+    <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
     {{ movie.title }}
     {{ movie.content }}
+    <!-- {{ movie }} -->
   </div>
 </template>
 
@@ -19,9 +20,10 @@ export default {
   },
   methods: {
     getMovieDetail: function() {
-      const movieId = this.$route.params
+      const movieId = this.$route.params.movieId
+      console.log(movieId)
       axios({
-        url: SERVER.URL + SERVER.ROUTES.getAllMovies + `/${movieId}/`,
+        url: SERVER.URL + SERVER.ROUTES.getAllMovies + `${movieId}/`,
         method: 'get',
       })
       .then((res) => {

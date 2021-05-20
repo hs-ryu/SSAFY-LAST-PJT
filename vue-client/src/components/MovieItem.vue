@@ -16,6 +16,7 @@ export default {
   methods: {
     goToDetail: function () {
       const movieId = this.movie.id
+      console.log(this.movie)
       this.$router.push({ name: 'MovieDetail', params: { movieId: movieId}})
     }
   }

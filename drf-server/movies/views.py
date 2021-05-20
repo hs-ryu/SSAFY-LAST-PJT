@@ -38,9 +38,9 @@ from movies import serializers
 def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
-    for i in range(1,51):
+    for i in range(1,6):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
-        URL = f'https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
+        URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
         get_movies = response['results']
         for get_movie in get_movies:
@@ -51,6 +51,7 @@ def savemovies(request):
             movie.poster_path = get_movie['poster_path']
             movie.vote_average = get_movie['vote_average']
             movie.release_date = get_movie['release_date']
+            # movie.save()
             try:
                 results = just_watch.search_for_item(query=f"{movie.title}")['items'][0]['offers']
                 for result in results:
@@ -63,10 +64,11 @@ def savemovies(request):
                         movie.wavve = url
                     elif 'naver' in url:
                         movie.naver = url
-                movie.save()
+                # movie.save()
             except:
+                pass
+            finally:
                 movie.save()
-                continue
     return render(request, 'movies/savemovies.html')
 
 
@@ -82,7 +84,7 @@ def getmovies(request):
 @api_view(['GET'])
 def getmoviedetail(request, movie_pk):
     now_time = timezone.make_aware(datetime.datetime.now())
-    movie = get_object_or_404(Movie, movie_id=movie_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
     # 일단 확인을 위해 minute으로 
     if datetime.datetime.now().minute > movie.last_cliked_time.minute:
         movie.last_cliked_time = now_time
@@ -90,6 +92,7 @@ def getmoviedetail(request, movie_pk):
         movie.save()
     movie.clicked += 1
     movie.last_cliked_time = now_time
+    movie.save()
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
@@ -111,7 +114,7 @@ def getpopularmovies(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def nowplayingmovies(request):
+def getnowshowing(request):
     # 두 날짜의 차이가 44일
     movies = Movie.objects.filter(release_date__gte = datetime.datetime.now()-datetime.timedelta(days=44))
     serializer = MovieListSerializer(movies, many=True)

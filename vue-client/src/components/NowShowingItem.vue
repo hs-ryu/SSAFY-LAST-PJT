@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h3>{{ nowShowingMovie.movieNm }}</h3>
-    <p>개봉일: {{ nowShowingMovie.openDt }}</p>
-    <p>누적관객: {{ nowShowingMovie.audiAcc }}</p>
+    <h3>{{ nowShowingMovie.title }}</h3>
   </div>
 </template>
 

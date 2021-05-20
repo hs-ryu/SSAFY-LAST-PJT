@@ -37,6 +37,8 @@ export default {
   },
   methods: {
     ...mapActions([
+      'getAllMovies',
+      'getPopularMovies',
       'getNowShowing',
     ])
   },
@@ -49,6 +51,8 @@ export default {
   },
   created: function () {
     this.getNowShowing()
+    this.getAllMovies()
+    this.getPopularMovies()
   }
 }
 </script>

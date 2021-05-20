@@ -8,33 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     allMovies: [
-      { id: 1,
-        title: '테스트제목',
-      content: '테스트'},
-      {title: '테스트제목2',
-      content: '테스트2'},
-      {title: '테스트제목2',
-      content: '테스트2'},
-      {title: '테스트제목2',
-      content: '테스트2'},
-      {title: '테스트제목2',
-      content: '테스트2'},
-      {title: '테스트제목2',
-      content: '테스트2'},
-      {title: '테스트제목2',
-      content: '테스트2'},
-      {title: '테스트제목2',
-      content: '테스트2'},
     ],
     popularMovies: [
-      {title: '인기영화제목',
-      content: '인기영화'},
-      {title: '인기영화제목',
-      content: '인기영화'},
-      {title: '인기영화제목',
-      content: '인기영화'},
-      {title: '인기영화제목',
-      content: '인기영화'},
     ],
     nowShowingMovies: [],
   },
@@ -77,7 +52,7 @@ export default new Vuex.Store({
     },
     getNowShowing: function ({ commit }) {
       axios({
-        url: SERVER.URL + SERVER.ROUTS.getNowShowing,
+        url: SERVER.URL + SERVER.ROUTES.getNowShowing,
         method: 'get',
       })
       .then((res) => {
