@@ -1,10 +1,11 @@
 
 
+from django.http import response
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Movie
-from .serializers import MovieListSerializer, MovieSerializer
+from .models import Movie, NowShowingMovie
+from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer
 
 # Create your views here.
 
@@ -18,7 +19,7 @@ from movies import serializers
 
 # 중요한것 하나. API로 영화 정보들을 불러와서 json 파일에 저장할때,
 # model이라는 필드를 추가해 우리가 정의한 모델 이름과 같도록 만들기 (ex- "model":"movies.genre" 이러면 장르 모델로 저장이 됨.)
-# fields는 오리가 정의한 모델의 테이블 이름에 맞게 들어가야함
+# fields는 우리가 정의한 모델의 테이블 이름에 맞게 들어가야함
 
 '''ex
 "fields": {
@@ -38,7 +39,8 @@ from movies import serializers
 def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
-    for i in range(1,6):
+    # 7~9 까지 하면 오류
+    for i in range(7,9):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
         URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
@@ -50,26 +52,80 @@ def savemovies(request):
             movie.overview = get_movie['overview']
             movie.poster_path = get_movie['poster_path']
             movie.vote_average = get_movie['vote_average']
-            movie.release_date = get_movie['release_date']
+            genres = get_movie['genre_ids']
+            # movie.save(commit=False)
+            # for genre in genres:
+            #     target = objects.filter(id=genre)
+            #     target.movies.add(movie.pk)
+            # 있는것만 DB에 넣자.
+            try:
+                movie.release_date = get_movie['release_date']
+            except:
+                continue
             # movie.save()
             try:
-                results = just_watch.search_for_item(query=f"{movie.title}")['items'][0]['offers']
-                for result in results:
-                    url = result['urls']['standard_web']
-                    if 'watcha' in url:
-                        movie.watcha = url
-                    elif 'netflix' in url:
-                        movie.netflix = url
-                    elif 'wavve' in url:
-                        movie.wavve = url
-                    elif 'naver' in url:
-                        movie.naver = url
+                results = just_watch.search_for_item(query=f"{movie.title}")['items']
+                if len(results) > 1:
+                    for result in results:
+                        # DB에 저장된 영화 title과 개봉년도가 같을 때에만 같은 영화로 간주
+                        if (movie.title == result['title']) and (movie.release_date[:4] == str(result['original_release_year'])):
+                            urls_info = result['offers']
+                            for url_info in urls_info:
+                                url = url_info['urls']['standard_web']
+                                if 'watcha' in url:
+                                    movie.watcha = url
+                                elif 'netflix' in url:
+                                    movie.netflix = url
+                                elif 'wavve' in url:
+                                    movie.wavve = url
+                                elif 'naver' in url:
+                                    movie.naver = url
+                else:
+                    results = just_watch.search_for_item(query=f"{movie.title}")['items'][0]['offers']
+                    for result in results:
+                        url = result['urls']['standard_web']
+                        if 'watcha' in url:
+                            movie.watcha = url
+                        elif 'netflix' in url:
+                            movie.netflix = url
+                        elif 'wavve' in url:
+                            movie.wavve = url
+                        elif 'naver' in url:
+                            movie.naver = url
                 # movie.save()
             except:
                 pass
             finally:
                 movie.save()
     return render(request, 'movies/savemovies.html')
+
+
+def savenowshowing(request):
+    KOBIS_API_KEY = '351749075a99330b8e539beb9afaf302'
+    yesterday = datetime.datetime.now()- datetime.timedelta(days=2)
+    year = yesterday.strftime("%Y")
+    month = yesterday.strftime("%m")
+    day = yesterday.strftime("%d")
+    today = year + month + day
+    URL = f'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key={KOBIS_API_KEY}&targetDt={today}'
+    response = requests.get(URL).json()
+    get_movies = response['boxOfficeResult']['dailyBoxOfficeList']
+    ClientID = 'k35V4NgZQkjVVQAZ8FtS'
+    ClientSecret = 'w1d2eYndo3'
+    for get_movie in get_movies:
+        movie = NowShowingMovie()
+        movie.movieNm = get_movie['movieNm']
+        movie.openDt = get_movie['openDt']
+        movie.audiAcc = get_movie['audiAcc']
+        NAVER_URL = f'https://openapi.naver.com/v1/search/movie.json?query={movie.movieNm}'
+        NAVER_response = requests.get(NAVER_URL,headers={"X-Naver-Client-Id":ClientID,"X-Naver-Client-Secret":ClientSecret}).json()
+        # print(NAVER_response)
+        movie.image_path = NAVER_response['items'][0]['image']
+        movie.userRating = NAVER_response['items'][0]['userRating']
+        movie.save()
+    return render(request, 'movies/savemovies.html')
+
+
 
 
 # 전체 영화 정보 조회
@@ -115,7 +171,11 @@ def getpopularmovies(request):
 
 @api_view(['GET'])
 def getnowshowing(request):
-    # 두 날짜의 차이가 44일
-    movies = Movie.objects.filter(release_date__gte = datetime.datetime.now()-datetime.timedelta(days=44))
-    serializer = MovieListSerializer(movies, many=True)
+    movies = get_list_or_404(NowShowingMovie)
+    serializer = NowShowingMovieSerializer(movies, many=True)
     return Response(serializer.data)
+
+    # # 두 날짜의 차이가 44일
+    # movies = Movie.objects.filter(release_date__gte = datetime.datetime.now()-datetime.timedelta(days=44))
+    # serializer = MovieListSerializer(movies, many=True)
+    # return Response(serializer.data)
