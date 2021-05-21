@@ -4,6 +4,7 @@ import MovieList from '@/views/movies/MovieList'
 import MovieDetail from '@/components/MovieDetail'
 import ReviewDetail from '@/views/reviews/ReviewDetail'
 import CreateReview from '@/views/reviews/CreateReview'
+import UpdateReview from '@/views/reviews/UpdateReview'
 import VoteList from '@/views/votes/VoteList'
 import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
@@ -27,9 +28,14 @@ const routes = [
     component: ReviewDetail
   },
   {
-    path: '/:movieId/createreview',
+    path: '/:movieId/reviews/create',
     name: 'CreateReview',
     component: CreateReview
+  },
+  {
+    path: '/:movieId/reviews/:reviewId/update',
+    name: 'UpdateReview',
+    component: UpdateReview
   },
   {
     path: '/vote',

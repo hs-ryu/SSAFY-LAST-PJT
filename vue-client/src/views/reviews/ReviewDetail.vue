@@ -3,8 +3,9 @@
     <h1>개별리뷰상세</h1>
     <h3>리뷰 제목: {{ review.title }}</h3>
     <p>영화: {{ movieTitle }}</p>
+    <p>평점: {{ review.rank }}</p>
     <p>리뷰 내용: {{ review.content }}</p>
-    <button>수정</button>
+    <button @click="goToUpdate">수정</button>
     <button @click="deleteReview">삭제</button>
   </div>
 </template>
@@ -47,6 +48,9 @@ export default {
       .catch((err) => {
         console.log(err)
       })
+    },
+    goToUpdate: function () {
+      this.$router.push({ name: 'UpdateReview', params: { movieId: this.movieId, reviewId: this.reviewId }, query: { review: this.review }})
     }
   },
   created: function () {

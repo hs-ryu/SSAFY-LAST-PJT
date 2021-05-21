@@ -9,7 +9,7 @@
     <a v-if="wavve" :href="wavve"><img src="@/assets/wavve_logo.png" alt="wavve logo"></a>
     <a v-if="naver" :href="naver"><img src="@/assets/naver_logo.png" alt="naver logo"></a>
     <!-- {{ movie }} -->
-    <div v-if="reviews">
+    <div v-if="reviews.length">
       <ReviewItem
         v-for="(review, idx) in reviews"
         :key="idx"
