@@ -19,7 +19,6 @@ export default new Vuex.Store({
       state.popularMovies = popularmovies
     },
     GET_NOW_SHOWING: function (state, nowShowingMovies) {
-      console.log(nowShowingMovies)
       state.nowShowingMovies = nowShowingMovies
     }
   },

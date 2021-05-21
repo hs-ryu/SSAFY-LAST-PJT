@@ -43,6 +43,7 @@ export default {
           data: reviewItem,
         })
         .then(() => {
+          console.log(this.movieId)
           this.$router.push({ name: 'MovieDetail', params: { movieId: this.movieId}})
         })
         .catch((err) => {
