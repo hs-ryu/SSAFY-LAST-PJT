@@ -47,7 +47,7 @@ class NowShowingMovie(models.Model):
 
 
 class Review(models.Model):
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
     # like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
     title = models.CharField(max_length=20)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
@@ -59,7 +59,7 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
     content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)

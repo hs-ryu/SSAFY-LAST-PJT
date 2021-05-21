@@ -15,14 +15,22 @@ from justwatch import JustWatch
 import datetime
 from django.utils import timezone
 
-from movies import serializers
 
-
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 # 중요한것 하나. API로 영화 정보들을 불러와서 json 파일에 저장할때,
 # model이라는 필드를 추가해 우리가 정의한 모델 이름과 같도록 만들기 (ex- "model":"movies.genre" 이러면 장르 모델로 저장이 됨.)
 # fields는 우리가 정의한 모델의 테이블 이름에 맞게 들어가야함
 
+
+# 관리자만 가능하게
+# from django.contrib.admin.views.decorators import staff_member_required
+# @staff_member_required
+# 혹은
+# @permission_required('is_staff')
+# 체크 해봐야함.
 
 def savegenre(request):
     TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
@@ -194,6 +202,8 @@ def getallreviews(request, movie_pk):
 
 # 상세 리뷰 조회
 @api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def getreview(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     serializer = ReviewSerializer(review)
@@ -201,6 +211,8 @@ def getreview(request, movie_pk, review_pk):
 
 # 해당 영화에 리뷰 생성
 @api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def createreview(request, movie_pk):
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
@@ -210,14 +222,19 @@ def createreview(request, movie_pk):
         reviews = Review.objects.filter(movie_id=movie_pk)
         movie.rank_average = movie.rank_total / (len(reviews) + 1)
         movie.save()
-        serializer.save(movie = movie)
+        serializer.save(movie=movie, user=request.user)
         # 나중에 유저 기능 구현하면 아래껄로
         # serializer.save(user=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # 리뷰 삭제
 @api_view(['DELETE'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def deletereview(request, movie_pk, review_pk):
+    # 해당 review를 작성한 유저가 아니라면 삭제하지 못함.
+    if not request.user.reviews.filter(pk=review_pk).exists():
+        return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
     # 리뷰를 삭제했을때 리뷰가 없다면 그 영화의 유저 평점을 0으로 만드는 로직 필요
     review = get_object_or_404(Review, pk=review_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
@@ -234,7 +251,12 @@ def deletereview(request, movie_pk, review_pk):
 
 # 리뷰 수정
 @api_view(['PUT'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def updatereview(request, movie_pk, review_pk):
+    # 해당 review를 작성한 유저가 아니라면 수정하지 못함.
+    if not request.user.reviews.filter(pk=review_pk).exists():
+        return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
     reviews = Review.objects.filter(movie_id=movie_pk)
     review = get_object_or_404(Review, pk=review_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
@@ -249,15 +271,19 @@ def updatereview(request, movie_pk, review_pk):
 
 # 리뷰의 댓글 작성
 @api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def createcomment(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     serializer = CommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(review = review)
+        serializer.save(review = review, user=request.user)
         return Response(serializer.data)
 
 # 리뷰의 댓글 불러오기
 @api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def getcomments(request, movie_pk, review_pk):
     comments = Comment.objects.filter(review_id=review_pk)
     serializer = CommentSerializer(comments, many=True)
@@ -265,14 +291,22 @@ def getcomments(request, movie_pk, review_pk):
 
 # 리뷰의 댓글 삭제하기
 @api_view(['DELETE'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def deletecomment(request, movie_pk, review_pk, comment_pk):
+    if not request.user.comments.filter(pk=comment_pk).exists():
+        return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
     comment = get_object_or_404(Comment, pk=comment_pk)
     comment.delete()
     return Response({ 'id': comment_pk })
 
 # 리뷰의 댓글 수정하기
 @api_view(['PUT'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def updatecomment(request, movie_pk, review_pk, comment_pk):
+    if not request.user.comments.filter(pk=comment_pk).exists():
+        return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
     comment = get_object_or_404(Comment, pk=comment_pk)
     serializer = CommentSerializer(comment, data=request.data)
     if serializer.is_valid(raise_exception=True):
@@ -280,37 +314,45 @@ def updatecomment(request, movie_pk, review_pk, comment_pk):
         return Response(serializer.data)
 
 
-# 투표 전부 조회
-@api_view(['GET'])
-def getallvotes(request, movie_pk):
-    votes = Vote.objects.filter(movie_id=movie_pk)
-    serializer = VoteListSerializer(votes, many=True)
-    return Response(serializer.data)
+# # 투표 전부 조회
+# @api_view(['GET'])
+# @authentication_classes([JSONWebTokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def getallvotes(request, movie_pk):
+#     votes = Vote.objects.filter(movie_id=movie_pk)
+#     serializer = VoteListSerializer(votes, many=True)
+#     return Response(serializer.data)
 
-#투표 상세
-@api_view(['GET'])
-def getvote(requet, movie_pk, vote_pk):
-    vote = get_object_or_404(Vote, pk=vote_pk)
-    serializer = VoteSerializer(vote)
-    return Response(serializer.data)
-
-
-#투표 생성
-@api_view(['POST'])
-def createvote(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    serializer = VoteSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(movie = movie)
-        return Response(serializer.data)
-
-# 투표 삭제
-@api_view(['DELETE'])
-def deletevote(request, movie_pk, vote_pk):
-    vote = get_object_or_404(Vote, pk=vote_pk)
-    vote.delete()
-    return Response({ 'id': vote_pk})
+# #투표 상세
+# @api_view(['GET'])
+# @authentication_classes([JSONWebTokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def getvote(requet, movie_pk, vote_pk):
+#     vote = get_object_or_404(Vote, pk=vote_pk)
+#     serializer = VoteSerializer(vote)
+#     return Response(serializer.data)
 
 
-# 투표 댓글 생성, 조회
+# #투표 생성
+# @api_view(['POST'])
+# @authentication_classes([JSONWebTokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def createvote(request, movie_pk):
+#     movie = get_object_or_404(Movie, pk=movie_pk)
+#     serializer = VoteSerializer(data=request.data)
+#     if serializer.is_valid(raise_exception=True):
+#         serializer.save(movie = movie)
+#         return Response(serializer.data)
+
+# # 투표 삭제
+# @api_view(['DELETE'])
+# @authentication_classes([JSONWebTokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def deletevote(request, movie_pk, vote_pk):
+#     vote = get_object_or_404(Vote, pk=vote_pk)
+#     vote.delete()
+#     return Response({ 'id': vote_pk})
+
+
+# # 투표 댓글 생성, 조회
 
