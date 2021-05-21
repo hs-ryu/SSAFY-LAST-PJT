@@ -97,7 +97,8 @@ export default {
         })
         .then(() => {
           this.commentContent = ''
-          this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
+          this.getReviewComments()
+          // this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
         })
         .catch((err) => {
           console.log(err)

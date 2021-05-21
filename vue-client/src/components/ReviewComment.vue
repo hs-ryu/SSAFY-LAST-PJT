@@ -37,6 +37,9 @@ export default {
     updateComment: function () {
       // 수정을 어떻게 하지...
     }
+  },
+  created: function () {
+    console.log(1)
   }
 }
 </script>
