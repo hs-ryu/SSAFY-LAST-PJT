@@ -64,3 +64,16 @@ class Comment(models.Model):
     content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Vote(models.Model):
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    option_one = models.TextField()
+    option_two = models.TextField()
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+class VoteComment(models.Model):
+    vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='votecomments')
+    choice = models.IntegerField()
+    content = models.CharField(max_length=100)

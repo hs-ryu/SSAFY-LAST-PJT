@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import SERVER from '@/api/drf.js'
+import axios from 'axios'
+
 export default {
   name: 'UpdateArticle',
   data: function () {

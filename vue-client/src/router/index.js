@@ -10,6 +10,7 @@ import ArticleDetail from '@/components/ArticleDetail'
 import UpdateArticle from '@/views/community/UpdateArticle'
 import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
+import CreateArticle from '@/views/community/CreateArticle'
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,11 @@ const routes = [
     path: '/community',
     name: 'ArticleList',
     component: ArticleList
+  },
+  {
+    path: '/community/createarticle',
+    name: 'CreateArticle',
+    component: CreateArticle,
   },
   {
     path: '/community/:articleId',

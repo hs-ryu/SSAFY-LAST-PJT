@@ -26,4 +26,14 @@ urlpatterns = [
     path('<int:movie_pk>/reviews/<int:review_pk>/getcomments/', views.getcomments, name='getcomments'),
     path('<int:movie_pk>/reviews/<int:review_pk>/<int:comment_pk>/deletecomment/', views.deletecomment, name='deletecomment'),
     path('<int:movie_pk>/reviews/<int:review_pk>/<int:comment_pk>/updatecomment/', views.updatecomment, name='updatecomment'),
+
+    # 투표와 관련된 URL
+    path('<int:movie_pk>/votes/', views.getallvotes, name='getallvotes'),
+    path('<int:movie_pk>/votes/<int:vote_pk>/', views.getvote, name='getvote'),
+    path('<int:movie_pk>/createvote/', views.createvote, name='createvote'),
+    path('<int:movie_pk>/<int:vote_pk>/deletevote/', views.deletevote, name='deletevote'),
+
+    # 투표 댓글과 관련된 URL
+    path('<int:movie_pk>/createvote/', views.createvote, name='createvote'),
+    path('<int:movie_pk>/<int:vote_pk>/deletevote/', views.deletevote, name='deletevote'),
 ]

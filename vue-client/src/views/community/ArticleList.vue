@@ -4,7 +4,7 @@
     <div v-for="(article, idx) in articles" :key="idx">
       <h2 @click="goToArticleDetail(article.id)">{{ article.title }}</h2>
     </div>
-    <button>게시글 작성</button>
+    <button @click="goToCreateArticle">게시글 작성</button>
   </div>
 </template>
 

@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import SERVER from '@/api/drf.js'
+import axios from 'axios'
+
 export default {
   name: 'ArticleDetail',
   data: function () {
@@ -57,7 +60,7 @@ export default {
     },
   },
   created: function () {
-    getArticleDetail()
+    this.getArticleDetail()
   }
 }
 </script>

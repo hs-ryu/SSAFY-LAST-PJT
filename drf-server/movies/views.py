@@ -5,8 +5,8 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Movie, NowShowingMovie, Genre, Review, Comment
-from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer, ReviewListSerializer, ReviewSerializer, CommentSerializer
+from .models import Movie, NowShowingMovie, Genre, Review, Comment, Vote, VoteComment
+from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer, ReviewListSerializer, ReviewSerializer, CommentSerializer, VoteListSerializer, VoteSerializer
 
 # Create your views here.
 
@@ -14,6 +14,8 @@ import requests
 from justwatch import JustWatch
 import datetime
 from django.utils import timezone
+
+from movies import serializers
 
 
 
@@ -40,8 +42,8 @@ def savegenre(request):
 def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
-    # 7~9 까지 하면 오류
-    for i in range(7,8):
+    # 19페이지오류
+    for i in range(1,11):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
         URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
@@ -275,3 +277,39 @@ def updatecomment(request, movie_pk, review_pk, comment_pk):
     if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data)
+
+
+# 투표 전부 조회
+@api_view(['GET'])
+def getallvotes(request, movie_pk):
+    votes = Vote.objects.filter(movie_id=movie_pk)
+    serializer = VoteListSerializer(votes, many=True)
+    return Response(serializer.data)
+
+#투표 상세
+@api_view(['GET'])
+def getvote(requet, movie_pk, vote_pk):
+    vote = get_object_or_404(Vote, pk=vote_pk)
+    serializer = VoteSerializer(vote)
+    return Response(serializer.data)
+
+
+#투표 생성
+@api_view(['POST'])
+def createvote(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = VoteSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(movie = movie)
+        return Response(serializer.data)
+
+# 투표 삭제
+@api_view(['DELETE'])
+def deletevote(request, movie_pk, vote_pk):
+    vote = get_object_or_404(Vote, pk=vote_pk)
+    vote.delete()
+    return Response({ 'id': vote_pk})
+
+
+# 투표 댓글 생성, 조회
+
