@@ -18,12 +18,14 @@ class Movie(models.Model):
     title = models.CharField(max_length=100)
     # 상세정보나, 유튜브에서 예고편 들고오려면 id값 필요한듯.
     movie_id = models.IntegerField()
-    # genres = models.ManyToManyField(Genre, related_name=movies)
+    genres = models.ManyToManyField(Genre, related_name='movies')
     overview = models.TextField()
     poster_path = models.CharField(max_length=200)
     # directors = models.ManyToManyField(Director)
     # actors = models.ManyToManyField(Actor)
     vote_average = models.FloatField()
+    rank_total = models.FloatField(default=0)
+    rank_average = models.FloatField(default=0)
     # like_users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     netflix = models.TextField(default='')
     watcha = models.TextField(default='')
@@ -40,4 +42,17 @@ class NowShowingMovie(models.Model):
     audiAcc = models.CharField(max_length=100)
     image_path = models.CharField(max_length=100)
     # 나중에 DB 초기화 할떄 default 지우고 다시 마이그레이션
-    userRating = models.FloatField(default=0)
+    userRating = models.FloatField()
+
+
+
+class Review(models.Model):
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
+    # like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
+    title = models.CharField(max_length=20)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
+    # 얘를 movie_pk로 해야하나.
+    rank = models.FloatField()
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

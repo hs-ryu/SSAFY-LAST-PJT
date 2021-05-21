@@ -2,10 +2,11 @@
 
 from django.http import response
 from django.shortcuts import get_list_or_404, get_object_or_404, render
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Movie, NowShowingMovie
-from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer
+from .models import Movie, NowShowingMovie, Genre, Review
+from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer, ReviewListSerializer, ReviewSerializer
 
 # Create your views here.
 
@@ -14,25 +15,25 @@ from justwatch import JustWatch
 import datetime
 from django.utils import timezone
 
-from movies import serializers
 
 
 # 중요한것 하나. API로 영화 정보들을 불러와서 json 파일에 저장할때,
 # model이라는 필드를 추가해 우리가 정의한 모델 이름과 같도록 만들기 (ex- "model":"movies.genre" 이러면 장르 모델로 저장이 됨.)
 # fields는 우리가 정의한 모델의 테이블 이름에 맞게 들어가야함
 
-'''ex
-"fields": {
-    "title" : "~~~~"
-    "release_data" : ~~~,
-    "overview" : ~~~,
-    "genres" : [
-        1,
-        2,
-        3
-    ]
-} 
-'''
+
+def savegenre(request):
+    TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
+    URL = f'https://api.themoviedb.org/3/genre/movie/list?api_key={TMDB_API_KEY}&language=ko-KR'
+    response = requests.get(URL).json()
+    get_genres = response['genres']
+    for get_genre in get_genres:
+        genre = Genre()
+        genre.id = get_genre['id']
+        genre.name = get_genre['name']
+        genre.save()
+    return render(request, 'movies/savemovies.html')
+
 
 
 # api를 사용해서 영화 데이터 불러와서 저장하기. 일단 샘플로만 만들기
@@ -40,28 +41,29 @@ def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
     # 7~9 까지 하면 오류
-    for i in range(7,9):
+    for i in range(7,8):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
         URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
         get_movies = response['results']
         for get_movie in get_movies:
             movie = Movie()
+            try:
+                movie.release_date = get_movie['release_date']
+            except:
+                continue
             movie.title = get_movie['title']
             movie.movie_id = get_movie['id']
             movie.overview = get_movie['overview']
             movie.poster_path = get_movie['poster_path']
             movie.vote_average = get_movie['vote_average']
             genres = get_movie['genre_ids']
-            # movie.save(commit=False)
-            # for genre in genres:
-            #     target = objects.filter(id=genre)
-            #     target.movies.add(movie.pk)
+
+            movie.save()
+            for genre in genres:
+                targets = Genre.objects.filter(id=genre)
+                movie.genres.add(targets[0])
             # 있는것만 DB에 넣자.
-            try:
-                movie.release_date = get_movie['release_date']
-            except:
-                continue
             # movie.save()
             try:
                 results = just_watch.search_for_item(query=f"{movie.title}")['items']
@@ -179,3 +181,66 @@ def getnowshowing(request):
     # movies = Movie.objects.filter(release_date__gte = datetime.datetime.now()-datetime.timedelta(days=44))
     # serializer = MovieListSerializer(movies, many=True)
     # return Response(serializer.data)
+
+# 해당 영화의 전체 리뷰 조회
+@api_view(['GET'])
+def getallreviews(request, movie_pk):
+    reviews = get_list_or_404(Review, movie_id=movie_pk)
+    serializer = ReviewListSerializer(reviews, many=True)
+    return Response(serializer.data)
+
+# 상세 리뷰 조회
+@api_view(['GET'])
+def getreview(request, movie_pk, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    serializer = ReviewSerializer(review)
+    return Response(serializer.data)
+
+# 해당 영화에 리뷰 생성
+@api_view(['POST'])
+def createreview(request, movie_pk):
+    
+    serializer = ReviewSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        # 여기서 영화 유저 평점을 계산해서 다시 집어넣는 로직 필요.
+        movie.rank_total += float(request.data['rank'])
+        reviews = Review.objects.filter(movie_id=movie_pk)
+        movie.rank_average = movie.rank_total / (len(reviews) + 1)
+        movie.save()
+        serializer.save(movie = movie)
+        # 나중에 유저 기능 구현하면 아래껄로
+        # serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+# 리뷰 삭제
+@api_view(['DELETE'])
+def deletereview(request, movie_pk, review_pk):
+    # 리뷰를 삭제했을때 리뷰가 없다면 그 영화의 유저 평점을 0으로 만드는 로직 필요
+    review = get_object_or_404(Review, pk=review_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    movie.rank_total -= review.rank
+    reviews = get_list_or_404(Review, movie_id=movie_pk)
+    if len(reviews)-1:
+        movie.rank_average = movie.rank_total / (len(reviews) - 1)
+    else:
+        movie.rank_average = 0
+    movie.save()
+    review.delete()
+    return Response({'id': review_pk})
+
+
+# 리뷰 수정
+@api_view(['PUT'])
+def updatereview(request, movie_pk, review_pk):
+    reviews = get_list_or_404(Review, movie_id=movie_pk)
+    review = get_object_or_404(Review, pk=review_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    movie.rank_total -= review.rank
+    movie.rank_total += float(request.data['rank'])
+    movie.rank_average = movie.rank_total / (len(reviews))
+    serializer = ReviewSerializer(review, data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        movie.save()
+        serializer.save()
+        return Response(serializer.data)

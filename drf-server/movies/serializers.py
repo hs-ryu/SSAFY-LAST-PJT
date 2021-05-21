@@ -1,6 +1,6 @@
 from django.db import models
 from rest_framework import serializers
-from .models import Movie, NowShowingMovie
+from .models import Movie, NowShowingMovie, Review
 
 class MovieListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +16,14 @@ class MovieSerializer(serializers.ModelSerializer):
 class NowShowingMovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = NowShowingMovie
-        fields = ('movieNm', 'openDt', 'audiAcc',)
+        fields = ('movieNm', 'openDt', 'audiAcc', 'image_path')
+
+class ReviewListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('id', 'title', 'rank','created_at', 'updated_at',)
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('id', 'content','title', 'rank','created_at', 'updated_at',)
