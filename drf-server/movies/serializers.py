@@ -1,6 +1,7 @@
 from django.db import models
+from django.db.models import fields
 from rest_framework import serializers
-from .models import Movie, NowShowingMovie, Review
+from .models import Comment, Movie, NowShowingMovie, Review
 
 class MovieListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,3 +28,9 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'content','title', 'rank','created_at', 'updated_at',)
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'content', 'created_at', 'updated_at')

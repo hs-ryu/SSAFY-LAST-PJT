@@ -20,4 +20,10 @@ urlpatterns = [
     path('<int:movie_pk>/createreview/', views.createreview, name='createreview'),
     path('<int:movie_pk>/reviews/<int:review_pk>/updatereview/', views.updatereview, name='updatereview'),
     path('<int:movie_pk>/reviews/<int:review_pk>/deletereview/', views.deletereview, name='deletereview'),
+
+    # 댓글과 관련된 URL
+    path('<int:movie_pk>/reviews/<int:review_pk>/createcomment/', views.createcomment, name='createcomment'),
+    path('<int:movie_pk>/reviews/<int:review_pk>/getcomments/', views.getcomments, name='getcomments'),
+    path('<int:movie_pk>/reviews/<int:review_pk>/<int:comment_pk>/deletecomment/', views.deletecomment, name='deletecomment'),
+    path('<int:movie_pk>/reviews/<int:review_pk>/<int:comment_pk>/updatecomment/', views.updatecomment, name='updatecomment'),
 ]

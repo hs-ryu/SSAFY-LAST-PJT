@@ -5,8 +5,8 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Movie, NowShowingMovie, Genre, Review
-from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer, ReviewListSerializer, ReviewSerializer
+from .models import Movie, NowShowingMovie, Genre, Review, Comment
+from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer, ReviewListSerializer, ReviewSerializer, CommentSerializer
 
 # Create your views here.
 
@@ -241,5 +241,37 @@ def updatereview(request, movie_pk, review_pk):
     serializer = ReviewSerializer(review, data=request.data)
     if serializer.is_valid(raise_exception=True):
         movie.save()
+        serializer.save()
+        return Response(serializer.data)
+
+# 리뷰의 댓글 작성
+@api_view(['POST'])
+def createcomment(request, movie_pk, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    serializer = CommentSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(review = review)
+        return Response(serializer.data)
+
+# 리뷰의 댓글 불러오기
+@api_view(['GET'])
+def getcomments(request, movie_pk, review_pk):
+    comments = Comment.objects.filter(review_id=review_pk)
+    serializer = CommentSerializer(comments, many=True)
+    return Response(serializer.data)
+
+# 리뷰의 댓글 삭제하기
+@api_view(['DELETE'])
+def deletecomment(request, movie_pk, review_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+    return Response({ 'id': comment_pk })
+
+# 리뷰의 댓글 수정하기
+@api_view(['PUT'])
+def updatecomment(request, movie_pk, review_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    serializer = CommentSerializer(comment, data=request.data)
+    if serializer.is_valid(raise_exception=True):
         serializer.save()
         return Response(serializer.data)
