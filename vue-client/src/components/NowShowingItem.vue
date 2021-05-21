@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h3>{{ nowShowingMovie.title }}</h3>
+    <img :src="nowShowingMovie.image_path" :alt="nowShowingMovie.movieNm">
+    <h3>{{ nowShowingMovie.movieNm }}</h3>
   </div>
 </template>
 

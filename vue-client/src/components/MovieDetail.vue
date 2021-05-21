@@ -9,6 +9,19 @@
     <a v-if="wavve" :href="wavve"><img src="@/assets/wavve_logo.png" alt="wavve logo"></a>
     <a v-if="naver" :href="naver"><img src="@/assets/naver_logo.png" alt="naver logo"></a>
     <!-- {{ movie }} -->
+    <div v-if="reviews">
+      <ReviewItem
+        v-for="(review, idx) in reviews"
+        :key="idx"
+        :review="review"
+        :movieId="movieId"
+        :movieTitle="movie.title"
+      />
+    </div>
+    <div v-else>
+      <p>리뷰가 아직 없어요. 리뷰를 작성해주세요!</p>
+    </div>
+    <button @click="goToCreateReview">리뷰 작성하기</button>
   </div>
 </template>
 
@@ -16,23 +29,28 @@
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
 
+import ReviewItem from '@/components/ReviewItem'
+
 export default {
   name: 'MovieDetail',
+  components: {
+    ReviewItem
+  },
   data: function () {
     return {
       movie: {},
+      movieId: this.$route.params.movieId,
       netflix: '',
       watcha: '',
       wavve: '',
       naver: '',
+      reviews: [],
     }
   },
   methods: {
     getMovieDetail: function() {
-      const movieId = this.$route.params.movieId
-      console.log(movieId)
       axios({
-        url: SERVER.URL + SERVER.ROUTES.getAllMovies + `${movieId}/`,
+        url: SERVER.URL + SERVER.ROUTES.getAllMovies + `${this.movieId}/`,
         method: 'get',
       })
       .then((res) => {
@@ -45,10 +63,23 @@ export default {
       .catch((err) => {
         console.log(err)
       })
+    },
+    getReviews: function() {
+      axios({
+        url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/`,
+        method: 'get',
+      })
+      .then((res) => {
+        this.reviews = res.data
+      })
+    },
+    goToCreateReview: function () {
+      this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: this.movieTitle}})
     }
   },
   created: function () {
     this.getMovieDetail()
+    this.getReviews()
   }
 
 }

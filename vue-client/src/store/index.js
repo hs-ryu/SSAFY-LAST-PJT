@@ -7,10 +7,8 @@ import axios from 'axios'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-    allMovies: [
-    ],
-    popularMovies: [
-    ],
+    allMovies: [],
+    popularMovies: [],
     nowShowingMovies: [],
   },
   mutations: {
@@ -26,6 +24,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    /* 전체 영화 조회 */
     getAllMovies: function ({ commit }) {
       axios({
         url: SERVER.URL + SERVER.ROUTES.getAllMovies,
@@ -38,6 +37,7 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    /* 인기 영화 조회 */
     getPopularMovies: function ({ commit }) {
       axios({
         url: SERVER.URL + SERVER.ROUTES.getPopularMovies,
@@ -50,6 +50,7 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    /* 현재상영중 영화 조회 */
     getNowShowing: function ({ commit }) {
       axios({
         url: SERVER.URL + SERVER.ROUTES.getNowShowing,
@@ -61,7 +62,7 @@ export default new Vuex.Store({
       .catch((err) => {
         console.log(err)
       })
-    }
+    },
   },
   modules: {
   }

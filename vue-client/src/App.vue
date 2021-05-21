@@ -2,7 +2,6 @@
   <div id="app">
     <div id="nav">
       <router-link :to="{ name: 'MovieList' }">Main</router-link> |
-      <router-link :to="{ name: 'ReviewList' }">Reviews</router-link> |
       <router-link :to="{ name: 'VoteList' }">Votes</router-link> |
       <router-link :to="{ name: 'Signup' }">Signup</router-link> |
       <router-link :to="{ name: 'Login' }">Login</router-link> |

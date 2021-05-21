@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import MovieList from '@/views/movies/MovieList.vue'
-import MovieDetail from '@/components/MovieDetail.vue'
-import ReviewList from '@/views/reviews/ReviewList.vue'
-import VoteList from '@/views/votes/VoteList.vue'
-import Signup from '@/views/accounts/Signup.vue'
-import Login from '@/views/accounts/Login.vue'
+import MovieList from '@/views/movies/MovieList'
+import MovieDetail from '@/components/MovieDetail'
+import ReviewDetail from '@/views/reviews/ReviewDetail'
+import CreateReview from '@/views/reviews/CreateReview'
+import VoteList from '@/views/votes/VoteList'
+import Signup from '@/views/accounts/Signup'
+import Login from '@/views/accounts/Login'
 
 Vue.use(VueRouter)
 
@@ -21,9 +22,14 @@ const routes = [
     component: MovieDetail
   },
   {
-    path: '/review',
-    name: 'ReviewList',
-    component: ReviewList
+    path: '/:movieId/reviews/:reviewId',
+    name: 'ReviewDetail',
+    component: ReviewDetail
+  },
+  {
+    path: '/:movieId/createreview',
+    name: 'CreateReview',
+    component: CreateReview
   },
   {
     path: '/vote',
