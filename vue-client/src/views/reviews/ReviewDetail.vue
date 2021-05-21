@@ -14,12 +14,14 @@
       <label for="comment">댓글작성</label>
       <input v-model="commentContent" type="text" name="comment" id="comment">
       <input @click="createComment" type="submit" value="작성">
+      <!-- {{ comments }} -->
       <ReviewComment
         v-for="(comment, idx) in comments"
         :key="idx"
         :comment="comment"
         :movieId="movieId"
         :reviewId="reviewId"
+        @comment-deleted="getReviewComments"
       />
     </div>
   </div>
@@ -32,7 +34,7 @@ import ReviewComment from '@/components/ReviewComment'
 
 export default {
   name: 'ReviewDetail',
-  component: {
+  components: {
     ReviewComment,
   },
   data: function () {
