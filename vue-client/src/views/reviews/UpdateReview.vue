@@ -14,6 +14,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'UpdateReview',
@@ -24,6 +25,11 @@ export default {
       rank: 0,
       content: '',
     }
+  },
+  computed: {
+    ...mapGetters([
+      'config'
+    ])
   },
   methods: {
     updateTitle: function (event) {
@@ -43,6 +49,7 @@ export default {
       const title = this.title ? this.title : this.review.title
       const rank = this.rank ? this.rank : this.review.rank
       const content = this.content ? this.content : this.review.content
+      const headers = this.config
       const reviewItem = {
         title,
         rank,
@@ -54,6 +61,7 @@ export default {
           url: SERVER.URL + SERVER.ROUTES.reviews + `${movieId}/reviews/${reviewId}/updatereview/`,
           method: 'put',
           data: reviewItem,
+          headers,
         })
         .then(() => {
           // console.log(this.movieId)

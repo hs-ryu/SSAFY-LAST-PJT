@@ -1,15 +1,37 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link :to="{ name: 'MovieList' }">Main</router-link> |
-      <router-link :to="{ name: 'ArticleList' }">Community</router-link> |
-      <router-link :to="{ name: 'Signup' }">Signup</router-link> |
-      <router-link :to="{ name: 'Login' }">Login</router-link> |
+        <router-link :to="{ name: 'MovieList' }">Main</router-link> |
+        <router-link :to="{ name: 'ArticleList' }">Community</router-link> |
+      <span v-if="isLoggedin">
+        <router-link @click.native="logout" to="#">Logout</router-link> |
+      </span>
+      <span v-else>
+        <router-link :to="{ name: 'Signup' }">Signup</router-link> |
+        <router-link :to="{ name: 'Login' }">Login</router-link>
+      </span>
     </div>
     <router-view/>
   </div>
 </template>
 
+<script>
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  name: 'App',
+  methods: {
+    ...mapActions([
+      'logout',
+    ])
+  },
+  computed: {
+    ...mapGetters([
+      'isLoggedIn',
+    ])
+  }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

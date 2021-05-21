@@ -32,11 +32,17 @@
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import ReviewComment from '@/components/ReviewComment'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ReviewDetail',
   components: {
     ReviewComment,
+  },
+  computed: {
+    ...mapGetters([
+      'config'
+    ])
   },
   data: function () {
     return {
@@ -74,9 +80,11 @@ export default {
       })
     },
     deleteReview: function () {
+      const headers = this.config
       axios({
         url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/deletereview/`,
         method: 'delete',
+        headers,
       })
       .then(() => {
         this.$router.push({ name: 'MovieDetail', params: { movieId: this.movieId}})
@@ -89,6 +97,7 @@ export default {
       this.$router.push({ name: 'UpdateReview', params: { movieId: this.movieId, reviewId: this.reviewId }, query: { review: this.review }})
     },
     createComment: function () {
+      const headers = this.config
       const commentItem = {
         content: this.commentContent,
       }
@@ -97,6 +106,7 @@ export default {
           url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/createcomment/`,
           method: 'post',
           data: commentItem,
+          headers,
         })
         .then(() => {
           this.commentContent = ''

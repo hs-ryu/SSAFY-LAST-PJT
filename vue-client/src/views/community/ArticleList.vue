@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>게시글 목록</h1>
+    <!-- {{ articles }} -->
     <div v-for="(article, idx) in articles" :key="idx">
       <h2 @click="goToArticleDetail(article.id)">{{ article.title }}</h2>
     </div>
@@ -25,7 +26,7 @@ export default {
     getAllArticles: function () {
       axios({
         // path('articles/', views.getallarticles, name='getallarticles'),
-        url: SERVER.URL + 'community/articles/',
+        url: SERVER.URL + '/community/articles/',
         method: 'get',
       })
       .then((res) => {

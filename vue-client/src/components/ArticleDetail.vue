@@ -1,38 +1,66 @@
 <template>
   <div>
-    <h1>글 제목: {{ article.title }}</h1>
-    <div v-if="article.category=='1'">
-      <p>분류: 공지사항</p>
+    <div>
+      <h1>글 제목: {{ article.title }}</h1>
+      <div v-if="article.category=='1'">
+        <p>분류: 공지사항</p>
+      </div>
+      <div v-else-if="article.category=='2'">
+        <p>분류: 건의사항</p>
+      </div>
+      <div v-else-if="article.category=='3'">
+        <p>분류: 자유글</p>
+      </div>
+      <p>글 내용: {{ article.content }}</p>
+      <button @click="deleteArticle">삭제</button>
+      <button @click="goToUpdateArticle">수정</button>
     </div>
-    <div v-else-if="article.category=='2'">
-      <p>분류: 건의사항</p>
+    <div>
+      <h2>댓글목록</h2>
+      <label for="comment">댓글작성</label>
+      <input v-model="commentContent" type="text" name="comment" id="comment">
+      <input @click="createComment" type="submit" value="작성">
+      <ArticleComment
+        v-for="(comment, idx) in comments"
+        :key="idx"
+        :comment="comment"
+        :articleId="articleId"
+        @comment-deleted="getArticleComments"
+        @modify-activate="getArticleComments"
+      />
     </div>
-    <div v-else-if="article.category=='3'">
-      <p>분류: 자유글</p>
-    </div>
-    <p>글 내용: {{ article.content }}</p>
-    <button @click="deleteArticle">삭제</button>
-    <button @click="goToUpdateArticle">수정</button>
   </div>
 </template>
 
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
+import ArticleComment from '@/components/ArticleComment'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ArticleDetail',
+  components: {
+    ArticleComment,
+  },
   data: function () {
     return {
       articleId: this.$route.params.articleId,
       article: {},
+      commentContent: '',
+      comments: [],
     }
+  },
+  computed: {
+    ...mapGetters([
+      'config'
+    ])
   },
   methods: {
     // path('articles/<int:article_pk>/', views.getarticle, name='getarticle'),
     getArticleDetail: function() {
       axios({
-        url: SERVER.URL + `community/articles/${this.articleId}`,
+        url: SERVER.URL + `/community/articles/${this.articleId}`,
         method: 'get',
       })
       .then((res) => {
@@ -42,11 +70,26 @@ export default {
         console.log(err)
       })
     },
+    getArticleComments: function () {
+      axios({
+        // path('articles/<int:article_pk>/comments/', views.getallcomments, name='getallcomments'),
+        url: SERVER.URL + `/community/articles/${this.articleId}/comments/`,
+        method: 'get',
+      })
+      .then((res) => {
+        this.comments = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     deleteArticle: function () {
+      const headers = this.config
       axios({
         // path('articles/<int:article_pk>/deletearticle/', views.deletearticle, name='deletearticle'),
-        url: SERVER.URL + `community/articles/${this.articleId}/deletearticle/`,
+        url: SERVER.URL + `/community/articles/${this.articleId}/deletearticle/`,
         method: 'delete',
+        headers,
       })
       .then(() => {
         this.$router.push({ name: 'ArticleList' })
@@ -58,6 +101,29 @@ export default {
     goToUpdateArticle: function () {
       this.$router.push({ name: 'UpdateArticle', params: { articleId: this.articleId }, query: { article: this.article }})
     },
+    createComment: function () {
+      const commentItem = {
+        content: this.commentContent,
+      }
+      if (commentItem.content) {
+        const headers = this.config
+        axios({
+          // path('articles/<int:article_pk>/createcomment/', views.createcomment, name='createcomment'),
+          url: SERVER.URL + `/community/articles/${this.articleId}/createcomment/`,
+          method: 'post',
+          data: commentItem,
+          headers,
+        })
+        .then(() => {
+          this.commentContent = ''
+          this.getArticleComments()
+          // this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    }
   },
   created: function () {
     this.getArticleDetail()

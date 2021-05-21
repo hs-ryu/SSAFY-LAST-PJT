@@ -14,15 +14,12 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'ReviewComment',
+  name: 'ArticleComment',
   props: {
     comment: {
       type: Object,
     },
-    movieId: {
-      type: String,
-    },
-    reviewId: {
+    articleId: {
       type: String,
     }
   },
@@ -38,23 +35,12 @@ export default {
     ])
   },
   methods: {
-    getReviewComments: function () {
-      axios({
-        url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/getcomments/`,
-        method: 'get',
-      })
-      .then((res) => {
-        this.comments = res.data
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    },
     deleteComment: function () {
-      const headers = this.config
       const commentId = this.comment.id
+      const headers = this.config
       axios({
-        url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/${commentId}/deletecomment/`,
+        // path('articles/<int:article_pk>/comments/<int:comment_pk>/deletecomment/', views.deletecomment, name='deletecomment'),
+        url: SERVER.URL + `/community/articles/${this.articleId}/comments/${commentId}/deletecomment/`,
         method: 'delete',
         headers,
       })
@@ -65,21 +51,22 @@ export default {
       })
     },
     updateMode: function () {
-      // console.log(this.modifyActivate)
+      console.log(this.modifyActivate)
       if (!this.modifyActivate) {
         this.modifyActivate = true // 수정창 열림
         this.$emit('modify-activate')
       } else {
         const commentContent = this.updatedContent ? this.updatedContent : this.comment.content
-        // console.log(commentContent)
+        console.log(commentContent)
         const commentItem = {
           content: commentContent,
         }
         if (commentItem.content) {
-          const headers = this.config
           const commentId = this.comment.id
+          const headers = this.config
           axios({
-            url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/${commentId}/updatecomment/`,
+            // path('articles/<int:article_pk>/comments/<int:comment_pk>/updatecomment/', views.updatecomment, name='updatecomment'),
+            url: SERVER.URL + `/community/articles/${this.articleId}/comments/${commentId}/updatecomment/`,
             method: 'put',
             data: commentItem,
             headers,

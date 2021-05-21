@@ -4,7 +4,7 @@
     <label for="title">글 제목</label>
     <input :value="article.title" @change="updateTitle" type="text" name="title" id="title">
     <label for="category">분류</label>
-    <select :value="article.category" @onchange="updateCategory" name="category" id="category">
+    <select :value="article.categories" @change="updateCategories" name="categories" id="categories">
       <option disabled value="">분류를 선택해 주세요</option>
       <option value="1">공지사항</option>
       <option value="2">건의사항</option>
@@ -19,6 +19,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'UpdateArticle',
@@ -26,16 +27,23 @@ export default {
     return {
       article: this.$route.query.article,
       title: '',
-      category: '',
+      categories: '',
       content: '',
     }
   },
+  computed: {
+    ...mapGetters([
+      'config'
+    ])
+  },
   methods: {
     updateTitle: function (event) {
+      console.log(EventTarget)
       this.title = event.target.value
     },
-    updateCategory: function (event) {
-      this.category = event.target.value
+    updateCategories: function (event) {
+      console.log(event.target.value)
+      this.categories = event.target.value
     },
     updateContent: function (event) {
       this.content = event.target.value
@@ -43,23 +51,26 @@ export default {
     updateArticle: function () {
       const articleId = this.$route.params.articleId
       const title = this.title ? this.title : this.article.title
-      const category = this.category ? this.category : this.article.category
+      const categories = this.categories ? this.categories : this.article.categories
       const content = this.content ? this.content : this.article.content
+      const headers = this.config
       const articleItem = {
-        title,
-        category,
-        content,
+        title: title,
+        categories: categories,
+        content: content,
       }
-      console.log(articleItem.title)
-      if (articleItem.title && articleItem.category && articleItem.content) {
+      // console.log(articleItem)
+      if (articleItem.title && articleItem.categories && articleItem.content) {
         axios({
           // path('articles/<int:article_pk>/updatearticle/', views.updatearticle, name='updatearticle'),
-          url: SERVER.URL + `community/articles/${articleId}/updatearticle/`,
+          url: SERVER.URL + `/community/articles/${articleId}/updatearticle/`,
           method: 'put',
           data: articleItem,
+          headers,
         })
         .then(() => {
-          this.$router.push({ name: 'articleDetail', params: { articleId: articleId}})
+          // console.log(res)
+          this.$router.push({ name: 'ArticleDetail', params: { articleId: articleId}})
         })
         .catch((err) => {
           console.log(err)

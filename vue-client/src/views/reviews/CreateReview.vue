@@ -15,6 +15,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'CreateReview',
@@ -27,8 +28,14 @@ export default {
       movieTitle: this.$route.query.movieTitle,
     }
   },
+  computed: {
+    ...mapGetters([
+      'config',
+    ])
+  },
   methods: {
     createReview: function (title, rank, content) {
+      const headers = this.config
       const reviewItem = {
         title,
         rank,
@@ -39,9 +46,10 @@ export default {
           url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/createreview/`,
           method: 'post',
           data: reviewItem,
+          headers,
         })
         .then(() => {
-          console.log(this.movieId)
+          // console.log(this.movieId)
           this.title = ''
           this.rank = 0
           this.content = ''
