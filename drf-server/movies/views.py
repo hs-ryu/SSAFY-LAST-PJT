@@ -185,7 +185,7 @@ def getnowshowing(request):
 # 해당 영화의 전체 리뷰 조회
 @api_view(['GET'])
 def getallreviews(request, movie_pk):
-    reviews = get_list_or_404(Review, movie_id=movie_pk)
+    reviews = Review.objects.filter(movie_id=movie_pk)
     serializer = ReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -199,7 +199,6 @@ def getreview(request, movie_pk, review_pk):
 # 해당 영화에 리뷰 생성
 @api_view(['POST'])
 def createreview(request, movie_pk):
-    
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         movie = get_object_or_404(Movie, pk=movie_pk)
@@ -220,7 +219,7 @@ def deletereview(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
     movie.rank_total -= review.rank
-    reviews = get_list_or_404(Review, movie_id=movie_pk)
+    reviews = Review.objects.filter(movie_id=movie_pk)
     if len(reviews)-1:
         movie.rank_average = movie.rank_total / (len(reviews) - 1)
     else:
@@ -233,7 +232,7 @@ def deletereview(request, movie_pk, review_pk):
 # 리뷰 수정
 @api_view(['PUT'])
 def updatereview(request, movie_pk, review_pk):
-    reviews = get_list_or_404(Review, movie_id=movie_pk)
+    reviews = Review.objects.filter(movie_id=movie_pk)
     review = get_object_or_404(Review, pk=review_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
     movie.rank_total -= review.rank
