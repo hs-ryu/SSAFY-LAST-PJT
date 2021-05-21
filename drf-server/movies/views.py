@@ -43,25 +43,25 @@ def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
     # 19페이지오류
-    for i in range(1,11):
+    for i in range(1,20):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
-        URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
+        URL = f'https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
         get_movies = response['results']
         for get_movie in get_movies:
-            movie = Movie()
             try:
-                movie.release_date = get_movie['release_date']
+                if get_movie['release_date'] and get_movie['title'] and get_movie['id'] and get_movie['overview'] and get_movie['poster_path'] and get_movie['vote_average'] and get_movie['genre_ids']:
+                    movie = Movie()
+                    movie.release_date = get_movie['release_date']
+                    movie.title = get_movie['title']
+                    movie.movie_id = get_movie['id']
+                    movie.overview = get_movie['overview']
+                    movie.poster_path = get_movie['poster_path']
+                    movie.vote_average = get_movie['vote_average']
+                    genres = get_movie['genre_ids']
+                    movie.save()
             except:
                 continue
-            movie.title = get_movie['title']
-            movie.movie_id = get_movie['id']
-            movie.overview = get_movie['overview']
-            movie.poster_path = get_movie['poster_path']
-            movie.vote_average = get_movie['vote_average']
-            genres = get_movie['genre_ids']
-
-            movie.save()
             for genre in genres:
                 targets = Genre.objects.filter(id=genre)
                 movie.genres.add(targets[0])
@@ -71,7 +71,6 @@ def savemovies(request):
                 results = just_watch.search_for_item(query=f"{movie.title}")['items']
                 if len(results) > 1:
                     for result in results:
-                        # DB에 저장된 영화 title과 개봉년도가 같을 때에만 같은 영화로 간주
                         if (movie.title == result['title']) and (movie.release_date[:4] == str(result['original_release_year'])):
                             urls_info = result['offers']
                             for url_info in urls_info:
@@ -146,6 +145,7 @@ def getmoviedetail(request, movie_pk):
     now_time = timezone.make_aware(datetime.datetime.now())
     movie = get_object_or_404(Movie, pk=movie_pk)
     # 일단 확인을 위해 minute으로 
+    # if (datetime.datetime.now().hour > movie.last_cliked_time.hour) or (datetime.datetime.now().day > movie.last_cliked_time.day) or (datetime.datetime.now().month > movie.last_cliked_time.month) or (datetime.datetime.now().year > movie.last_cliked_time.year)
     if datetime.datetime.now().minute > movie.last_cliked_time.minute:
         movie.last_cliked_time = now_time
         movie.clicked = 0
@@ -166,6 +166,7 @@ def getpopularmovies(request):
     # 다 0이면 뭘로 들고올까? 랜덤?
     recommend_movies = Movie.objects.order_by('-clicked')[:10]
     for movie in movies:
+        # if (datetime.datetime.now().hour > movie.last_cliked_time.hour) or (datetime.datetime.now().day > movie.last_cliked_time.day) or (datetime.datetime.now().month > movie.last_cliked_time.month) or (datetime.datetime.now().year > movie.last_cliked_time.year)
         if datetime.datetime.now().minute > movie.last_cliked_time.minute:
             movie.last_cliked_time = now_time
             movie.clicked = 0
