@@ -72,6 +72,9 @@ export default {
       .then((res) => {
         this.reviews = res.data
       })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     goToCreateReview: function () {
       this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: this.movieTitle}})

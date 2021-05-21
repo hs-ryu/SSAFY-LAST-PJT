@@ -1,0 +1,67 @@
+<template>
+  <div>
+    <h1>글 제목: {{ article.title }}</h1>
+    <div v-if="article.category=='1'">
+      <p>분류: 공지사항</p>
+    </div>
+    <div v-else-if="article.category=='2'">
+      <p>분류: 건의사항</p>
+    </div>
+    <div v-else-if="article.category=='3'">
+      <p>분류: 자유글</p>
+    </div>
+    <p>글 내용: {{ article.content }}</p>
+    <button @click="deleteArticle">삭제</button>
+    <button @click="goToUpdateArticle">수정</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ArticleDetail',
+  data: function () {
+    return {
+      articleId: this.$route.params.articleId,
+      article: {},
+    }
+  },
+  methods: {
+    // path('articles/<int:article_pk>/', views.getarticle, name='getarticle'),
+    getArticleDetail: function() {
+      axios({
+        url: SERVER.URL + `community/articles/${this.articleId}`,
+        method: 'get',
+      })
+      .then((res) => {
+        this.article = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    deleteArticle: function () {
+      axios({
+        // path('articles/<int:article_pk>/deletearticle/', views.deletearticle, name='deletearticle'),
+        url: SERVER.URL + `community/articles/${this.articleId}/deletearticle/`,
+        method: 'delete',
+      })
+      .then(() => {
+        this.$router.push({ name: 'ArticleList' })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    goToUpdateArticle: function () {
+      this.$router.push({ name: 'UpdateArticle', params: { articleId: this.articleId }, query: { article: this.article }})
+    },
+  },
+  created: function () {
+    getArticleDetail()
+  }
+}
+</script>
+
+<style>
+
+</style>

@@ -22,6 +22,7 @@
         :movieId="movieId"
         :reviewId="reviewId"
         @comment-deleted="getReviewComments"
+        @modify-activate="getReviewComments"
       />
     </div>
   </div>

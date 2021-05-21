@@ -1,8 +1,9 @@
 <template>
   <div>
-    <p>{{ comment.content }}</p>
-    <p>{{ comment.id }}</p>
-    <button @click="updateComment">수정</button>
+    <p :class="{hide: modifyActivate}">{{ comment.content }}</p>
+    <!-- <p>{{ comment.id }}</p> -->
+    <input :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
+    <button @click="updateMode">수정</button>
     <button @click="deleteComment">삭제</button>
   </div>
 </template>
@@ -22,6 +23,12 @@ export default {
     },
     reviewId: {
       type: String,
+    }
+  },
+  data: function () {
+    return {
+      modifyActivate: false,
+      updatedContent: '',
     }
   },
   methods: {
@@ -49,13 +56,43 @@ export default {
         // this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
       })
     },
-    updateComment: function () {
-      // 수정을 어떻게 하지...
+    updateMode: function () {
+      console.log(this.modifyActivate)
+      if (!this.modifyActivate) {
+        this.modifyActivate = true // 수정창 열림
+        this.$emit('modify-activate')
+      } else {
+        const commentContent = this.updatedContent ? this.updatedContent : this.comment.content
+        console.log(commentContent)
+        const commentItem = {
+          content: commentContent,
+        }
+        if (commentItem.content) {
+          const commentId = this.comment.id
+          axios({
+            url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/${commentId}/updatecomment/`,
+            method: 'put',
+            data: commentItem,
+          })
+          .then(() => {
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        }
+        this.modifyActivate = false
+        this.$emit('modify-activate')
+      }
+    },
+    updateContent: function (event) {
+      this.updatedContent = event.target.value
     }
   },
 }
 </script>
 
 <style>
-
+.hide {
+  display: none;
+}
 </style>
