@@ -1,5 +1,5 @@
-from community.models import Article, Comment
-from community.serializers import ArticleListSerializer, ArticleSerializer, CommentSerializer
+from .models import Article, Comment
+from .serializers import ArticleListSerializer, ArticleSerializer, CommentSerializer
 from django.shortcuts import get_object_or_404, render
 
 from rest_framework import status
@@ -20,13 +20,26 @@ def createarticle(request):
     serializer = ArticleSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user=request.user)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # 모든 게시글 조회
 @api_view(['GET'])
 def getallarticles(request):
     articles = Article.objects.all()
     serializer = ArticleListSerializer(articles, many=True)
+    return Response(serializer.data)
+
+# 게시글 좋아요
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def likearticle(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if article.like_users.filter(pk=request.user.pk).exists():
+        article.like_users.remove(request.user)
+    else:
+        article.like_users.add(request.user)
+    serializer = ArticleSerializer(article)
     return Response(serializer.data)
 
 # 게시글 상세 조회
@@ -69,9 +82,10 @@ def deletearticle(request, article_pk):
 def createcomment(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     serializer = CommentSerializer(data=request.data)
+    #여기서 막히네. 해결!
     if serializer.is_valid(raise_exception=True):
         serializer.save(article=article, user=request.user) # 이 시점에 어떤 게시글에 달린 댓글인지에 대한 정보를 추가해줘야함.
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # 게시글의 댓글들 조회
 @api_view(['GET'])
@@ -88,7 +102,7 @@ def getallcomments(reqeust, article_pk):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def updatecomment(request, article_pk, comment_pk):
-    if not request.user.comments.filter(pk=comment_pk).exists():
+    if not request.user.comment_set.filter(pk=comment_pk).exists():
         return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
     comment = get_object_or_404(Comment, pk=comment_pk)
     serializer = CommentSerializer(comment, data=request.data)
@@ -101,7 +115,7 @@ def updatecomment(request, article_pk, comment_pk):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def deletecomment(request, article_pk, comment_pk):
-    if not request.user.comments.filter(pk=comment_pk).exists():
+    if not request.user.comment_set.filter(pk=comment_pk).exists():
         return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
     comment = get_object_or_404(Comment, pk=comment_pk)
     comment.delete()

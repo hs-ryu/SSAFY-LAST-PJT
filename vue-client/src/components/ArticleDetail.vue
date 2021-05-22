@@ -131,6 +131,8 @@ export default {
   },
   created: function () {
     this.getArticleDetail()
+    // 현선 추가
+    this.getArticleComments()
   }
 }
 </script>

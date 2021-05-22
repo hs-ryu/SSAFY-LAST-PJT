@@ -3,6 +3,11 @@
     <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
     {{ movie.title }}
     {{ movie.content }}
+    <div v-if="movie.trailer">
+      <p>트레일러</p>
+      <iframe :src="'https://www.youtube.com/embed/' + movie.trailer" frameborder="0" style="display:block; width:100vw; height: 100vh"></iframe>
+    </div>
+
     <p>제공하는 플랫폼</p>
     <a v-if="netflix" :href="netflix"><img src="@/assets/netflix_logo.png" alt="netflix logo"></a>
     <a v-if="watcha" :href="watcha"><img src="@/assets/watcha_logo.png" alt="watcha logo"></a>

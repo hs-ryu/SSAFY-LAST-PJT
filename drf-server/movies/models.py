@@ -6,12 +6,14 @@ from django.utils import timezone
 class Genre(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 # 디렉터랑 액터는 credit으로 받아옴. 얘네 둘은 어차피 한 API로 호출 가능하니까 한번만 할까?
 # 가능할까?
-class Director(models.Model):
-    name = models.CharField(max_length=100)
-class Actor(models.Model):
-    name = models.CharField(max_length=100)
+# class Director(models.Model):
+#     name = models.CharField(max_length=100)
+# class Actor(models.Model):
+#     name = models.CharField(max_length=100)
 
 # Create your models here.
 class Movie(models.Model):
@@ -26,7 +28,8 @@ class Movie(models.Model):
     vote_average = models.FloatField()
     rank_total = models.FloatField(default=0)
     rank_average = models.FloatField(default=0)
-    # like_users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    trailer = models.TextField()
+    # like_users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_movies')
     netflix = models.TextField(default='')
     watcha = models.TextField(default='')
     wavve = models.TextField(default='')
@@ -34,6 +37,8 @@ class Movie(models.Model):
     release_date = models.DateField()
     clicked = models.IntegerField(default=0)
     last_cliked_time = models.DateTimeField(default=timezone.make_aware(datetime.datetime.strptime("2021-05-18 16:30:30", '%Y-%m-%d %H:%M:%S')))
+    def __str__(self):
+        return self.title
 
 
 class NowShowingMovie(models.Model):
@@ -41,9 +46,9 @@ class NowShowingMovie(models.Model):
     openDt = models.DateField()
     audiAcc = models.CharField(max_length=100)
     image_path = models.CharField(max_length=100)
-    # 나중에 DB 초기화 할떄 default 지우고 다시 마이그레이션
     userRating = models.FloatField()
-
+    def __str__(self):
+        return self.movieNm
 
 
 class Review(models.Model):
@@ -56,7 +61,8 @@ class Review(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
@@ -64,7 +70,8 @@ class Comment(models.Model):
     content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    def __str__(self):
+        return self.content
 
 class Vote(models.Model):
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

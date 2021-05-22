@@ -1,5 +1,3 @@
-
-
 from django.http import response
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 from rest_framework import status
@@ -7,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Movie, NowShowingMovie, Genre, Review, Comment, Vote, VoteComment
 from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer, ReviewListSerializer, ReviewSerializer, CommentSerializer, VoteListSerializer, VoteSerializer
-
+from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 
 import requests
@@ -32,6 +30,8 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 # @permission_required('is_staff')
 # 체크 해봐야함.
 
+# @authentication_classes([JSONWebTokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def savegenre(request):
     TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
     URL = f'https://api.themoviedb.org/3/genre/movie/list?api_key={TMDB_API_KEY}&language=ko-KR'
@@ -47,13 +47,15 @@ def savegenre(request):
 
 
 # api를 사용해서 영화 데이터 불러와서 저장하기. 일단 샘플로만 만들기
+# @authentication_classes([JSONWebTokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
     # 19페이지오류
-    for i in range(1,3):
+    for i in range(1,2):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
-        URL = f'https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
+        URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
         get_movies = response['results']
         for get_movie in get_movies:
@@ -104,13 +106,22 @@ def savemovies(request):
                         elif 'naver' in url:
                             movie.naver = url
                 # movie.save()
+                # 트레일러 없는 영화는 아예 저장도 안되게 할려면 위로 올리면 됨.
+                TRAILER_URL = f'https://api.themoviedb.org/3/movie/{movie.movie_id}/videos?api_key={TMDB_API_KEY}&language=en-US'
+                trailer_response = requests.get(TRAILER_URL).json()
+                trailer_results = trailer_response["results"]
+                for trailer_result in trailer_results:
+                    if trailer_result["site"].lower() == "youtube":
+                        movie.trailer = trailer_result["key"]
+                        break
             except:
                 pass
             finally:
                 movie.save()
     return render(request, 'movies/savemovies.html')
 
-
+# @authentication_classes([JSONWebTokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def savenowshowing(request):
     KOBIS_API_KEY = '351749075a99330b8e539beb9afaf302'
     yesterday = datetime.datetime.now()- datetime.timedelta(days=2)
@@ -165,6 +176,19 @@ def getmoviedetail(request, movie_pk):
     return Response(serializer.data)
 
 
+# 영화 좋아요
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def likemovie(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    if movie.like_users.filter(pk=request.user.pk).exists():
+        movie.like_users.remove(request.user)
+    else:
+        movie.like_users.add(request.user)
+    serializer = MovieSerializer(movie)
+    return Response(serializer.data)
+
 # 인기 영화 정보 조회
 # 여기 clicked 사용
 @api_view(['GET'])
@@ -172,7 +196,9 @@ def getpopularmovies(request):
     now_time = timezone.make_aware(datetime.datetime.now())
     movies = get_list_or_404(Movie)
     # 다 0이면 뭘로 들고올까? 랜덤?
-    recommend_movies = Movie.objects.order_by('-clicked')[:10]
+    recommend_movies = Movie.objects.order_by('-clicked')[:20]
+    if recommend_movies[0].clicked == 0:
+        pass
     for movie in movies:
         # if (datetime.datetime.now().hour > movie.last_cliked_time.hour) or (datetime.datetime.now().day > movie.last_cliked_time.day) or (datetime.datetime.now().month > movie.last_cliked_time.month) or (datetime.datetime.now().year > movie.last_cliked_time.year)
         if datetime.datetime.now().minute > movie.last_cliked_time.minute:
@@ -208,6 +234,20 @@ def getreview(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     serializer = ReviewSerializer(review)
     return Response(serializer.data)
+
+# 리뷰 좋아요
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def likemovie(request, movie_pk, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+    if review.like_users.filter(pk=request.user.pk).exists():
+        review.like_users.remove(request.user)
+    else:
+        review.like_users.add(request.user)
+    serializer = ReviewSerializer(review)
+    return Response(serializer.data)
+
 
 # 해당 영화에 리뷰 생성
 @api_view(['POST'])
