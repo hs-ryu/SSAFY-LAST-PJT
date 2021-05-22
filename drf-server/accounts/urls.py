@@ -9,4 +9,5 @@ urlpatterns = [
     path('api-token-auth/', obtain_jwt_token),
     path('<int:user_pk>/follow/', views.follow, name='follow'),
     path('verify-user/', views.verify_user),
+    path('userinfo/<int:user_id>/', views.userinfo),
 ]

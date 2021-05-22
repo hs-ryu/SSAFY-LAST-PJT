@@ -69,3 +69,12 @@ def verify_user(request):
         'issuperuser': superuser_status,
     }
     return JsonResponse(user_info)
+
+
+def userinfo(request, user_pk):
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    username = user.username
+    user_info = {
+        'username' : username,
+    }
+    return JsonResponse(user_info)
