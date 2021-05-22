@@ -78,3 +78,21 @@ def userinfo(request, user_pk):
         'username' : username,
     }
     return JsonResponse(user_info)
+
+
+def profile(request, user_pk):
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    like_articles = user.like_articles.all()
+    like_movies = user.like_movies.all()
+    like_reviews = user.like_reviews.all()
+    create_articles = user.articles.all()
+    create_reviews = user.reviews.all()
+    # create_votes = user.votes.all()
+    user_info = {
+        'like_articles' : like_articles,
+        'like_movies' : like_movies,
+        'like_reviews' : like_reviews,
+        'create_articles': create_articles,
+        'create_reviews': create_reviews,
+    }
+    return JsonResponse(user_info)
