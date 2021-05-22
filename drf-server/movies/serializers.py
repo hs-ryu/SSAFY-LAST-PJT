@@ -15,7 +15,9 @@ class MovieListSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ('id','title','movie_id', 'overview', 'poster_path', 'vote_average', 'netflix', 'watcha', 'wavve', 'naver', 'clicked','release_date', 'trailer')
+        fields = ('id','title','movie_id', 'overview', 'poster_path', 'vote_average', 'netflix', 'watcha', 'wavve', 'naver', 'clicked','release_date', 'trailer', 'like_users')
+        read_only_fields = ('like_users',)
+
 
 class NowShowingMovieSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,35 +25,39 @@ class NowShowingMovieSerializer(serializers.ModelSerializer):
         fields = ('movieNm', 'openDt', 'audiAcc', 'image_path')
 
 class ReviewListSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField()
     class Meta:
         model = Review
-        fields = ('id', 'title', 'rank','created_at', 'updated_at',)
+        fields = ('id', 'title', 'rank','created_at', 'updated_at', 'username')
 
 class ReviewSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
-
     class Meta:
         model = Review
         fields = ('id', 'content','title', 'rank','created_at', 'updated_at', 'like_users', 'username')
         read_only_fields = ('like_users',)
 
 class CommentSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField()
     class Meta:
         model = Comment
-        fields = ('id', 'content', 'created_at', 'updated_at',)
+        fields = ('id', 'content', 'created_at', 'updated_at', 'username')
 
 
 class VoteListSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField()
     class Meta:
         model = Vote
-        fields = ('title', 'movie', 'option_one_count', 'option_two_count', 'option_one', 'option_two')
+        fields = ('title', 'movie', 'option_one_count', 'option_two_count', 'option_one', 'option_two', 'username')
 
 class VoteSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField()
     class Meta:
         model = Vote
-        fields = ('title', 'option_one_count', 'option_two_count', )
+        fields = ('title', 'option_one_count', 'option_two_count', 'username')
 
 class VoteCommentSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField()
     class Meta:
         model = VoteComment
-        fields = ('choice', 'content',)
+        fields = ('choice', 'content', 'username')
