@@ -3,6 +3,7 @@
     <div>
       <h1>개별리뷰상세</h1>
       <h3>리뷰 제목: {{ review.title }}</h3>
+      <p>작성자: {{ review.username }}</p>
       <p>{{ review }}</p>
       <p>영화: {{ movieTitle }}</p>
       <p>평점: {{ review.rank }}</p>
@@ -11,6 +12,7 @@
       <button @click="deleteReview">삭제</button>
     </div>
     <div>
+      {{ likeStatus }}
       <button v-if="likeStatus" @click="getLikeStatus">좋아요취소</button>
       <button v-else @click="getLikeStatus">좋아요</button>
     </div>
@@ -37,7 +39,7 @@
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import ReviewComment from '@/components/ReviewComment'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
   name: 'ReviewDetail',
@@ -61,7 +63,11 @@ export default {
       comments: [],
       commentContent: '',
       likeCount: 0,
-      likeStatus: false,
+      // likeStatus: false,
+      likeStatus: this.review.like_users.includes('userId'),
+      ...mapState([
+        'userId',
+      ])
     }
   },
   methods: {
@@ -146,13 +152,17 @@ export default {
         this.likeStatus = liked
         console.log(this.likeStatus)
         console.log(this.likeCount)
+        this.getReviewDetail()
       })
+    },
+    updateLikeStatus: function () {
+      this.likeStatus = this.review.like_users.includes(this.userId)
     }
   },
   created: function () {
     this.getReviewDetail()
     this.getReviewComments() // 댓글목록 가져오는 함수
-    this.getLikeStatus()
+    this.updateLikeStatus()
   },
 }
 </script>
