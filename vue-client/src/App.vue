@@ -7,6 +7,7 @@
         <router-link :to="{ name: 'ArticleList' }">Community</router-link> |
       <span v-if="isLoggedIn">
         <router-link @click.native="logout" to="#">Logout</router-link> |
+        <router-link :to="{ name: 'Profile', params: { userId }}">Mypage</router-link>
         <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/">SYSTEM</a>
       </span>
       <span v-else>

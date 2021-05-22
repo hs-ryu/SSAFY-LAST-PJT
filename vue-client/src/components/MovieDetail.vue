@@ -1,11 +1,13 @@
 <template>
   <div>
+    <!-- {{ movie }} -->
     <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
     {{ movie.title }}
     {{ movie.content }}
     <div>
-      <button>좋아요</button>
-      <button>좋아요취소</button>
+      <p>{{ movie.like_users.length }}명이 좋아합니다.</p>
+      <button v-if="movie.like_users.includes(userId)" @click="getLikeStatus">좋아요취소</button>
+      <button v-else @click="getLikeStatus">좋아요</button>
     </div>
     <div v-if="movie.trailer">
       <p>트레일러</p>
@@ -37,6 +39,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
+import { mapGetters, mapState } from 'vuex'
 
 import ReviewItem from '@/components/ReviewItem'
 
@@ -54,9 +57,15 @@ export default {
       wavve: '',
       naver: '',
       reviews: [],
-      likeCount: 0,
-      likeStatus: false,
     }
+  },
+  computed: {
+    ...mapGetters([
+      'config',
+    ]),
+    ...mapState([
+      'userId',
+    ])
   },
   methods: {
     getMovieDetail: function() {
@@ -90,6 +99,18 @@ export default {
     goToCreateReview: function () {
       this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: this.movieTitle}})
     },
+    getLikeStatus: function () {
+      const headers = this.config
+      axios({
+        // 'getmovies/<int:movie_pk>/likes/
+        url: SERVER.URL + `/movies/getmovies/${this.movieId}/likes/`,
+        method: 'post',
+        headers,
+      })
+      .then(() => {
+        this.getMovieDetail()
+      })
+    }
   },
   created: function () {
     this.getMovieDetail()

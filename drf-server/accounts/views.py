@@ -80,8 +80,8 @@ def userinfo(request, user_pk):
     return JsonResponse(user_info)
 
 
-def profile(request, user_pk):
-    user = get_object_or_404(get_user_model(), pk=user_pk)
+def profile(request, user_id):
+    user = get_object_or_404(get_user_model(), pk=user_id)
     like_articles = user.like_articles.all()
     like_movies = user.like_movies.all()
     like_reviews = user.like_reviews.all()

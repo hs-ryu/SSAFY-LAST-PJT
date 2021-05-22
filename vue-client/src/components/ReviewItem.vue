@@ -13,7 +13,7 @@ export default {
       type: Object,
     },
     movieId: {
-      type: Number,
+      type: String,
     },
     movieTitle: {
       type: String,

@@ -11,6 +11,7 @@ import UpdateArticle from '@/views/community/UpdateArticle'
 import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
 import CreateArticle from '@/views/community/CreateArticle'
+import Profile from '@/views/accounts/Profile'
 
 Vue.use(VueRouter)
 
@@ -70,6 +71,11 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  {
+    path: '/profile/:userId',
+    name: 'Profile',
+    component: Profile,
+  }
   
 ]
 

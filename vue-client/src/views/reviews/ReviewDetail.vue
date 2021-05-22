@@ -12,9 +12,10 @@
       <button @click="deleteReview">삭제</button>
     </div>
     <div>
-      {{ likeStatus }}
-      <button v-if="likeStatus" @click="getLikeStatus">좋아요취소</button>
-      <button v-else @click="getLikeStatus">좋아요</button>
+      <!-- {{ review.like_users.includes(userId) }} -->
+      <p>{{ review.like_users.length }}명이 좋아합니다.</p>
+      <button style="border: 0; outline: 0;" class="btn btn-link" v-if="review.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
+      <button class="btn btn-link" v-else @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:black;"></i></button>
     </div>
     <div>
       <h2>댓글 목록</h2>
@@ -39,7 +40,7 @@
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import ReviewComment from '@/components/ReviewComment'
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'ReviewDetail',
@@ -50,9 +51,9 @@ export default {
     ...mapGetters([
       'config'
     ]),
-    ...mapActions([
-      'getUserName'
-    ])
+    ...mapState([
+      'userId',
+    ]),
   },
   data: function () {
     return {
@@ -62,12 +63,9 @@ export default {
       reviewId: this.$route.params.reviewId,
       comments: [],
       commentContent: '',
-      likeCount: 0,
+      // likeCount: 0,
       // likeStatus: false,
-      likeStatus: this.review.like_users.includes('userId'),
-      ...mapState([
-        'userId',
-      ])
+      // likeStatus: this.review.like_users.includes('userId'),
     }
   },
   methods: {
@@ -146,29 +144,32 @@ export default {
         method: 'post',
         headers,
       })
-      .then((res) => {
-        const { likeCount, liked } = res.data
-        this.likeCount = likeCount
-        this.likeStatus = liked
-        console.log(this.likeStatus)
-        console.log(this.likeCount)
+      .then(() => {
+        // const { likeCount } = res.data
+        // this.likeCount = likeCount
+        // this.likeStatus = liked
         this.getReviewDetail()
       })
     },
-    updateLikeStatus: function () {
-      this.likeStatus = this.review.like_users.includes(this.userId)
-    }
+    // updateLikeStatus: function () {
+    //   this.likeStatus = this.review.like_users.includes(this.userId)
+    // }
   },
   created: function () {
     this.getReviewDetail()
     this.getReviewComments() // 댓글목록 가져오는 함수
-    this.updateLikeStatus()
+    // this.updateLikeStatus()
   },
 }
 </script>
 
 <style>
-.hide {
-  display: none;
+/* button :focus {
+  border: none;
+  outline: none;
 }
+button :hover{ 	
+  border: none;
+  outline: none;
+  } */
 </style>

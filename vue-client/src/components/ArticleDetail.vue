@@ -1,7 +1,9 @@
 <template>
   <div>
     <div>
+      {{ article }}
       <h1>글 제목: {{ article.title }}</h1>
+      <p>작성자: {{ article.username }}</p>
       <div v-if="article.categories=='1'">
         <p>분류: 공지사항</p>
       </div>
@@ -14,6 +16,11 @@
       <p>글 내용: {{ article.content }}</p>
       <button @click="deleteArticle">삭제</button>
       <button @click="goToUpdateArticle">수정</button>
+    </div>
+    <div>
+      <p>{{ article.like_users.length }}명이 좋아합니다.</p>
+      <button v-if="article.like_users.includes(userId)" @click="getLikeStatus">좋아요취소</button>
+      <button v-else @click="getLikeStatus">좋아요</button>
     </div>
     <div>
       <h2>댓글목록</h2>
@@ -36,7 +43,7 @@
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import ArticleComment from '@/components/ArticleComment'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'ArticleDetail',
@@ -54,6 +61,9 @@ export default {
   computed: {
     ...mapGetters([
       'config'
+    ]),
+    ...mapState([
+      'userId'
     ])
   },
   methods: {
@@ -127,7 +137,22 @@ export default {
           console.log(err)
         })
       }
-    }
+    },
+    getLikeStatus: function () {
+      const headers = this.config
+      axios({
+        // 'articles/<int:article_pk>/likes/'
+        url: SERVER.URL + `/community/articles/${this.articleId}/likes/`,
+        method: 'post',
+        headers,
+      })
+      .then(() => {
+        // const { likeCount } = res.data
+        // this.likeCount = likeCount
+        // this.likeStatus = liked
+        this.getArticleDetail()
+      })
+    },
   },
   created: function () {
     this.getArticleDetail()

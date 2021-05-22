@@ -12,9 +12,9 @@ export default new Vuex.Store({
     popularMovies: [],
     nowShowingMovies: [],
     authToken: localStorage.getItem('jwt'),
-    username: '',
+    username: '손님',
     isSuperuser: false,
-    userId: null,
+    userId: -1,
   },
   getters: {
     // 로그인상태 확인 boolean 값
@@ -71,9 +71,9 @@ export default new Vuex.Store({
           this.state.username = username
           this.state.userId = userId
           this.state.isSuperuser = issuperuser
-          console.log(this.state.username)
-          console.log(this.state.userId)
-          console.log(this.state.isSuperuser)
+          // console.log(this.state.username)
+          // console.log(this.state.userId)
+          // console.log(this.state.isSuperuser)
         })
         router.push({ name: 'MovieList' })
       })
@@ -118,15 +118,6 @@ export default new Vuex.Store({
       })
       .catch((err) => {
         console.log(err)
-      })
-    },
-    getUserName: function (userId) {
-      axios({
-        url: SERVER.URL + SERVER.ROUTES.getUserName + `${userId}/`,
-        method: 'get',
-      })
-      .then((res) => {
-        return res.data.username
       })
     },
     /* 전체 영화 조회 */
