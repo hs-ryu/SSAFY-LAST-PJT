@@ -7,12 +7,12 @@
         <router-link :to="{ name: 'ArticleList' }">Community</router-link> |
       <span v-if="isLoggedIn">
         <router-link @click.native="logout" to="#">Logout</router-link> |
+        <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/">SYSTEM</a>
       </span>
       <span v-else>
         <router-link :to="{ name: 'Signup' }">Signup</router-link> |
         <router-link :to="{ name: 'Login' }">Login</router-link>
       </span>
-      <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/">SYSTEM</a>
     </div>
     <router-view/>
   </div>

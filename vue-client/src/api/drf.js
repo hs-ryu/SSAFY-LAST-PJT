@@ -6,6 +6,7 @@ export default {
     signup: '/accounts/signup/',
     login: '/accounts/api-token-auth/',
     verify_user: '/accounts/verify-user/',
+    getUserName: '/accounts/userinfo/',
     getAllMovies: '/movies/getmovies/',
     getPopularMovies: '/movies/getpopularmovies/',
     getNowShowing: '/movies/getnowshowing/',

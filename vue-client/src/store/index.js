@@ -120,6 +120,15 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    getUserName: function (userId) {
+      axios({
+        url: SERVER.URL + SERVER.ROUTES.getUserName + `${userId}/`,
+        method: 'get',
+      })
+      .then((res) => {
+        return res.data.username
+      })
+    },
     /* 전체 영화 조회 */
     getAllMovies: function ({ commit }) {
       axios({

@@ -3,6 +3,10 @@
     <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
     {{ movie.title }}
     {{ movie.content }}
+    <div>
+      <button>좋아요</button>
+      <button>좋아요취소</button>
+    </div>
     <div v-if="movie.trailer">
       <p>트레일러</p>
       <iframe :src="'https://www.youtube.com/embed/' + movie.trailer" frameborder="0" style="display:block; width:100vw; height: 100vh"></iframe>
@@ -50,6 +54,8 @@ export default {
       wavve: '',
       naver: '',
       reviews: [],
+      likeCount: 0,
+      likeStatus: false,
     }
   },
   methods: {
@@ -83,7 +89,7 @@ export default {
     },
     goToCreateReview: function () {
       this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: this.movieTitle}})
-    }
+    },
   },
   created: function () {
     this.getMovieDetail()

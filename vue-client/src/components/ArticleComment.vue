@@ -73,6 +73,7 @@ export default {
           })
           .then(() => {
             // 여기 필요할듯
+            this.$emit('modify-activate')
           })
           .catch((err) => {
             console.log(err)

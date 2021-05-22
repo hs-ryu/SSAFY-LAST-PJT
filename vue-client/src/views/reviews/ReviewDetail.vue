@@ -3,11 +3,16 @@
     <div>
       <h1>개별리뷰상세</h1>
       <h3>리뷰 제목: {{ review.title }}</h3>
+      <p>{{ review }}</p>
       <p>영화: {{ movieTitle }}</p>
       <p>평점: {{ review.rank }}</p>
       <p>리뷰 내용: {{ review.content }}</p>
       <button @click="goToUpdate">수정</button>
       <button @click="deleteReview">삭제</button>
+    </div>
+    <div>
+      <button v-if="likeStatus" @click="getLikeStatus">좋아요취소</button>
+      <button v-else @click="getLikeStatus">좋아요</button>
     </div>
     <div>
       <h2>댓글 목록</h2>
@@ -32,7 +37,7 @@
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import ReviewComment from '@/components/ReviewComment'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'ReviewDetail',
@@ -42,6 +47,9 @@ export default {
   computed: {
     ...mapGetters([
       'config'
+    ]),
+    ...mapActions([
+      'getUserName'
     ])
   },
   data: function () {
@@ -52,6 +60,8 @@ export default {
       reviewId: this.$route.params.reviewId,
       comments: [],
       commentContent: '',
+      likeCount: 0,
+      likeStatus: false,
     }
   },
   methods: {
@@ -121,15 +131,34 @@ export default {
           console.log(err)
         })
       }
+    },
+    // path('<int:movie_pk>/reviews/<int:review_pk>/likes/', views.likereview, name='likereview'),
+    getLikeStatus: function () {
+      const headers = this.config
+      axios({
+        url: SERVER.URL + `/movies/${this.movieId}/reviews/${this.reviewId}/likes/`,
+        method: 'post',
+        headers,
+      })
+      .then((res) => {
+        const { likeCount, liked } = res.data
+        this.likeCount = likeCount
+        this.likeStatus = liked
+        console.log(this.likeStatus)
+        console.log(this.likeCount)
+      })
     }
   },
   created: function () {
     this.getReviewDetail()
     this.getReviewComments() // 댓글목록 가져오는 함수
-  }
+    this.getLikeStatus()
+  },
 }
 </script>
 
 <style>
-
+.hide {
+  display: none;
+}
 </style>
