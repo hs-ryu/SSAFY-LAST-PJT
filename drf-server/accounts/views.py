@@ -58,7 +58,7 @@ def follow(request, user_pk):
 
 @api_view(['POST'])
 def verify_user(request):
-    decoded = jwt.decode(request.data.get('token'), 'settings.py의 SECRET_KEY', algorithms=["HS256"])
+    decoded = jwt.decode(request.data.get('token'), '7(y1dmoz!7jil1-$oqmlidjn&!h+@jef!!wccv@8f8xpy#d89s', algorithms=["HS256"])
     user_id = decoded.get('user_id')
     username = decoded.get('username')
     you = get_object_or_404(get_user_model(), pk=user_id)

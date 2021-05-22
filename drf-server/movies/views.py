@@ -405,12 +405,20 @@ def deletevote(request, movie_pk, vote_pk):
     return Response({ 'id': vote_pk})
 
 
-# 투표 댓글 생성
+# 투표 목록 불러오기.
 @api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getvotecomments(request, movie_pk):
+    votes = Vote.objects.filter(movie_id=movie_pk)
+    serializer = VoteListSerializer(votes, many=True)
+    return Response(serializer.data)
+
+
+# 투표 댓글 생성
+@api_view(['POST'])
 def createvotecomment(request, movie_pk):
     votes = Vote.objects.filter(movie_id=movie_pk)
     serializer = VoteListSerializer(votes, many=True)
     return Response(serializer.data)
 
-def getvotecomments(request, movie_pk):
-    pass
