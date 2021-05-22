@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
 from .models import Comment, Movie, NowShowingMovie, Review, Vote, VoteComment
+
+User = get_user_model()
 
 class MovieListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,10 +28,12 @@ class ReviewListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'rank','created_at', 'updated_at',)
 
 class ReviewSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField()
+
     class Meta:
         model = Review
-        fields = ('id', 'content','title', 'rank','created_at', 'updated_at',)
-
+        fields = ('id', 'content','title', 'rank','created_at', 'updated_at', 'like_users', 'username')
+        read_only_fields = ('like_users',)
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,7 +44,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class VoteListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ('title', 'movie', 'option_one_count', 'option_two_count',)
+        fields = ('title', 'movie', 'option_one_count', 'option_two_count', 'option_one', 'option_two')
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:

@@ -38,4 +38,5 @@ urlpatterns = [
     # # 투표 댓글과 관련된 URL
     path('<int:movie_pk>/votes/<int:vote_pk>/createvotecomment/', views.createvotecomment, name='createvotecomment'),
     path('<int:movie_pk>/votes/<int:vote_pk>/votecomments/', views.getvotecomments, name='getallvotecomments'),
+    path('<int:movie_pk>/votes/<int:vote_pk>/<int:votecomment_pk>/deletevotecomment/', views.deletevotecomment, name='deletevotecomment'),
 ]
