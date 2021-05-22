@@ -29,7 +29,7 @@ class Movie(models.Model):
     rank_total = models.FloatField(default=0)
     rank_average = models.FloatField(default=0)
     trailer = models.TextField()
-    like_users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_movies')
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
     netflix = models.TextField(default='')
     watcha = models.TextField(default='')
     wavve = models.TextField(default='')

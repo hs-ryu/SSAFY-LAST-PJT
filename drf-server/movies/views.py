@@ -58,6 +58,7 @@ def savemovies(request):
         URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
         get_movies = response['results']
+        
         for get_movie in get_movies:
             try:
                 if get_movie['release_date'] and get_movie['title'] and get_movie['id'] and get_movie['overview'] and get_movie['poster_path'] and get_movie['vote_average'] and get_movie['genre_ids']:
