@@ -29,7 +29,7 @@ class Movie(models.Model):
     rank_total = models.FloatField(default=0)
     rank_average = models.FloatField(default=0)
     trailer = models.TextField()
-    # like_users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_movies')
+    like_users = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_movies')
     netflix = models.TextField(default='')
     watcha = models.TextField(default='')
     wavve = models.TextField(default='')
@@ -53,7 +53,7 @@ class NowShowingMovie(models.Model):
 
 class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
-    # like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
     title = models.CharField(max_length=20)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
     # 얘를 movie_pk로 해야하나.
@@ -64,6 +64,7 @@ class Review(models.Model):
     def __str__(self):
         return self.title
 
+
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
@@ -73,14 +74,20 @@ class Comment(models.Model):
     def __str__(self):
         return self.content
 
+
 class Vote(models.Model):
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='votes')
     title = models.CharField(max_length=100)
+    option_one_count = models.IntegerField(default=0)
+    option_two_count = models.IntegerField(default=0)
     option_one = models.TextField()
     option_two = models.TextField()
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
 
+
 class VoteComment(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='votecomments')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='vote_comments')
     choice = models.IntegerField()
     content = models.CharField(max_length=100)
+

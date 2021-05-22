@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Comment, Movie, NowShowingMovie, Review, Vote
+from .models import Comment, Movie, NowShowingMovie, Review, Vote, VoteComment
 
 class MovieListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,3 +45,8 @@ class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
         fields = ('title', 'option_one_count', 'option_two_count', )
+
+class VoteCommentSerializer(serializers.ModelSerailizer):
+    class Meta:
+        model = VoteComment
+        fields = ('choice', 'content', )

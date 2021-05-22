@@ -13,7 +13,7 @@ urlpatterns = [
     path('getmovies/<int:movie_pk>/', views.getmoviedetail, name='getmoviedetail'),
     path('getpopularmovies/', views.getpopularmovies, name='getpopularmovies'),
     path('getnowshowing/', views.getnowshowing, name='getnowshowing'),
-    # path('getmovies/<int:movie_pk>/likes/', views.likemovie, name='likemovie'),
+    path('getmovies/<int:movie_pk>/likes/', views.likemovie, name='likemovie'),
 
     # 리뷰와 관련된 URL
     path('<int:movie_pk>/reviews/', views.getallreviews, name='getallreviews'),
@@ -21,7 +21,7 @@ urlpatterns = [
     path('<int:movie_pk>/createreview/', views.createreview, name='createreview'),
     path('<int:movie_pk>/reviews/<int:review_pk>/updatereview/', views.updatereview, name='updatereview'),
     path('<int:movie_pk>/reviews/<int:review_pk>/deletereview/', views.deletereview, name='deletereview'),
-    # path('<int:movie_pk>/reviews/<int:review_pk>/likes/', views.likereview, name='likereview'),
+    path('<int:movie_pk>/reviews/<int:review_pk>/likes/', views.likereview, name='likereview'),
 
     # 댓글과 관련된 URL
     path('<int:movie_pk>/reviews/<int:review_pk>/createcomment/', views.createcomment, name='createcomment'),
@@ -30,12 +30,12 @@ urlpatterns = [
     path('<int:movie_pk>/reviews/<int:review_pk>/<int:comment_pk>/updatecomment/', views.updatecomment, name='updatecomment'),
 
     # # 투표와 관련된 URL
-    # path('<int:movie_pk>/votes/', views.getallvotes, name='getallvotes'),
-    # path('<int:movie_pk>/votes/<int:vote_pk>/', views.getvote, name='getvote'),
-    # path('<int:movie_pk>/createvote/', views.createvote, name='createvote'),
-    # path('<int:movie_pk>/<int:vote_pk>/deletevote/', views.deletevote, name='deletevote'),
+    path('<int:movie_pk>/votes/', views.getallvotes, name='getallvotes'),
+    path('<int:movie_pk>/votes/<int:vote_pk>/', views.getvote, name='getvote'),
+    path('<int:movie_pk>/createvote/', views.createvote, name='createvote'),
+    path('<int:movie_pk>/<int:vote_pk>/deletevote/', views.deletevote, name='deletevote'),
 
     # # 투표 댓글과 관련된 URL
-    # path('<int:movie_pk>/createvote/', views.createvote, name='createvote'),
-    # path('<int:movie_pk>/<int:vote_pk>/deletevote/', views.deletevote, name='deletevote'),
+    path('<int:movie_pk>/votes/<int:vote_pk>/createvotecomment/', views.createvotecomment, name='createvotecomment'),
+    path('<int:movie_pk>/votes/<int:vote_pk>/votecomments/', views.getvotecomments, name='getallvotecomments'),
 ]

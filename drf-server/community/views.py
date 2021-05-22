@@ -1,6 +1,7 @@
 from .models import Article, Comment
 from .serializers import ArticleListSerializer, ArticleSerializer, CommentSerializer
 from django.shortcuts import get_object_or_404, render
+from django.http import JsonResponse
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -37,10 +38,15 @@ def likearticle(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if article.like_users.filter(pk=request.user.pk).exists():
         article.like_users.remove(request.user)
+        liked = False
     else:
         article.like_users.add(request.user)
-    serializer = ArticleSerializer(article)
-    return Response(serializer.data)
+        liked = True
+    like_status = {
+        'liked' : liked,
+        'likeCount' : article.like_users.count(),
+    }
+    return JsonResponse(like_status)
 
 # 게시글 상세 조회
 @api_view(['GET'])

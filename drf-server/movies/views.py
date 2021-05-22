@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Movie, NowShowingMovie, Genre, Review, Comment, Vote, VoteComment
 from .serializers import MovieListSerializer, MovieSerializer, NowShowingMovieSerializer, ReviewListSerializer, ReviewSerializer, CommentSerializer, VoteListSerializer, VoteSerializer
-from django.contrib.admin.views.decorators import staff_member_required
+# from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse, HttpResponse
 # Create your views here.
 
 import requests
@@ -52,7 +53,6 @@ def savegenre(request):
 def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
-    # 19페이지오류
     for i in range(1,2):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
         URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
@@ -184,10 +184,15 @@ def likemovie(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     if movie.like_users.filter(pk=request.user.pk).exists():
         movie.like_users.remove(request.user)
+        liked = False
     else:
         movie.like_users.add(request.user)
-    serializer = MovieSerializer(movie)
-    return Response(serializer.data)
+        liked = True
+    like_status = {
+        'liked' : liked,
+        'likeCount' : movie.like_users.count()
+    }
+    return JsonResponse(like_status)
 
 # 인기 영화 정보 조회
 # 여기 clicked 사용
@@ -243,10 +248,15 @@ def likemovie(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     if review.like_users.filter(pk=request.user.pk).exists():
         review.like_users.remove(request.user)
+        liked = False
     else:
         review.like_users.add(request.user)
-    serializer = ReviewSerializer(review)
-    return Response(serializer.data)
+        liked = True
+    like_status = {
+        'liked' : liked,
+        'likeCount' : review.like_users.count()
+    }
+    return JsonResponse(like_status)
 
 
 # 해당 영화에 리뷰 생성
@@ -354,45 +364,49 @@ def updatecomment(request, movie_pk, review_pk, comment_pk):
         return Response(serializer.data)
 
 
-# # 투표 전부 조회
+# 투표 전부 조회
+@api_view(['GET'])
+def getallvotes(request, movie_pk):
+    votes = Vote.objects.filter(movie_id=movie_pk)
+    serializer = VoteListSerializer(votes, many=True)
+    return Response(serializer.data)
+
+#투표 상세
+@api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getvote(requet, movie_pk, vote_pk):
+    vote = get_object_or_404(Vote, pk=vote_pk)
+    serializer = VoteSerializer(vote)
+    return Response(serializer.data)
+
+
+#투표 생성
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def createvote(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = VoteSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(movie = movie, user=request.user)
+        return Response(serializer.data)
+
+# 투표 삭제
+@api_view(['DELETE'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def deletevote(request, movie_pk, vote_pk):
+    if not request.user.votes.filter(pk=vote_pk).exists():
+        return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
+    vote = get_object_or_404(Vote, pk=vote_pk)
+    vote.delete()
+    return Response({ 'id': vote_pk})
+
+
+# 투표 댓글 생성
 # @api_view(['GET'])
-# @authentication_classes([JSONWebTokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def getallvotes(request, movie_pk):
+# def createvotecomment(request, movie_pk):
 #     votes = Vote.objects.filter(movie_id=movie_pk)
 #     serializer = VoteListSerializer(votes, many=True)
 #     return Response(serializer.data)
-
-# #투표 상세
-# @api_view(['GET'])
-# @authentication_classes([JSONWebTokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def getvote(requet, movie_pk, vote_pk):
-#     vote = get_object_or_404(Vote, pk=vote_pk)
-#     serializer = VoteSerializer(vote)
-#     return Response(serializer.data)
-
-
-# #투표 생성
-# @api_view(['POST'])
-# @authentication_classes([JSONWebTokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def createvote(request, movie_pk):
-#     movie = get_object_or_404(Movie, pk=movie_pk)
-#     serializer = VoteSerializer(data=request.data)
-#     if serializer.is_valid(raise_exception=True):
-#         serializer.save(movie = movie)
-#         return Response(serializer.data)
-
-# # 투표 삭제
-# @api_view(['DELETE'])
-# @authentication_classes([JSONWebTokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def deletevote(request, movie_pk, vote_pk):
-#     vote = get_object_or_404(Vote, pk=vote_pk)
-#     vote.delete()
-#     return Response({ 'id': vote_pk})
-
-
-# # 투표 댓글 생성, 조회
-
