@@ -51,7 +51,7 @@ def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
     # 19페이지오류
-    for i in range(1,20):
+    for i in range(1,3):
         TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
         URL = f'https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()

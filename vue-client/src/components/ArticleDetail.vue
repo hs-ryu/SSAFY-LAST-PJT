@@ -2,13 +2,13 @@
   <div>
     <div>
       <h1>글 제목: {{ article.title }}</h1>
-      <div v-if="article.category=='1'">
+      <div v-if="article.categories=='1'">
         <p>분류: 공지사항</p>
       </div>
-      <div v-else-if="article.category=='2'">
+      <div v-else-if="article.categories=='2'">
         <p>분류: 건의사항</p>
       </div>
-      <div v-else-if="article.category=='3'">
+      <div v-else-if="article.categories=='3'">
         <p>분류: 자유글</p>
       </div>
       <p>글 내용: {{ article.content }}</p>
@@ -59,9 +59,11 @@ export default {
   methods: {
     // path('articles/<int:article_pk>/', views.getarticle, name='getarticle'),
     getArticleDetail: function() {
+      const headers = this.config
       axios({
         url: SERVER.URL + `/community/articles/${this.articleId}`,
         method: 'get',
+        headers,
       })
       .then((res) => {
         this.article = res.data
@@ -71,10 +73,12 @@ export default {
       })
     },
     getArticleComments: function () {
+      const headers = this.config
       axios({
         // path('articles/<int:article_pk>/comments/', views.getallcomments, name='getallcomments'),
         url: SERVER.URL + `/community/articles/${this.articleId}/comments/`,
         method: 'get',
+        headers,
       })
       .then((res) => {
         this.comments = res.data

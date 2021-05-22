@@ -56,9 +56,11 @@ export default {
   },
   methods: {
     getReviewDetail: function () {
+      const headers = this.config
       axios({
         url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/`,
         method: 'get',
+        headers,
       })
       .then((res) => {
         this.review = res.data
@@ -68,9 +70,11 @@ export default {
       })
     },
     getReviewComments: function () {
+      const headers = this.config
       axios({
         url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/getcomments/`,
         method: 'get',
+        headers,
       })
       .then((res) => {
         this.comments = res.data
