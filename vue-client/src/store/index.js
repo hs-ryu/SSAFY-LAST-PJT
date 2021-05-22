@@ -12,6 +12,9 @@ export default new Vuex.Store({
     popularMovies: [],
     nowShowingMovies: [],
     authToken: localStorage.getItem('jwt'),
+    username: '',
+    isSuperuser: false,
+    userId: null,
   },
   getters: {
     // 로그인상태 확인 boolean 값
@@ -53,11 +56,52 @@ export default new Vuex.Store({
       })
       .then((res) => {
         commit('SET_TOKEN', res.data.token)
+        axios({
+          url: SERVER.URL + SERVER.ROUTES.verify_user,
+          method: 'post',
+          data: {
+            token: this.state.authToken,
+          }
+        })
+        .then((res) => {
+          console.log(res.data)
+          const username = res.data.username ? res.data.username : '손님'
+          const userId = res.data.user_id ? res.data.user_id : null
+          const issuperuser = res.data.issuperuser ? res.data.issuperuser : false
+          this.state.username = username
+          this.state.userId = userId
+          this.state.isSuperuser = issuperuser
+          console.log(this.state.username)
+          console.log(this.state.userId)
+          console.log(this.state.isSuperuser)
+        })
         router.push({ name: 'MovieList' })
       })
       .catch((err) => {
         console.log(err)
       })
+    },
+    get_user_info: function () {
+      console.log(this.state)
+        axios({
+          url: SERVER.URL + SERVER.ROUTES.verify_user,
+          method: 'post',
+          data: {
+            token: this.state.authToken,
+          }
+        })
+        .then((res) => {
+          console.log(res.data)
+          const username = res.data.username ? res.data.username : '손님'
+          const userId = res.data.user_id ? res.data.user_id : null
+          const issuperuser = res.data.issuperuser ? res.data.issuperuser : false
+          this.state.username = username
+          this.state.userId = userId
+          this.state.isSuperuser = issuperuser
+          console.log(this.state.username)
+          console.log(this.state.userId)
+          console.log(this.state.isSuperuser)
+        })
     },
     logout: function ({ commit }) {
       commit('REMOVE_TOKEN')

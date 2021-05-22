@@ -5,6 +5,7 @@ export default {
   ROUTES: {
     signup: '/accounts/signup/',
     login: '/accounts/api-token-auth/',
+    verify_user: '/accounts/verify-user/',
     getAllMovies: '/movies/getmovies/',
     getPopularMovies: '/movies/getpopularmovies/',
     getNowShowing: '/movies/getnowshowing/',
