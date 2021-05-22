@@ -4,7 +4,7 @@ from .models import Article, Comment
 class ArticleListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ('id', 'title', 'categories')
+        fields = ('id', 'title', 'categories','user')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,4 +19,4 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         # 게시글-댓글 사이에 1:N 관계가 형성되었을때 'comment_set'를 넣어주면 조회했을때 같이 나옴.
-        fields = ('id', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'categories')
+        fields = ('id', 'title', 'content', 'created_at', 'updated_at', 'comments', 'comment_count', 'categories','user',)
