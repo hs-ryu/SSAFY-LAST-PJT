@@ -244,7 +244,7 @@ def getreview(request, movie_pk, review_pk):
 @api_view(['POST'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
-def likemovie(request, movie_pk, review_pk):
+def likereview(request, movie_pk, review_pk):
     review = get_object_or_404(Review, pk=review_pk)
     if review.like_users.filter(pk=request.user.pk).exists():
         review.like_users.remove(request.user)
@@ -405,8 +405,11 @@ def deletevote(request, movie_pk, vote_pk):
 
 
 # 투표 댓글 생성
-# @api_view(['GET'])
-# def createvotecomment(request, movie_pk):
-#     votes = Vote.objects.filter(movie_id=movie_pk)
-#     serializer = VoteListSerializer(votes, many=True)
-#     return Response(serializer.data)
+@api_view(['GET'])
+def createvotecomment(request, movie_pk):
+    votes = Vote.objects.filter(movie_id=movie_pk)
+    serializer = VoteListSerializer(votes, many=True)
+    return Response(serializer.data)
+
+def getvotecomments(request, movie_pk):
+    pass

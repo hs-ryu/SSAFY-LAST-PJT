@@ -46,7 +46,7 @@ class VoteSerializer(serializers.ModelSerializer):
         model = Vote
         fields = ('title', 'option_one_count', 'option_two_count', )
 
-class VoteCommentSerializer(serializers.ModelSerailizer):
+class VoteCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = VoteComment
         fields = ('choice', 'content', )
