@@ -1,7 +1,10 @@
 <template>
   <div>
-    <h1>개별리뷰제목</h1>
-    <h2 @click="goToReviewDetail">{{ review.title }}</h2>
+    <tr>
+      <td @click="goToReviewDetail">{{ review.title }}</td>
+      <td>v</td>
+      <td>{{ review.username }}</td>
+    </tr>
   </div>
 </template>
 
