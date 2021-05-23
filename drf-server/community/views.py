@@ -26,7 +26,7 @@ def createarticle(request):
 # 모든 게시글 조회
 @api_view(['GET'])
 def getallarticles(request):
-    articles = Article.objects.all()
+    articles = Article.objects.order_by('-pk')
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
 

@@ -14,6 +14,8 @@ urlpatterns = [
     path('getpopularmovies/', views.getpopularmovies, name='getpopularmovies'),
     path('getnowshowing/', views.getnowshowing, name='getnowshowing'),
     path('getmovies/<int:movie_pk>/likes/', views.likemovie, name='likemovie'),
+    # 영화 검색
+    path('searchmovies/<str:search_item>/', views.searchmovies, name='searchmovies'),
 
     # 리뷰와 관련된 URL
     path('<int:movie_pk>/reviews/', views.getallreviews, name='getallreviews'),

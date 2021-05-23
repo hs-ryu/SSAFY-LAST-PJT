@@ -15,6 +15,10 @@ export default new Vuex.Store({
     username: '손님',
     isSuperuser: false,
     userId: -1,
+
+    // 검색
+    inputValue: '',
+    searchMovies : [],
   },
   getters: {
     // 로그인상태 확인 boolean 값
@@ -24,6 +28,16 @@ export default new Vuex.Store({
     config: function (state) {
       return {
         Authorization: `JWT ${state.authToken}`
+      }
+    },
+    movieLength: function (state) {
+      if (state.searchMovies) {
+        return state.searchMovies.Length
+      }
+    },
+    inputLength: function (state) {
+      if (state.inputValue) {
+        return state.inputValue.Length
       }
     }
   },
@@ -44,7 +58,17 @@ export default new Vuex.Store({
     },
     GET_NOW_SHOWING: function (state, nowShowingMovies) {
       state.nowShowingMovies = nowShowingMovies
+    },
+
+    // 검색
+    SET_INPUT_VALUE : function (state, inputValue) {
+      state.inputValue = inputValue
+    },
+    SET_SEARCH_MOVIES: function (state, searchMovies) {
+      state.searchMovies = searchMovies
     }
+
+
   },
   actions: {
     /* 인증 & 권한 */
@@ -159,6 +183,22 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+
+    // 검색 
+    fetchMovies: function ({ commit, state }, event) {
+      commit('SET_INPUT_VALUE', event.target.value)
+      axios({
+        url: SERVER.URL + SERVER.ROUTES.searchMovies + state.inputValue + '/',
+        method: 'get',
+      })
+      .then((res) => {
+        commit('SET_SEARCH_MOVIES', res.data.items)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    }
+
   },
   modules: {
   }

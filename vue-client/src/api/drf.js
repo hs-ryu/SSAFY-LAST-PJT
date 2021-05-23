@@ -11,5 +11,8 @@ export default {
     getPopularMovies: '/movies/getpopularmovies/',
     getNowShowing: '/movies/getnowshowing/',
     reviews: '/movies/',
+
+    // 서치
+    searchMovies: '/movies/searchmovies/',
   }
 }

@@ -227,6 +227,15 @@ def getnowshowing(request):
     # serializer = MovieListSerializer(movies, many=True)
     # return Response(serializer.data)
 
+# 검색
+@api_view(['GET'])
+def searchmovies(request, search_item):
+    movies = Movie.objects.filter(title__contains=search_item)
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
+
+
+
 # 해당 영화의 전체 리뷰 조회
 @api_view(['GET'])
 def getallreviews(request, movie_pk):
