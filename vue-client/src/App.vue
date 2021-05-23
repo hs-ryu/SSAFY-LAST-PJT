@@ -161,4 +161,9 @@ export default {
 .main-color-background {
   background-color: #CE93D8;
 }
+
+.custom-button {
+  background-color: #CE93D8;
+  color: white;
+}
 </style>

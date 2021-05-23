@@ -133,7 +133,9 @@ export default {
     },
     goToCreateReview: function () {
       const movieTitle = this.movie.title
-      this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle }})
+      const moviePosterPath = this.movie.poster_path
+      console.log(moviePosterPath)
+      this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
     },
     getLikeStatus: function () {
       const headers = this.config
