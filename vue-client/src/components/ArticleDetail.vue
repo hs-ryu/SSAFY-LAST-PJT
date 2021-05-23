@@ -3,7 +3,7 @@
     <div>
       {{ article }}
       <h1>글 제목: {{ article.title }}</h1>
-      <p>작성자: {{ article.username }}</p>
+      <p @click="goToProfile">작성자: {{ article.username }}</p>
       <div v-if="article.categories=='1'">
         <p>분류: 공지사항</p>
       </div>
@@ -152,6 +152,10 @@ export default {
         // this.likeStatus = liked
         this.getArticleDetail()
       })
+    },
+    goToProfile: function () {
+      const userName = this.article.username
+      this.$router.push({ name: 'Profile', params: { username: userName }})
     },
   },
   created: function () {

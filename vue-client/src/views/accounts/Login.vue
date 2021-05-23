@@ -1,12 +1,14 @@
 <template>
   <div>
-    <h1>로그인</h1>
+    <div class="m-5">
+      <h1>로그인</h1>
+    </div>
     <div>
-      <label for="username">사용자 이름: </label>
+      <label for="username">사용자 이름</label>
       <input type="text" id="username" v-model="credentials.username">
     </div>
     <div>
-      <label for="password">비밀번호: </label>
+      <label for="password">비밀번호</label>
       <input 
         type="password" 
         id="password" 

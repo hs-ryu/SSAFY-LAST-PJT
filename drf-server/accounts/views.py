@@ -80,8 +80,8 @@ def userinfo(request, user_pk):
     return JsonResponse(user_info)
 
 
-def profile(request, user_id):
-    user = get_object_or_404(get_user_model(), pk=user_id)
+def profile(request, username):
+    user = get_object_or_404(get_user_model(), username=username)
     like_articles = user.like_articles.all()
     like_articles_json = []
     for like_article in like_articles:
@@ -142,20 +142,33 @@ def profile(request, user_id):
         create_reviews_json.append(
             {
                 'id' : create_review.id,
-                'movie' : like_review.movie.title,
-                'movie_id' : like_review.movie.id,
+                'movie' : create_review.movie.title,
+                'movie_id' : create_review.movie.id,
                 'title' : create_review.title,
                 'content' : create_review.content,
             }
         )
 
+    followers = user.followers.all()
+    followers_json = []
+    for follower in followers:
+        followers_json.append(follower.id)
+
+    followings = user.followings.all()
+    followings_json = []
+    for following in followings:
+        followings_json.append(following.id)
 
     # create_votes = user.votes.all()
     user_info = {
+        'username': user.username,
+        'user_id': user.id,
         'like_articles' : like_articles_json,
         'like_movies' : like_movies_json,
         'like_reviews' : like_reviews_json,
         'create_articles': create_articles_json,
         'create_reviews': create_reviews_json,
+        'followers': followers_json,
+        'followings': followings_json,
     }
     return JsonResponse(user_info)

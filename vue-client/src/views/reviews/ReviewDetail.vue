@@ -3,7 +3,7 @@
     <div>
       <h1>개별리뷰상세</h1>
       <h3>리뷰 제목: {{ review.title }}</h3>
-      <p>작성자: {{ review.username }}</p>
+      <p @click="goToProfile">작성자: {{ review.username }}</p>
       <p>{{ review }}</p>
       <p>영화: {{ movieTitle }}</p>
       <p>평점: {{ review.rank }}</p>
@@ -153,6 +153,14 @@ export default {
     },
     // updateLikeStatus: function () {
     //   this.likeStatus = this.review.like_users.includes(this.userId)
+    // }
+    goToProfile: function () {
+      const userName = this.review.username
+      this.$router.push({ name: 'Profile', params: { username: userName }})
+    },
+    // goToReviewDetail: function () {
+    //   const reviewId = this.review.id
+    //   this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: reviewId }, query: { movieTitle: this.movieTitle}})
     // }
   },
   created: function () {

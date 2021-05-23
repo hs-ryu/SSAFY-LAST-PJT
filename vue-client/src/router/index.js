@@ -72,7 +72,7 @@ const routes = [
     component: Login
   },
   {
-    path: '/profile/:userId',
+    path: '/profile/:username',
     name: 'Profile',
     component: Profile,
   }
