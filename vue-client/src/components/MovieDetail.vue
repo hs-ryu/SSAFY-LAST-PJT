@@ -38,35 +38,40 @@
         </div>
       </div>
     </div>
-    <div class="m-2" v-if="reviews.length">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">글 제목</th>
-            <th scope="col">평점</th>
-            <th scope="col">작성자</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(review, idx) in reviews" :key="idx +'1'">
-            <td @click="goToReviewDetail(review.id)">{{ review.title }}</td>
-            <td>{{ review.rank }}</td>
-            <td>{{ review.username }}</td>
-            <!-- <ReviewItem
-              v-for="(review, idx) in reviews"
-              :key="idx"
-              :review="review"
-              :movieId="movieId"
-              :movieTitle="movie.title"
-            /> -->
-          </tr>
-        </tbody>
-      </table>
+    <div style="width: 1000px;" class="mx-auto">
+      <div class="m-2" v-if="reviews.length">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">글 제목</th>
+              <th scope="col">평점</th>
+              <th scope="col">작성자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(review, idx) in reviews" :key="idx +'1'">
+              <td @click="goToReviewDetail(review.id)">{{ review.title }}</td>
+              <td>{{ review.rank }}</td>
+              <td>{{ review.username }}</td>
+              <!-- <ReviewItem
+                v-for="(review, idx) in reviews"
+                :key="idx"
+                :review="review"
+                :movieId="movieId"
+                :movieTitle="movie.title"
+              /> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="m-5" v-else>
+        <p>리뷰가 아직 없어요. 첫번째 글을 쓸 수 있는 절호의 찬스! 🤘</p>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
+        <button style="border-color: #CE93D8" class="btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
+      </div>
     </div>
-    <div class="m-5" v-else>
-      <p>리뷰가 아직 없어요. 리뷰를 작성해주세요!</p>
-    </div>
-    <button class="btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
   </div>
 </template>
 
@@ -134,7 +139,7 @@ export default {
     goToCreateReview: function () {
       const movieTitle = this.movie.title
       const moviePosterPath = this.movie.poster_path
-      console.log(moviePosterPath)
+      // console.log(moviePosterPath)
       this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
     },
     getLikeStatus: function () {
@@ -150,7 +155,10 @@ export default {
       })
     },
     goToReviewDetail: function (reviewId) {
-      this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: reviewId }, query: { movieTitle: this.movieTitle}})
+      const movieTitle = this.movie.title
+      const moviePosterPath = this.movie.poster_path
+      // console.log(moviePosterPath)
+      this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: reviewId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
     }
   },
   created: function () {

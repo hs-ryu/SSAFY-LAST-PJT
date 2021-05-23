@@ -1,17 +1,26 @@
 <template>
   <div>
-    <p :class="{hide: modifyActivate}">{{ comment.content }}</p>
-    <!-- <p>{{ comment.id }}</p> -->
-    <input :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
-    <button @click="updateMode">수정</button>
-    <button @click="deleteComment">삭제</button>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex">
+        <p class="fw-bold me-4">{{ comment.username }}</p>
+        <p :class="{hide: modifyActivate}">{{ comment.content }}</p>
+        <input style="width: 500px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
+      </div>
+      <div class="d-flex">
+        <p>(작성시각)</p>
+        <div v-if="loginedUser=(comment.username)">
+          <button class="mx-1 btn btn-sm main-color-background text-white" @click="updateMode">수정</button>
+          <button class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'ReviewComment',
@@ -35,7 +44,10 @@ export default {
   computed: {
     ...mapGetters([
       'config'
-    ])
+    ]),
+    ...mapState({
+      'loginedUser': 'userName'
+    }),
   },
   methods: {
     getReviewComments: function () {

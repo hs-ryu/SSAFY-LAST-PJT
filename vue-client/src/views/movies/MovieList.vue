@@ -15,7 +15,7 @@
       </div>
     </div>
     <div v-else>
-      <h2>현재상영중</h2>
+      <h2>NOW SHOWING</h2>
       <!-- <p>{{ nowShowingMovies }}</p> -->
       <div class="card-group">
         <NowShowingItem
@@ -24,7 +24,7 @@
           :nowShowingMovie="nowShowingMovie"
         />
       </div>
-      <h2>인기영화목록</h2>
+      <h2>{{ today.getHours() }}시의 인기영화</h2>
       <!-- <p>{{ popularMovies }}</p> -->
       <div class="card-group">
         <PopularMovieItem
@@ -102,6 +102,7 @@ export default {
       'inputValue',
       'platformMovies',
       'platformvalue',
+      'today',
     ]),
     ...mapGetters([
       'movieLength',

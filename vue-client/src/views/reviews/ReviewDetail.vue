@@ -1,37 +1,54 @@
 <template>
-  <div>
-    <div>
-      <h1>개별리뷰상세</h1>
-      <h3>리뷰 제목: {{ review.title }}</h3>
-      <p @click="goToProfile">작성자: {{ review.username }}</p>
-      <p>{{ review }}</p>
-      <p>영화: {{ movieTitle }}</p>
-      <p>평점: {{ review.rank }}</p>
-      <p>리뷰 내용: {{ review.content }}</p>
-      <button @click="goToUpdate">수정</button>
-      <button @click="deleteReview">삭제</button>
+  <div style="mx-auto">
+    <div class="mt-5 d-flex justify-content-center align-items-center">
+      <div style="max-width: 300px;">
+        <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" :alt="movieTitle">
+      </div>
+      <div class="mx-4" style="width: 500px; height: 450px; text-align: left;">
+        <h2 class="d-inline">{{ review.username }}님의 리뷰 📝</h2>
+        <!-- <button class="d-inline mx-2 btn btn-sm main-color-background text-white" @click="goToProfile" type="submit" value="작성">프로필</button> -->
+        <button style="border-color: #CE93D8" class="ms-2 d-inline btn btn-sm main-color-content" @click="goToProfile">프로필</button>
+        <h4 class="my-2">{{ review.title }} | 작성시각 | {{ review.rank }} ⭐</h4>
+        <!-- <p>{{ review }}</p> -->
+        <hr style="border-style: dotted">
+        <div style="height: 300px;">
+          <p>{{ review.content }}</p>
+        </div>
+        <!-- {{ review }} -->
+        <div class="d-flex justify-content-between">
+          <div>
+            <button class="btn d-inline" v-if="review.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
+            <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
+            <p class="d-inline">{{ review.like_users.length }}명이 이 리뷰를 좋아합니다.</p>
+          </div>
+          <div v-if="loginedUser=(review.username)">
+            <button class="mx-2 btn main-color-background text-white" @click="goToUpdate">수정</button>
+            <button class="btn main-color-background text-white" @click="deleteReview">삭제</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
-      <!-- {{ review.like_users.includes(userId) }} -->
-      <p>{{ review.like_users.length }}명이 좋아합니다.</p>
-      <button style="border: 0; outline: 0;" class="btn btn-link" v-if="review.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
-      <button class="btn btn-link" v-else @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:black;"></i></button>
+    <div style="width: 900px;" class="mx-auto">
+      <hr>
+      <div v-if="comments.length">
+        <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
+        <ReviewComment
+          v-for="(comment, idx) in comments"
+          :key="idx"
+          :comment="comment"
+          :movieId="movieId"
+          :reviewId="reviewId"
+          @comment-deleted="getReviewComments"
+          @modify-activate="getReviewComments"
+        />
+      </div>
+      <div v-else>
+        <p>댓글이 아직 없어요. 첫번째 댓글을 쓸 수 있는 절호의 찬스! 🤘</p>
+      </div>
+      <input style="width: 500px" v-model="commentContent" type="text" name="comment" id="comment" placeholder="댓글을 작성해주세요">
+      <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
     </div>
-    <div>
-      <h2>댓글 목록</h2>
-      <label for="comment">댓글작성</label>
-      <input v-model="commentContent" type="text" name="comment" id="comment">
-      <input @click="createComment" type="submit" value="작성">
-      <!-- {{ comments }} -->
-      <ReviewComment
-        v-for="(comment, idx) in comments"
-        :key="idx"
-        :comment="comment"
-        :movieId="movieId"
-        :reviewId="reviewId"
-        @comment-deleted="getReviewComments"
-        @modify-activate="getReviewComments"
-      />
     </div>
   </div>
 </template>
@@ -51,15 +68,17 @@ export default {
     ...mapGetters([
       'config'
     ]),
-    ...mapState([
-      'userId',
-    ]),
+    ...mapState({
+      'userId': 'userId',
+      'loginedUser': 'userName'
+    }),
   },
   data: function () {
     return {
       review: {},
       movieTitle: this.$route.query.movieTitle,
       movieId: this.$route.params.movieId,
+      moviePosterPath: this.$route.query.moviePosterPath,
       reviewId: this.$route.params.reviewId,
       comments: [],
       commentContent: '',
@@ -112,7 +131,7 @@ export default {
       })
     },
     goToUpdate: function () {
-      this.$router.push({ name: 'UpdateReview', params: { movieId: this.movieId, reviewId: this.reviewId }, query: { review: this.review }})
+      this.$router.push({ name: 'UpdateReview', params: { movieId: this.movieId, reviewId: this.reviewId }, query: { review: this.review, moviePosterPath: this.moviePosterPath }})
     },
     createComment: function () {
       const headers = this.config

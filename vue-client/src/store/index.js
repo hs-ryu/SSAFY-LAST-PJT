@@ -15,6 +15,7 @@ export default new Vuex.Store({
     username: '손님',
     isSuperuser: false,
     userId: -1,
+    today: new Date(),
 
     // 검색
     inputValue: '',

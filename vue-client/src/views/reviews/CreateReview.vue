@@ -1,11 +1,11 @@
 <template>
   <div style="text-align: center">
-    <h1 class="m-4">리뷰 작성</h1>
-    <div class="d-flex justify-content-center align-items-center">
-      <div style="max-width: 200px;">
+    <div class="mt-5 d-flex justify-content-center align-items-center">
+      <div style="max-width: 300px;">
         <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" :alt="movieTitle">
       </div>
       <div class="mx-4" style="width: 500px; text-align: left;">
+        <h4 class="pb-4">영화 '{{ movieTitle }}', 어떠셨나요?</h4>
         <div class="startRadio">
           <label class="startRadio__box">
             <input type="radio" name="star" id="" value="0.5" v-model="rank">
@@ -51,14 +51,17 @@
         <br>
         <label for="title">제목</label>
         <br>
-        <input v-model.trim="title" type="text" name="title" id="title">
+        <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title">
         <br>
         <label for="content">내용</label>
         <br>
         <!-- <input v-model.trim="content" type="text" name="content" id="content"> -->
-        <textarea v-model.trim="content" name="content" id="content" cols="40" rows="5"></textarea>
+        <textarea v-model.trim="content" name="content" id="content" cols="58" rows="7"></textarea>
         <br>
-        <input class="btn main-color-background text-white" @click="createReview(title, rank, content)" type="submit" value="작성">
+        <div class="d-flex justify-content-end">
+          <input class="mx-2 btn main-color-background text-white" @click="createReview(title, rank, content)" type="submit" value="작성">
+          <input class="btn main-color-background text-white" @click="$router.go(-1)" type="submit" value="취소">
+        </div>
       </div>
     </div>
     <!-- <h1>리뷰 작성</h1> -->
@@ -167,7 +170,7 @@ export default {
           console.log(err)
         })
       }
-    }
+    },
   }
 }
 </script>
