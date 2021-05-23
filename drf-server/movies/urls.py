@@ -16,6 +16,8 @@ urlpatterns = [
     path('getmovies/<int:movie_pk>/likes/', views.likemovie, name='likemovie'),
     # 영화 검색
     path('searchmovies/<str:search_item>/', views.searchmovies, name='searchmovies'),
+    # 해당 플랫폼에서 상영중인 영화들 목록 불러오기
+    path('<str:platform>/', views.platformmovies, name='platformmovies'),
 
     # 리뷰와 관련된 URL
     path('<int:movie_pk>/reviews/', views.getallreviews, name='getallreviews'),

@@ -33,6 +33,27 @@
           :popularMovie="popularMovie"
         />
       </div>
+
+      <!-- 플랫폼상영 -->
+      <h2>현재 {{ platformvalue }}에서 상영중인 영화입니다</h2>
+      <div>
+        <div>
+          <p class="d-inline mx-3" @click="setPlatform('netflix')">netflix</p>
+          <p class="d-inline mx-3" @click="setPlatform('watcha')">watcha</p>
+          <p class="d-inline mx-3" @click="setPlatform('wavve')">wavve</p>
+          <p class="d-inline mx-3" @click="setPlatform('naver')">naver</p>
+        </div>
+      </div>
+      <div class="card-group">
+        <PlatformMovieItem
+          v-for="(platformMovie, idx) in platformMovies"
+          :key="idx + '3'"
+          :platformMovie="platformMovie"
+        />
+      </div>
+      
+
+
       <h2>전체영화목록</h2>
       <div class="card-group">
         <MovieItem
@@ -50,6 +71,7 @@ import MovieItem from '@/components/MovieItem'
 import PopularMovieItem from '@/components/PopularMovieItem'
 import NowShowingItem from '@/components/NowShowingItem'
 import SearchMovieItem from '@/components/SearchMovieItem'
+import PlatformMovieItem from '@/components/PlatformMovieItem'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
@@ -59,6 +81,7 @@ export default {
     PopularMovieItem,
     NowShowingItem,
     SearchMovieItem,
+    PlatformMovieItem,
   },
   methods: {
     ...mapActions([
@@ -66,6 +89,8 @@ export default {
       'getPopularMovies',
       'getNowShowing',
       'fetchMovies',
+      'getPlatformMovies',
+      'setPlatform',
     ])
   },
   computed: {
@@ -75,6 +100,8 @@ export default {
       'nowShowingMovies',
       'searchMovies',
       'inputValue',
+      'platformMovies',
+      'platformvalue',
     ]),
     ...mapGetters([
       'movieLength',
@@ -85,6 +112,7 @@ export default {
     this.getNowShowing()
     this.getAllMovies()
     this.getPopularMovies()
+    this.getPlatformMovies(this.platformvalue)
   },
 }
 </script>

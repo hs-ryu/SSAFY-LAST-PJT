@@ -237,6 +237,19 @@ def searchmovies(request, search_item):
     return Response(serializer.data)
 
 
+# 플랫폼별 영화 반환
+@api_view(['GET'])
+def platformmovies(request, platform):
+    if platform == 'netflix':
+        movies = Movie.objects.filter(netflix__contains='netflix')
+    elif platform == 'watcha' :
+        movies = Movie.objects.filter(watcha__contains='watcha')
+    elif platform == 'wavve' :
+        movies = Movie.objects.filter(wavve__contains='wavve')
+    elif platform == 'naver' :
+        movies = Movie.objects.filter(naver__contains='naver')
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
 
 # 해당 영화의 전체 리뷰 조회
 @api_view(['GET'])

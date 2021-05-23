@@ -19,6 +19,10 @@ export default new Vuex.Store({
     // 검색
     inputValue: '',
     searchMovies : [],
+    
+    // 플랫폼 영화
+    platformvalue: 'netflix',
+    platformMovies : [],
   },
   getters: {
     // 로그인상태 확인 boolean 값
@@ -66,10 +70,13 @@ export default new Vuex.Store({
     },
     SET_SEARCH_MOVIES: function (state, searchMovies) {
       state.searchMovies = searchMovies
-      console.log(state.searchMovies)
-    }
-
-
+    },
+    GET_PLATFORM_MOVIES: function (state, platformMovies) {
+      state.platformMovies = platformMovies
+    },
+    SET_PLATFORM: function(state, platform) {
+      state.platformvalue = platform
+    },
   },
   actions: {
     /* 인증 & 권한 */
@@ -184,6 +191,19 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    setPlatform: function ({ commit }, platform) {
+      commit('SET_PLATFORM', platform)
+      axios({
+        url: SERVER.URL + SERVER.ROUTES.getPlatformMovies + platform + '/',
+        method: 'get',
+      })
+      .then((res) => {
+        commit('GET_PLATFORM_MOVIES', res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
 
     // 검색 
     fetchMovies: function ({ commit, state }, event) {
@@ -195,13 +215,23 @@ export default new Vuex.Store({
       .then((res) => {
         console.log(res)
         commit('SET_SEARCH_MOVIES', res.data)
-
       })
       .catch((err)=>{
         console.log(err)
       })
-    }
-
+    },
+    getPlatformMovies: function ({ commit }, platform) {
+      axios({
+        url: SERVER.URL + SERVER.ROUTES.getPlatformMovies + platform + '/',
+        method: 'get',
+      })
+      .then((res) => {
+        commit('GET_PLATFORM_MOVIES', res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
   },
   modules: {
   }

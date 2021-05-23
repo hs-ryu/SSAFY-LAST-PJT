@@ -9,31 +9,32 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-between align-items-center">
-                <span class="d-flex">
-                  <li class="nav-item px-2">
-                    <router-link :to="{ name: 'MovieList' }">Main</router-link>
-                  </li>
-                  <li class="nav-item px-2">
-                    <router-link :to="{ name: 'ArticleList' }">Community</router-link>
-                  </li>
-                </span>
-                <span class="d-flex">
-                  <li class="mb-0 nav-item px-2 justify-content-end">
-                    <p v-if="isLoggedIn">{{ username }}님, 환영합니다!</p>
-                    <p v-else>손님, 환영합니다!</p>
-                  </li>
-                </span>
+              <span class="d-flex">
+                <li class="nav-item px-2">
+                  <router-link :to="{ name: 'MovieList' }">Main</router-link>
+                </li>
+                <li class="nav-item px-2">
+                  <router-link :to="{ name: 'ArticleList' }">Community</router-link>
+                </li>
+              </span>
             </ul>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end align-items-center">
+
             </ul>
+            <span class="d-flex">
+              <li class="mb-0 nav-item px-2 justify-content-end" style="list-style:none;">
+                <p class="mb-0" v-if="isLoggedIn">{{ username }}님, 환영합니다!</p>
+                <p class="mb-0" v-else>손님, 환영합니다!</p>
+              </li>
+            </span>
             <span v-if="isLoggedIn">
-              <router-link @click.native="logout" to="#">Logout</router-link>
-              <router-link :to="{ name: 'Profile', params: { username }}">Mypage</router-link>
-              <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/">SYSTEM</a>
+              <router-link @click.native="logout" to="#" class="mx-2">Logout</router-link>
+              <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2">Mypage</router-link>
+              <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/" class="mx-2">SYSTEM</a>
             </span>
             <span v-else>
-              <router-link :to="{ name: 'Signup' }">Signup</router-link>
-              <router-link :to="{ name: 'Login' }">Login</router-link>
+              <router-link :to="{ name: 'Signup' }" class="mx-2">Signup</router-link>
+              <router-link :to="{ name: 'Login' }" class="mx-2">Login</router-link>
               <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 로그인
               </button> -->

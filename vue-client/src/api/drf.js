@@ -12,6 +12,9 @@ export default {
     getNowShowing: '/movies/getnowshowing/',
     reviews: '/movies/',
 
+    // 플랫폼 영화들
+    getPlatformMovies: '/movies/',
+
     // 서치
     searchMovies: '/movies/searchmovies/',
   }
