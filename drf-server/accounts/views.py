@@ -83,16 +83,79 @@ def userinfo(request, user_pk):
 def profile(request, user_id):
     user = get_object_or_404(get_user_model(), pk=user_id)
     like_articles = user.like_articles.all()
+    like_articles_json = []
+    for like_article in like_articles:
+        like_articles_json.append(
+            {  
+                'id' : like_article.id,
+                'user_id' : like_article.user_id,
+                'title' : like_article.title,
+                'categories' : like_article.categories,
+                'content' : like_article.content,
+                'created_at' : like_article.created_at,
+                'updated_at' : like_article.updated_at,
+            }
+        )
+
     like_movies = user.like_movies.all()
+    like_movies_json = []
+    for like_movie in like_movies:
+        like_movies_json.append(
+            {  
+                'id' : like_movie.id,
+                'title' : like_movie.title,
+                'poster_path' : like_movie.poster_path,
+            }
+        )
+
     like_reviews = user.like_reviews.all()
+    like_reviews_json = []
+    for like_review in like_reviews:
+        like_reviews_json.append(
+            {
+                'id' : like_review.id,
+                'movie' : like_review.movie.title,
+                'movie_id' : like_review.movie.id,
+                'title' : like_review.title,
+                'content' : like_review.content,
+            }
+        )
+
     create_articles = user.articles.all()
+    create_articles_json = []
+    for create_article in create_articles:
+        create_articles_json.append(
+            {
+                'id' : create_article.id,
+                'user_id' : create_article.user_id,
+                'title' : create_article.title,
+                'categories' : create_article.categories,
+                'content' : create_article.content,
+                'created_at' : create_article.created_at,
+                'updated_at' : create_article.updated_at,
+            }
+        )
+
     create_reviews = user.reviews.all()
+    create_reviews_json = []
+    for create_review in create_reviews:
+        create_reviews_json.append(
+            {
+                'id' : create_review.id,
+                'movie' : like_review.movie.title,
+                'movie_id' : like_review.movie.id,
+                'title' : create_review.title,
+                'content' : create_review.content,
+            }
+        )
+
+
     # create_votes = user.votes.all()
     user_info = {
-        'like_articles' : like_articles,
-        'like_movies' : like_movies,
-        'like_reviews' : like_reviews,
-        'create_articles': create_articles,
-        'create_reviews': create_reviews,
+        'like_articles' : like_articles_json,
+        'like_movies' : like_movies_json,
+        'like_reviews' : like_reviews_json,
+        'create_articles': create_articles_json,
+        'create_reviews': create_reviews_json,
     }
     return JsonResponse(user_info)
