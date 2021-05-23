@@ -66,6 +66,7 @@ export default new Vuex.Store({
     },
     SET_SEARCH_MOVIES: function (state, searchMovies) {
       state.searchMovies = searchMovies
+      console.log(state.searchMovies)
     }
 
 
@@ -192,7 +193,9 @@ export default new Vuex.Store({
         method: 'get',
       })
       .then((res) => {
-        commit('SET_SEARCH_MOVIES', res.data.items)
+        console.log(res)
+        commit('SET_SEARCH_MOVIES', res.data)
+
       })
       .catch((err)=>{
         console.log(err)

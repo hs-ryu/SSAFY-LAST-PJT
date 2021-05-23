@@ -18,6 +18,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
+from urllib import parse
 # 중요한것 하나. API로 영화 정보들을 불러와서 json 파일에 저장할때,
 # model이라는 필드를 추가해 우리가 정의한 모델 이름과 같도록 만들기 (ex- "model":"movies.genre" 이러면 장르 모델로 저장이 됨.)
 # fields는 우리가 정의한 모델의 테이블 이름에 맞게 들어가야함
@@ -230,7 +231,8 @@ def getnowshowing(request):
 # 검색
 @api_view(['GET'])
 def searchmovies(request, search_item):
-    movies = Movie.objects.filter(title__contains=search_item)
+    search = parse.unquote(search_item)
+    movies = Movie.objects.filter(title__startswith=search)
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
 

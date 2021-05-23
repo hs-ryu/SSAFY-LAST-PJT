@@ -4,7 +4,7 @@
     <div class="d-flex justify-content-center">
       <input @input="fetchMovies" class="form-control m-3 w-75" type="search" placeholder="Search" aria-label="Search">
     </div>
-    <div v-if="inputLength">
+    <div v-if="inputValue">
       <h2>검색결과</h2>
       <div class="card-group">
         <SearchMovieItem
@@ -42,12 +42,14 @@
         />
       </div>
     </div>
+      
   </div>
 </template>
 <script>
 import MovieItem from '@/components/MovieItem'
 import PopularMovieItem from '@/components/PopularMovieItem'
 import NowShowingItem from '@/components/NowShowingItem'
+import SearchMovieItem from '@/components/SearchMovieItem'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
@@ -56,6 +58,7 @@ export default {
     MovieItem,
     PopularMovieItem,
     NowShowingItem,
+    SearchMovieItem,
   },
   methods: {
     ...mapActions([
@@ -70,6 +73,8 @@ export default {
       'allMovies',
       'popularMovies',
       'nowShowingMovies',
+      'searchMovies',
+      'inputValue',
     ]),
     ...mapGetters([
       'movieLength',
@@ -80,7 +85,7 @@ export default {
     this.getNowShowing()
     this.getAllMovies()
     this.getPopularMovies()
-  }
+  },
 }
 </script>
 
