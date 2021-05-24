@@ -73,6 +73,7 @@ import SearchMovieItem from '@/components/SearchMovieItem'
 import PlatformMovieItem from '@/components/PlatformMovieItem'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
+
 export default {
   name: 'MovieList',
   components: {
@@ -91,7 +92,7 @@ export default {
       'getPlatformMovies',
       'setPlatform',
       'resetInputValue',
-    ])
+    ]),
   },
   computed: {
     ...mapState([
