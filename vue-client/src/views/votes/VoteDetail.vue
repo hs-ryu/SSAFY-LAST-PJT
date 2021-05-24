@@ -8,9 +8,10 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-
+import { mapGetters, mapState } from 'vuex'
 export default {
   name: 'VoteDetail',
+  
   data: function () {
     return {
       comment: {},
@@ -20,6 +21,15 @@ export default {
       comments: [],
       commentContent: '',
     }
+  },
+  computed: {
+    ...mapGetters([
+      'config'
+    ]),
+    ...mapState({
+      'userId': 'userId',
+      'loginedUser': 'userName'
+    }),
   },
   methods: {
     getVoteDetail: function () {
@@ -33,7 +43,6 @@ export default {
       })
       .then((res) => {
         this.votes = res.data
-        console.log('하하')
       })
       .catch((err) => {
         console.log(err)

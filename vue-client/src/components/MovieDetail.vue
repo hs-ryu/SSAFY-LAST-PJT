@@ -212,8 +212,6 @@ export default {
     },
     goToVoteDetail: function (voteId, voteTitle) {
       this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, voteId: voteId}, query: {voteTitle: voteTitle}})
-      console.log(voteTitle)
-      console.log(voteId)
     }
   },
   created: function () {
