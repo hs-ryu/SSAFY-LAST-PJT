@@ -17,14 +17,12 @@
     <div v-else>
       <h2>NOW SHOWING</h2>
       <!-- <p>{{ nowShowingMovies }}</p> -->
-      <swiper class="swiper"
-        :options="swiperOption"
-        v-for="(nowShowingMovie, idx) in nowShowingMovies"
-        :key="idx + '1'"
-        >
-        <swiper-slide>
-          <img class="d-inline" :src="nowShowingMovie.image_path" alt="">
-        </swiper-slide>
+      <swiper class="swiper" :options="swiperOption">
+        <NowShowingItem
+          v-for="(nowShowingMovie, idx) in nowShowingMovies"
+          :key="idx + '1'"
+          :nowShowingMovie="nowShowingMovie"
+        />
         <div class="swiper-pagination" slot="pagination"></div>
         <div class="swiper-button-prev" slot="button-prev"></div>
         <div class="swiper-button-next" slot="button-next"></div>
@@ -106,9 +104,9 @@ export default {
   data: function () {
     return {
       swiperOption: {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        slidesPerGroup: 5,
+        slidesPerView: 5,
+        spaceBetween: 0,
+        slidesPerGroup: 1,
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
