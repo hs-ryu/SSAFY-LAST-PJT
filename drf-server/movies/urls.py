@@ -14,6 +14,7 @@ urlpatterns = [
     path('getpopularmovies/', views.getpopularmovies, name='getpopularmovies'),
     path('getnowshowing/', views.getnowshowing, name='getnowshowing'),
     path('getmovies/<int:movie_pk>/likes/', views.likemovie, name='likemovie'),
+    path('getgenre/<int:movie_pk>/', views.getgenre, name='getgenre'),
     # 영화 검색
     path('searchmovies/<str:search_item>/', views.searchmovies, name='searchmovies'),
     # 해당 플랫폼에서 상영중인 영화들 목록 불러오기

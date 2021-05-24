@@ -17,6 +17,21 @@
     <div v-else>
       <h2>NOW SHOWING</h2>
       <!-- <p>{{ nowShowingMovies }}</p> -->
+      <swiper class="swiper"
+        :options="swiperOption"
+        v-for="(nowShowingMovie, idx) in nowShowingMovies"
+        :key="idx + '1'"
+        >
+        <swiper-slide>
+          <img class="d-inline" :src="nowShowingMovie.image_path" alt="">
+        </swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
+        <div class="swiper-button-prev" slot="button-prev"></div>
+        <div class="swiper-button-next" slot="button-next"></div>
+      </swiper>
+
+
+      <!-- 원래꺼 -->
       <div class="card-group">
         <NowShowingItem
           v-for="(nowShowingMovie, idx) in nowShowingMovies"
@@ -73,6 +88,9 @@ import SearchMovieItem from '@/components/SearchMovieItem'
 import PlatformMovieItem from '@/components/PlatformMovieItem'
 import { mapActions, mapState, mapGetters } from 'vuex'
 
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
+
 
 export default {
   name: 'MovieList',
@@ -82,6 +100,27 @@ export default {
     NowShowingItem,
     SearchMovieItem,
     PlatformMovieItem,
+    Swiper,
+    SwiperSlide,
+  },
+  data: function () {
+    return {
+      swiperOption: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        slidesPerGroup: 5,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }
+      },
+    }
   },
   methods: {
     ...mapActions([
@@ -121,6 +160,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
 </style>

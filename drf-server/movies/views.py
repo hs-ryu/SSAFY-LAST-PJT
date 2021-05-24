@@ -179,6 +179,18 @@ def getmoviedetail(request, movie_pk):
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
+# 개별 영화 장르 정보 조회
+@api_view(['GET'])
+def getgenre(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    genres = movie.genres.all()
+    genres_list = []
+    for genre in genres:
+        genres_list.append(genre.name)
+    genres_json = {
+        'genres': genres_list,
+    }
+    return JsonResponse(genres_json)
 
 # 영화 좋아요
 @api_view(['POST'])

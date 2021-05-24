@@ -12,9 +12,10 @@
         </div>
       </div>
     </div>
-    
+    <h3 v-if="userProfile.favorite_genre=='없음'" class="my-3 fw-bold" style="text-align: left;">💡 좋아하는 영화에 좋아요를 누르시면 선호 장르를 분석해드려요!</h3>
+    <h3 v-else class="my-3 fw-bold" style="text-align: left;">[선호 장르] {{ userProfile.favorite_genre }}</h3>
     <h2 class="fw-bold" style="text-align: left;">좋아요 한 영화</h2>
-    <div class="card-group mb-5">
+    <div v-if="userProfile.like_movies.length" class="card-group mb-5">
       <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'">
         <div class="mb-1">
           <div class="card text-center mt-1 border-light h-100" style="width: 170px;">
@@ -26,6 +27,7 @@
         </div>
       </div>
     </div>
+    <div v-else class="my-5"><p>좋아요 한 영화가 없습니다.</p></div>
 
     <div class="my-2 d-flex justify-content-between">
       <div>
@@ -61,7 +63,7 @@
             </ul>
           </nav>
         </div>
-        <div v-else>
+        <div v-else class="my-5">
           <p>작성한 리뷰가 없습니다.</p>
         </div>
       </div>
@@ -103,10 +105,13 @@
             </ul>
           </nav>
         </div>
+        <div v-else class="my-5">
+          <p>작성한 게시글이 없습니다.</p>
+        </div>
       </div>
     </div>
     
-    {{userProfile}}
+    <!-- {{userProfile}} -->
   </div>
 </template>
 

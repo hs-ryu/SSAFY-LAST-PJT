@@ -160,6 +160,17 @@ def profile(request, username):
     for following in followings:
         followings_json.append(following.id)
 
+    likemovies = user.like_movies.all()
+    cnt_genres = []
+    for likemovie in likemovies:
+        genres = likemovie.genres.all()
+        for genre in genres:
+            cnt_genres.append(genre.name)
+
+    from collections import Counter
+    cnt_result = Counter(cnt_genres)
+    favorite_genre = cnt_result.most_common()[0][0] if cnt_result else '없음'
+
     # create_votes = user.votes.all()
     user_info = {
         'username': user.username,
@@ -171,5 +182,6 @@ def profile(request, username):
         'create_reviews': create_reviews_json,
         'followers': followers_json,
         'followings': followings_json,
+        'favorite_genre': favorite_genre,
     }
     return JsonResponse(user_info)
