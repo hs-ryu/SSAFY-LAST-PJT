@@ -14,14 +14,15 @@
     </div>
     
     <h2 class="fw-bold" style="text-align: left;">좋아요 한 영화</h2>
-    <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'"
-      class="card-group">
-      <div class="mb-1">
-        <div class="card text-center mt-1 border-light">
-          <div class="card-body p-0">
-            <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="width: 200px; height: 300px; object-fit: cover;" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
-            <p class="card-title m-0">{{ movie.title }}</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    <div class="card-group mb-5">
+      <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'">
+        <div class="mb-1">
+          <div class="card text-center mt-1 border-light" style="width: 150px;  height: 200px;">
+            <div class="card-body p-0">
+              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="object-fit: cover;" class="card-img-top img-fluid rounded mx-auto d-block" :alt="movie.title">
+              <p class="card-title m-0">{{ movie.title }}</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
           </div>
         </div>
       </div>
@@ -50,13 +51,13 @@
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item">
-                <button type="button" class="text-dark page-link" v-if="page != 1" @click="page--"> Previous </button>
+                <button type="button" class="text-dark page-link" v-if="reviewsPage != 1" @click="reviewsPage--"> Previous </button>
               </li>
-              <li class="text-dark page-item" v-for="(pageNumber,idx) in pages.slice(page-1, page+5)" :key=idx>
+              <li class="text-dark page-item" v-for="(pageNumber,idx) in reviewsPages.slice(reviewsPage-1, reviewsPage+5)" :key=idx>
                 <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
               </li>
               <li class="page-item">
-                <button type="button" @click="page++" v-if="page < pages.length" class="text-dark page-link"> Next </button>
+                <button type="button" @click="reviewsPage++" v-if="reviewsPage < reviewsPages.length" class="text-dark page-link"> Next </button>
               </li>
             </ul>
           </nav>
@@ -92,13 +93,13 @@
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item">
-                <button type="button" class="text-dark page-link" v-if="page != 1" @click="page--"> Previous </button>
+                <button type="button" class="text-dark page-link" v-if="articlesPage != 1" @click="articlesPage--"> Previous </button>
               </li>
-              <li class="page-item" v-for="(pageNumber,idx) in pages.slice(page-1, page+5)" :key=idx>
-                <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
+              <li class="page-item" v-for="(pageNumber,idx) in articlesPages.slice(articlesPage-1, articlesPage+5)" :key=idx>
+                <button type="button" class="text-dark page-link"  @click="articlesPage=pageNumber">{{ pageNumber }}</button>
               </li>
               <li class="page-item">
-                <button type="button" @click="page++" v-if="page < pages.length" class="text-dark page-link"> Next </button>
+                <button type="button" @click="articlesPage++" v-if="articlesPage < articlesPages.length" class="text-dark page-link"> Next </button>
               </li>
             </ul>
           </nav>
@@ -121,9 +122,12 @@ export default {
     return {
       userName: this.$route.params.username,
       userProfile: {},
-      page: 1,
-			perPage: 6,
-			pages: [],	
+      reviewsPage: 1,
+      articlesPage: 1,
+			reviewsPerPage: 6,
+			articlesPerPage: 6,
+			reviewsPages: [],	
+			articlesPages: [],	
     }
   },
   computed: {
@@ -134,10 +138,10 @@ export default {
       'config',
     ]),
     displayReviews () {
-      return this.paginate(this.userProfile.create_reviews)
+      return this.reviewPaginate(this.userProfile.create_reviews)
     },
     displayArticles () {
-      return this.paginate(this.userProfile.create_articles)
+      return this.articlePaginate(this.userProfile.create_articles)
     },
     Reviews () {
       return this.userProfile.create_reviews
@@ -181,24 +185,31 @@ export default {
       })
     },
     setReviewPages: function () {
-      let numberOfPages = Math.ceil(this.userProfile.create_reviews.length / this.perPage)
+      let numberOfPages = Math.ceil(this.userProfile.create_reviews.length / this.reviewsPerPage)
       for (let index=1; index <= numberOfPages; index++)
       {
-        this.pages.push(index)
+        this.reviewsPages.push(index)
       }
     },
     setArticlePages: function () {
-      let numberOfPages = Math.ceil(this.userProfile.create_articles.length / this.perPage)
+      let numberOfPages = Math.ceil(this.userProfile.create_articles.length / this.articlesPerPage)
       for (let index=1; index <= numberOfPages; index++)
       {
-        this.pages.push(index)
+        this.articlesPages.push(index)
       }
     },
-    paginate: function (articles) {
-      let page = this.page
-      let perPage = this.perPage
-      let from = (page * perPage) - perPage;
-      let to = (page * perPage)
+    reviewPaginate: function (reviews) {
+      let reviewsPage = this.reviewsPage
+      let reviewsPerPage = this.reviewsPerPage
+      let from = (reviewsPage * reviewsPerPage) - reviewsPerPage;
+      let to = (reviewsPage * reviewsPerPage)
+      return reviews.slice(from, to)
+    },
+    articlePaginate: function (articles) {
+      let articlesPage = this.articlesPage
+      let articlesPerPage = this.articlesPerPage
+      let from = (articlesPage * articlesPerPage) - articlesPerPage;
+      let to = (articlesPage * articlesPerPage)
       return articles.slice(from, to)
     }
   },
