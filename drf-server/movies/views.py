@@ -168,8 +168,8 @@ def getmoviedetail(request, movie_pk):
     now_time = timezone.now()
     movie = get_object_or_404(Movie, pk=movie_pk)
     # 일단 확인을 위해 minute으로 
-    # if (now_time.hour > movie.last_cliked_time.hour) or (now_time.day > movie.last_cliked_time.day) or (now_time.month > movie.last_cliked_time.month) or (now_time.year > movie.last_cliked_time.year):
-    if now_time.minute > movie.last_cliked_time.minute:
+    if (now_time.hour > movie.last_cliked_time.hour) or (now_time.day > movie.last_cliked_time.day) or (now_time.month > movie.last_cliked_time.month) or (now_time.year > movie.last_cliked_time.year):
+    # if now_time.minute > movie.last_cliked_time.minute:
         movie.last_cliked_time = now_time
         movie.clicked = 0
         movie.save()
@@ -209,8 +209,8 @@ def getpopularmovies(request):
     if recommend_movies[0].clicked == 0:
         pass
     for movie in movies:
-        # if (now_time.hour > movie.last_cliked_time.hour) or (now_time.day > movie.last_cliked_time.day) or (now_time.month > movie.last_cliked_time.month) or (now_time.year > movie.last_cliked_time.year):
-        if now_time.minute > movie.last_cliked_time.minute:
+        if (now_time.hour > movie.last_cliked_time.hour) or (now_time.day > movie.last_cliked_time.day) or (now_time.month > movie.last_cliked_time.month) or (now_time.year > movie.last_cliked_time.year):
+        # if now_time.minute > movie.last_cliked_time.minute:
             movie.last_cliked_time = now_time
             movie.clicked = 0
             movie.save()

@@ -22,7 +22,7 @@ class MovieSerializer(serializers.ModelSerializer):
 class NowShowingMovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = NowShowingMovie
-        fields = ('movieNm', 'openDt', 'audiAcc', 'image_path')
+        fields = ('movieNm', 'openDt', 'audiAcc', 'image_path', 'userRating')
 
 class ReviewListSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
