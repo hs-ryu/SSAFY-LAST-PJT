@@ -412,8 +412,6 @@ def getallvotes(request, movie_pk):
 
 #투표 상세
 @api_view(['GET'])
-@authentication_classes([JSONWebTokenAuthentication])
-@permission_classes([IsAuthenticated])
 def getvote(request, movie_pk, vote_pk):
     vote = get_object_or_404(Vote, pk=vote_pk)
     serializer = VoteSerializer(vote)

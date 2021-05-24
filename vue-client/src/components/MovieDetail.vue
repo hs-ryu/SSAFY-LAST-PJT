@@ -86,8 +86,7 @@
           </thead>
           <tbody>
             <tr v-for="(vote, idx) in votes" :key="idx +'2'">
-              {{ vote }}
-              <td @click="goToVoteDetail(vote.id, vote.title)">{{ vote.title }}</td>
+              <td @click="goToVoteDetail(vote.id)">{{ vote.title }}</td>
               <td>{{ vote.option_one_count + vote.option_two_count }}</td>
             </tr>
           </tbody>
@@ -170,29 +169,14 @@ export default {
         console.log(err)
       })
     },
-    getVotes: function () {
-      // path('<int:movie_pk>/votes/', views.getallvotes, name='getallvotes'),
-      axios({
-        url: SERVER.URL + '/movies/' + `${this.movieId}/votes/`,
-        method: 'get',
-      })
-      .then((res) => {
-        this.votes = res.data
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    },
+
     goToCreateReview: function () {
       const movieTitle = this.movie.title
       const moviePosterPath = this.movie.poster_path
       // console.log(moviePosterPath)
       this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
     },
-    goToCreateVote: function () {
-      const movieTitle = this.movie.title
-      this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }, query: { movieTitle: movieTitle }})
-    },
+
     getLikeStatus: function () {
       const headers = this.config
       axios({
@@ -210,10 +194,31 @@ export default {
       const moviePosterPath = this.movie.poster_path
       // console.log(moviePosterPath)
       this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: reviewId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
+      console.log(movieTitle)
     },
-    goToVoteDetail: function (voteId, voteTitle) {
-      this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, voteId: voteId}, query: {voteTitle: voteTitle}})
-    }
+
+    // 굳!!!!
+    getVotes: function () {
+      // path('<int:movie_pk>/votes/', views.getallvotes, name='getallvotes'),
+      axios({
+        url: SERVER.URL + '/movies/' + `${this.movieId}/votes/`,
+        method: 'get',
+      })
+      .then((res) => {
+        this.votes = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    goToVoteDetail: function (voteId) {
+      const movieId = this.movieId
+      this.$router.push({ name: 'VoteDetail', params: { movieId: movieId, voteId: voteId }})
+      // console.log(movieId)
+    },
+    goToCreateVote: function () {
+      this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }})
+    },
   },
   created: function () {
     this.getMovieDetail()

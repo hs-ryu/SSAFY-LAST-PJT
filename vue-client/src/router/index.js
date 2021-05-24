@@ -80,9 +80,9 @@ const routes = [
     component: Profile,
   },
   {
-    path: '/movies/:movieId/votes/:voteId',
+    path: '/:movieId/:voteId',
     name: 'VoteDetail',
-    componet: VoteDetail,
+    component: VoteDetail,
   },
   {
     path: '/movies/:movieId/votes',
@@ -110,6 +110,8 @@ router.beforeEach((to, from, next) => {
     'CreateReview',
     'ReviewDetail',
     'UpdateReview',
+    'VoteDetail',
+    'CreateVote',
   ]
   //1-2. 로그아웃이 필요한 컴포넌트(로그인 상태가 아닌 경우에 방문해야 하는 컴포넌트)
   // const publicPages = [
