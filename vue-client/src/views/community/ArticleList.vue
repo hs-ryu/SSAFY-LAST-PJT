@@ -2,7 +2,7 @@
   <div>
     <h1>게시글 목록</h1>
     <!-- {{ articles }} -->
-    <table class="table table-hover content-font">
+    <table style="width: 1000px;" class="table table-hover content-font">
       <thead>
         <tr class="text-center">
           <th scope="col">글번호</th>
@@ -29,13 +29,13 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <li class="page-item">
-          <button type="button" class="page-link" v-if="page != 1" @click="page--"> Previous </button>
+          <button type="button" class="text-dark page-link" v-if="page != 1" @click="page--"> Previous </button>
         </li>
         <li class="page-item" v-for="(pageNumber,idx) in pages.slice(page-1, page+5)" :key=idx>
-          <button type="button" class="page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
+          <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
         </li>
         <li class="page-item">
-          <button type="button" @click="page++" v-if="page < pages.length" class="page-link"> Next </button>
+          <button type="button" @click="page++" v-if="page < pages.length" class="text-dark page-link"> Next </button>
         </li>
       </ul>
     </nav>

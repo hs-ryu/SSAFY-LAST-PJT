@@ -144,6 +144,7 @@ def profile(request, username):
                 'id' : create_review.id,
                 'movie' : create_review.movie.title,
                 'movie_id' : create_review.movie.id,
+                'rank': create_review.rank,
                 'title' : create_review.title,
                 'content' : create_review.content,
             }

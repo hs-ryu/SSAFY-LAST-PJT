@@ -15,26 +15,97 @@
     
     <h2 class="fw-bold" style="text-align: left;">좋아요 한 영화</h2>
     <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'"
-      class="card-group row row-cols-6 row-cols-md-2 g-4">
-        <div class="col">
-          <div class="card text-center mt-1 border-light">
-            <div class="card-body p-0">
-              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="width: 200px; height: 300px; object-fit: cover;" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
-              <p class="card-title m-0">{{ movie.title }}</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
+      class="card-group">
+      <div class="mb-1">
+        <div class="card text-center mt-1 border-light">
+          <div class="card-body p-0">
+            <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="width: 200px; height: 300px; object-fit: cover;" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
+            <p class="card-title m-0">{{ movie.title }}</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
           </div>
         </div>
+      </div>
     </div>
-    <h2 class="fw-bold" style="text-align: left;">작성한 리뷰 목록</h2>
-    <div v-for="(review, idx) in userProfile.create_reviews" :key="idx + '1'">
-      <p>{{ review.movie }}</p>
-      <p>{{ review.title }}</p>
+
+    <div class="my-2 d-flex justify-content-between">
+      <div>
+        <h2 class="fw-bold" style="text-align: left;">작성한 리뷰</h2>
+        <div class="m-2" v-if="userProfile.create_reviews.length">
+          <table style="width: 450px; height: 275px;" class="table">
+            <thead>
+              <tr>
+                <th scope="col">영화</th>
+                <th scope="col">제목</th>
+                <th scope="col">평점</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(review, idx) in displayReviews" :key="idx +'1'">
+                <td>{{ review.movie }}</td>
+                <td @click="goToReviewDetail(review.id)">{{ review.title }}</td>
+                <td>{{ review.rank }} ⭐</td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button type="button" class="text-dark page-link" v-if="page != 1" @click="page--"> Previous </button>
+              </li>
+              <li class="text-dark page-item" v-for="(pageNumber,idx) in pages.slice(page-1, page+5)" :key=idx>
+                <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
+              </li>
+              <li class="page-item">
+                <button type="button" @click="page++" v-if="page < pages.length" class="text-dark page-link"> Next </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div v-else>
+          <p>작성한 리뷰가 없습니다.</p>
+        </div>
+      </div>
+      <div>
+        <h2 class="fw-bold" style="text-align: left;">작성한 게시글</h2>
+        <div class="m-2" v-if="userProfile.create_articles.length">
+          <table style="width: 450px; height: 275px;" class="table">
+            <thead>
+              <tr>
+                <th scope="col">카테고리</th>
+                <th scope="col">제목</th>
+                <th scope="col">날짜</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(article, idx) in displayArticles" :key="idx +'2'">
+                <td v-if="article.categories=2">
+                  자유글
+                </td>
+                <td v-else>
+                  건의사항
+                </td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.created_at }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button type="button" class="text-dark page-link" v-if="page != 1" @click="page--"> Previous </button>
+              </li>
+              <li class="page-item" v-for="(pageNumber,idx) in pages.slice(page-1, page+5)" :key=idx>
+                <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
+              </li>
+              <li class="page-item">
+                <button type="button" @click="page++" v-if="page < pages.length" class="text-dark page-link"> Next </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </div>
-    <h2>작성한 게시글 목록</h2>
-    <div v-for="(article, idx) in userProfile.create_articles" :key="idx + '2'">
-      <p>{{ article.title }}</p>
-    </div>
+    
     {{userProfile}}
   </div>
 </template>
@@ -50,6 +121,9 @@ export default {
     return {
       userName: this.$route.params.username,
       userProfile: {},
+      page: 1,
+			perPage: 6,
+			pages: [],	
     }
   },
   computed: {
@@ -58,7 +132,27 @@ export default {
     }),
     ...mapGetters([
       'config',
-    ])
+    ]),
+    displayReviews () {
+      return this.paginate(this.userProfile.create_reviews)
+    },
+    displayArticles () {
+      return this.paginate(this.userProfile.create_articles)
+    },
+    Reviews () {
+      return this.userProfile.create_reviews
+    },
+    Articles () {
+      return this.userProfile.create_articles
+    }
+  },
+  watch: {
+    Reviews () {
+      this.setReviewPages()
+    },
+    Articles () {
+      this.setArticlePages()
+    }
   },
   methods: {
     getUserProfile: function () {
@@ -86,6 +180,27 @@ export default {
         this.getUserProfile()
       })
     },
+    setReviewPages: function () {
+      let numberOfPages = Math.ceil(this.userProfile.create_reviews.length / this.perPage)
+      for (let index=1; index <= numberOfPages; index++)
+      {
+        this.pages.push(index)
+      }
+    },
+    setArticlePages: function () {
+      let numberOfPages = Math.ceil(this.userProfile.create_articles.length / this.perPage)
+      for (let index=1; index <= numberOfPages; index++)
+      {
+        this.pages.push(index)
+      }
+    },
+    paginate: function (articles) {
+      let page = this.page
+      let perPage = this.perPage
+      let from = (page * perPage) - perPage;
+      let to = (page * perPage)
+      return articles.slice(from, to)
+    }
   },
   created: function () {
     this.getUserProfile()
