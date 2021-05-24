@@ -86,6 +86,7 @@
           </thead>
           <tbody>
             <tr v-for="(vote, idx) in votes" :key="idx +'2'">
+              {{ vote }}
               <td @click="goToVoteDetail(vote.id, vote.title)">{{ vote.title }}</td>
               <td>{{ vote.option_one_count + vote.option_two_count }}</td>
             </tr>
