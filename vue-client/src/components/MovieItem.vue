@@ -27,7 +27,7 @@
                 {{ movie.title }}
               </p>
               <div class="caption_desc">
-                평점 : {{ movie.rank_average }}<br>
+                평점 : {{ movie.rank_average.toFixed(1) }}<br>
                 개봉일 : {{ movie.release_date }}<br>
                 <br>
               </div>

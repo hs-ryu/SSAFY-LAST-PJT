@@ -18,7 +18,7 @@
                 {{ popularMovie.title }}
               </p>
               <div class="caption_desc">
-                평점 : {{ popularMovie.rank_average }}<br>
+                평점 : {{ popularMovie.rank_average.toFixed(1) }}<br>
                 개봉일 : {{ popularMovie.release_date }}<br>
                 <br>
               </div>
