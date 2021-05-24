@@ -12,7 +12,7 @@ import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
 import CreateArticle from '@/views/community/CreateArticle'
 import Profile from '@/views/accounts/Profile'
-import VoteDetail from '@/components/VoteDetail'
+// import VoteDetail from '@/views/votes/VoteDetail'
 
 
 Vue.use(VueRouter)
@@ -78,11 +78,11 @@ const routes = [
     name: 'Profile',
     component: Profile,
   },
-  {
-    path: '/votes/:voteId',
-    name: 'VoteDetail',
-    compontnet: VoteDetail,
-  },
+  // {
+  //   path: '/votes/:voteId',
+  //   name: 'VoteDetail',
+  //   compontnet: VoteDetail,
+  // },
 ]
 
 const router = new VueRouter({

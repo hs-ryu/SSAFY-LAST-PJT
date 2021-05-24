@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>투표목록</h1>
-    <VoteDetail 
-    
+    <VoteItem
+          
     />
   </div>
 </template>
@@ -35,9 +35,6 @@ export default {
       .catch((err) => {
         console.log(err)
       })
-    },
-    goToVoteItem: function (voteId) {
-      this.$router.push({ name: 'VoteItem', params: { voteId}})
     },
     goToCreateVote: function () {
       this.$router.push({ name: 'CreateVote'})
