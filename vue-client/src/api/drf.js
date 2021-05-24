@@ -17,5 +17,7 @@ export default {
 
     // 서치
     searchMovies: '/movies/searchmovies/',
+
+    votes: '/movies/',
   }
 }

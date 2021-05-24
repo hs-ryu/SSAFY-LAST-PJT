@@ -72,6 +72,11 @@
         <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
         <button style="border-color: #CE93D8" class="btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
       </div>
+      <div>
+        <p>투표가 아직 없어요. 첫번째 투표를 등록해 보세요</p>
+      </div>
+      <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
+      <button clas></button>
     </div>
   </div>
 </template>
@@ -97,6 +102,7 @@ export default {
       wavve: '',
       naver: '',
       reviews: [],
+      votes: [],
     }
   },
   computed: {
@@ -137,11 +143,28 @@ export default {
         console.log(err)
       })
     },
+    getVotes: function () {
+      // path('<int:movie_pk>/votes/', views.getallvotes, name='getallvotes'),
+      axios({
+        url: SERVER.URL + '/movies/' + `${this.movieId}/votes/`,
+        method: 'get',
+      })
+      .then((res) => {
+        this.votes = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
     goToCreateReview: function () {
       const movieTitle = this.movie.title
       const moviePosterPath = this.movie.poster_path
       // console.log(moviePosterPath)
       this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
+    },
+    goToCreateVote: function () {
+      const movieTitle = this.movie.title
+      this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }, query: { movieTitle: movieTitle }})
     },
     getLikeStatus: function () {
       const headers = this.config
@@ -165,6 +188,7 @@ export default {
   created: function () {
     this.getMovieDetail()
     this.getReviews()
+    this.getVotes()
   }
 
 }

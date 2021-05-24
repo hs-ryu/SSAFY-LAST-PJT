@@ -3,7 +3,6 @@
     <h1>개별투표정보</h1>
     <tr>
       <td @click="goToVoteDetail">{{ vote.title }}</td>
-      <td>v</td>
       <td>{{ vote.username }}</td>
     </tr>
   </div>

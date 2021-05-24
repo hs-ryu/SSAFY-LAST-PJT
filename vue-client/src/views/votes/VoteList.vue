@@ -2,8 +2,11 @@
   <div>
     <h1>투표목록</h1>
     <VoteItem
-          
+      v-for="(vote, idx) in votes"
+      :key="idx"
+      :vote="vote"
     />
+    <button @click="goToCreateVote"> 투표 만들기! </button>
   </div>
 </template>
 
@@ -23,10 +26,10 @@ export default {
     }
   },
   methods: {
-    getAllVotes: function () {
+    getVotes: function () {
       // path('<int:movie_pk>/votes/', views.getallvotes, name='getallvotes'),
       axios({
-        url: SERVER.URL + '/movies/' + movieId + '/votes/',
+        url: SERVER.URL + '/movies/' + `${this.movieId}/votes/`,
         method: 'get',
       })
       .then((res) => {
@@ -41,7 +44,7 @@ export default {
     },
   },
   created: function () {
-    this.getAllVotes()
+    this.getVotes()
   }
 }
 </script>

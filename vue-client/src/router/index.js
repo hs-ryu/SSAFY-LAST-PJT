@@ -12,7 +12,8 @@ import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
 import CreateArticle from '@/views/community/CreateArticle'
 import Profile from '@/views/accounts/Profile'
-// import VoteDetail from '@/views/votes/VoteDetail'
+import VoteDetail from '@/views/votes/VoteDetail'
+import CreateVote from '@/views/votes/CreateVote'
 
 
 Vue.use(VueRouter)
@@ -78,11 +79,16 @@ const routes = [
     name: 'Profile',
     component: Profile,
   },
-  // {
-  //   path: '/votes/:voteId',
-  //   name: 'VoteDetail',
-  //   compontnet: VoteDetail,
-  // },
+  {
+    path: '/movies/:movieId/votes/:voteId',
+    name: 'VoteDetail',
+    componet: VoteDetail,
+  },
+  {
+    path: '/movies/:movieId/votes',
+    name: 'CreateVote',
+    component: CreateVote,
+  }
 ]
 
 const router = new VueRouter({
