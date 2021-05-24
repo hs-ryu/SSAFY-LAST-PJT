@@ -16,7 +16,7 @@ import VoteDetail from '@/components/VoteDetail'
 export default {
   name: 'VoteList',
   components: {
-    VoteDetail
+    VoteItem
   },
   data: {
     function() {

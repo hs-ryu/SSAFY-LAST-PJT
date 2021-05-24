@@ -48,16 +48,16 @@ class VoteListSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
     class Meta:
         model = Vote
-        fields = ('title', 'movie', 'option_one_count', 'option_two_count', 'option_one', 'option_two', 'username')
+        fields = ('id','title', 'movie', 'option_one_count', 'option_two_count', 'option_one', 'option_two', 'username')
 
 class VoteSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
     class Meta:
         model = Vote
-        fields = ('title', 'option_one_count', 'option_two_count', 'username', 'created_at', 'updated_at')
+        fields = ('id','title', 'option_one_count', 'option_two_count', 'username', 'created_at', 'updated_at', 'option_one', 'option_two')
 
 class VoteCommentSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
     class Meta:
         model = VoteComment
-        fields = ('choice', 'content', 'username', 'created_at', 'updated_at')
+        fields = ('id', 'choice', 'content', 'username', 'created_at', 'updated_at')

@@ -1,6 +1,7 @@
 <template>
   <div>
-
+    <h1>투표 제목 : {{ voteTitle }}</h1>
+    <p>gkkggk</p>
   </div>
 </template>
 
@@ -10,7 +11,6 @@ import axios from 'axios'
 
 export default {
   name: 'VoteDetail',
-
   data: function () {
     return {
       comment: {},
@@ -26,7 +26,6 @@ export default {
       const headers = this.config
       // path('<int:movie_pk>/createvote/', views.createvote, name='createvote'),
       // path('<int:movie_pk>/votes/<int:vote_pk>/', views.getvote, name='getvote'),
-      
       axios({
         url: SERVER.URL + SERVER.ROUTES.votes + `${this.movieId}/votes/${this.voteId}/`,
         method: 'get',
@@ -34,13 +33,12 @@ export default {
       })
       .then((res) => {
         this.votes = res.data
+        console.log('하하')
       })
       .catch((err) => {
         console.log(err)
       })
     },
-
-
 
     deleteVote: function () {
       // path('<int:movie_pk>/<int:vote_pk>/deletevote/', views.deletevote, name='deletevote'),

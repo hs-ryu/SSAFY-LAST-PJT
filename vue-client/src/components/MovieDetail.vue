@@ -72,12 +72,38 @@
         <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
         <button style="border-color: #CE93D8" class="btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
       </div>
-      <div>
-        <p>투표가 아직 없어요. 첫번째 투표를 등록해 보세요</p>
-      </div>
-      <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
-      <button clas></button>
     </div>
+
+
+    <div style="width: 1000px;" class="mx-auto">
+      <div class="m-2" v-if="votes.length">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">제목</th>
+              <th scope="col">진행상황</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(vote, idx) in votes" :key="idx +'2'">
+              <td @click="goToVoteDetail(vote.id, vote.title)">{{ vote.title }}</td>
+              <td>{{ vote.option_one_count + vote.option_two_count }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="m-5" v-else>
+        <p>투표가 아직 없어요. 첫번째 투표를 등록해 보세요! 🤘</p>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
+      </div>
+    </div>
+
+    
+  
+
+
   </div>
 </template>
 
@@ -183,6 +209,11 @@ export default {
       const moviePosterPath = this.movie.poster_path
       // console.log(moviePosterPath)
       this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: reviewId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
+    },
+    goToVoteDetail: function (voteId, voteTitle) {
+      this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, voteId: voteId}, query: {voteTitle: voteTitle}})
+      console.log(voteTitle)
+      console.log(voteId)
     }
   },
   created: function () {
