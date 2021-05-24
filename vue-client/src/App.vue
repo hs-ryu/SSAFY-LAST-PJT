@@ -35,9 +35,9 @@
             <span v-else>
               <router-link :to="{ name: 'Signup' }" class="mx-2">Signup</router-link>
               <router-link :to="{ name: 'Login' }" class="mx-2">Login</router-link>
-              <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 로그인
-              </button> -->
+              </button>
             </span>
             <!-- <form class="d-flex">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -114,7 +114,17 @@ export default {
       'logout',
       'get_user_info',
       'login',
-    ])
+    ]),
+    resetModal: function () {
+      const modal = document.querySelector('#exampleModal')
+      modal.addEventListener('hidden.bs.modal', function () {
+        this.credentials.username = ''
+        this.credentials.password = ''
+        // console.log('모달 닫힘')
+        // console.log(document.forms[0])
+        document.forms[0].reset()
+      })
+    },
   },
   computed: {
     ...mapGetters([
@@ -127,7 +137,11 @@ export default {
     ])
   },
   created: function () {
-    this.get_user_info()
+    // this.get_user_info()
+  },
+  updated: function () {
+    this.resetModal()
+    // this.get_user_info()
   }
 }
 </script>
