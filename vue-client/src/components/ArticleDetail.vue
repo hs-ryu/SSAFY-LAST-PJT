@@ -35,10 +35,10 @@
     </div>
 
     <div style="width: 700px;" class="mx-auto">
-      <div v-if="article.comments.length">
-        <h5 style="text-align: left" class="my-3">댓글 ({{ article.comments.length }})</h5>
+      <div v-if="comments.length">
+        <h5 style="text-align: left" class="my-3">댓글 ({{ comments.length }})</h5>
         <ArticleComment
-        v-for="(comment, idx) in article.comments"
+        v-for="(comment, idx) in comments"
         :key="idx"
         :comment="comment"
         :articleId="articleId"
@@ -63,7 +63,7 @@
       <button v-if="article.like_users.includes(userId)" @click="getLikeStatus">좋아요취소</button>
       <button v-else @click="getLikeStatus">좋아요</button>
     </div> -->
-    <div>
+    <!-- <div>
       <h2>댓글목록</h2>
       <label for="comment">댓글작성</label>
       <input v-model="commentContent" type="text" name="comment" id="comment">
@@ -77,8 +77,7 @@
         @modify-activate="getArticleComments"
       />
     </div>
-    {{ article.comments }}
-    {{ article }}
+    {{ comments }} -->
   </div>
 </template>
 
@@ -135,6 +134,7 @@ export default {
         headers,
       })
       .then((res) => {
+        console.log(res.data)
         this.comments = res.data
       })
       .catch((err) => {

@@ -97,8 +97,8 @@ def createcomment(request, article_pk):
 @api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
-def getallcomments(reqeust, article_pk):
-    comments = Comment.objects.all()
+def getallcomments(request, article_pk):
+    comments = Comment.objects.filter(article_id=article_pk)
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
 
