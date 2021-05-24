@@ -97,6 +97,8 @@ export default {
   },
   created: function() {
     this.getVoteDetail()
+    console.log(this.movieId)
+    console.log(this.voteId)
     this.getVoteComments()
   }
 }
