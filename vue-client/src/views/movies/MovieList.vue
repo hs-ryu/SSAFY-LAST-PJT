@@ -18,7 +18,7 @@
       <h2>NOW SHOWING</h2>
       <!-- <p>{{ nowShowingMovies }}</p> -->
       <swiper class="swiper" :options="swiperOption">
-        <NowShowingItem
+        <NowShowingItem2
           v-for="(nowShowingMovie, idx) in nowShowingMovies"
           :key="idx + '1'"
           :nowShowingMovie="nowShowingMovie"
@@ -82,11 +82,12 @@
 import MovieItem from '@/components/MovieItem'
 import PopularMovieItem from '@/components/PopularMovieItem'
 import NowShowingItem from '@/components/NowShowingItem'
+import NowShowingItem2 from '@/components/NowShowingItem2'
 import SearchMovieItem from '@/components/SearchMovieItem'
 import PlatformMovieItem from '@/components/PlatformMovieItem'
 import { mapActions, mapState, mapGetters } from 'vuex'
-
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+// SwiperSlide 
+import { Swiper } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 
 
@@ -96,17 +97,22 @@ export default {
     MovieItem,
     PopularMovieItem,
     NowShowingItem,
+    NowShowingItem2,
     SearchMovieItem,
     PlatformMovieItem,
     Swiper,
-    SwiperSlide,
+    // SwiperSlide,
   },
   data: function () {
     return {
       swiperOption: {
-        slidesPerView: 5,
+        slidesPerView: 10,
         spaceBetween: 0,
-        slidesPerGroup: 1,
+        slidesPerGroup: 2,
+        // autoplay: {
+        //   delay: 2500,
+        //   disableOnInteraction: false
+        // },
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
@@ -159,4 +165,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  // @import './base.scss';
 </style>

@@ -1,17 +1,21 @@
 <template>
   <div class="d-inline">
-    <img class="d-inline" :src="nowShowingMovie.image_path" style="width: 200px;  height: 300px;" alt="">
+    <swiper-slide><img class="d-inline" :src="nowShowingMovie.image_path" style="width: 200px;  height: 300px;" alt=""></swiper-slide>
   </div>
 </template>
 
 <script>
+import { SwiperSlide } from 'vue-awesome-swiper'
 export default {
   name: 'NowShowingItem2',
   props: {
     nowShowingMovie: {
       type: Object,
-    }
+    },
   },
+  components: {
+    SwiperSlide,
+  }
 }
 </script>
 
