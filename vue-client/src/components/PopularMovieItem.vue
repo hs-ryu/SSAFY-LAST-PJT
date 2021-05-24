@@ -5,11 +5,25 @@
     <h3 @click="goToDetail">{{ popularMovie.title }}</h3>
     <p>{{ popularMovie.content }}</p> -->
 
-    <div class="d-flex justify-content-center mb-1 ">
+    <div class="mb-1" @click="goToDetail">
       <div class="card text-center mt-1 border-light">
-        <div class="card-body p-0">
-          <img :src="'http://image.tmdb.org/t/p/w200/' + popularMovie.poster_path " style="width: 200px;  height: 300px; object-fit: cover;" class="card-img-top rounded mx-auto d-block" alt="" @click="goToDetail">
-          <p class="card-title m-0" @click="goToDetail">{{ popularMovie.title }}</p>
+        <div class="card-body p-0" >
+          <div class="hover_effect_box hover_effect_1">
+            <div class="content_bg" >
+              <img :src="'http://image.tmdb.org/t/p/w200/' + popularMovie.poster_path" style="width: 200px;  height: 300px; object-fit: cover;  z-index: 0;" class="card-img-top rounded mx-auto d-block" alt="">
+            </div>
+            <div class="caption">
+              <p class="caption_title">
+                <br>
+                {{ popularMovie.title }}
+              </p>
+              <div class="caption_desc">
+                평점 : {{ popularMovie.rank_average }}<br>
+                개봉일 : {{ popularMovie.release_date }}<br>
+                <br>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

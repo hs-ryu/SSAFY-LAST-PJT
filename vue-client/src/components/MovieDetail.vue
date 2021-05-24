@@ -13,7 +13,8 @@
         <br>
         <p>{{ movie.overview }}</p>
         <p>개봉일: {{ movie.release_date.substring(0, 4) }}년 {{ movie.release_date.substring(5, 7) }}월 {{ movie.release_date.substring(8, 10) }}일</p>
-        <p>평점: {{ movie.vote_average }}⭐</p>
+        <p>평점: {{ movie.rank_average.toFixed(2) }}⭐</p>
+
         <div class="d-inline" v-if="isLoggedIn">
           <button class="btn d-inline" v-if="movie.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
           <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
@@ -176,4 +177,6 @@ export default {
 img {
   width: 100%;
 }
+
+
 </style>

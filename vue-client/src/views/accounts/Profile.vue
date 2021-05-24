@@ -17,11 +17,10 @@
     <div class="card-group mb-5">
       <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'">
         <div class="mb-1">
-          <div class="card text-center mt-1 border-light" style="width: 150px;  height: 200px;">
-            <div class="card-body p-0">
-              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="object-fit: cover;" class="card-img-top img-fluid rounded mx-auto d-block" :alt="movie.title">
+          <div class="card text-center mt-1 border-light h-100" style="width: 170px;">
+            <div class="card-body p-0" style="flex-grow: 0;">
+              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="object-fit: cover; height:250px" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
               <p class="card-title m-0">{{ movie.title }}</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
           </div>
         </div>

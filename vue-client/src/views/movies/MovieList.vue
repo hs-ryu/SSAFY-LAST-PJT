@@ -33,7 +33,6 @@
           :popularMovie="popularMovie"
         />
       </div>
-
       <!-- 플랫폼상영 -->
       <h2>현재 {{ platformvalue }}에서 상영중인 영화입니다</h2>
       <div>

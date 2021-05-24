@@ -38,24 +38,6 @@ export default {
       type: Object,
     }
   },
-  methods: {
-    
-    // zoomIn: function(event) {
-    //   console.log(event)
-    //   event.target.style.transform = "scale(2)";
-    //   event.target.style.zIndex = '1';
-    //   event.target.style.transition = "all 0.5s";
-    //   event.target.style.webkitFilter = "blur(3px) brightness(50%)";
-      
-    // },
-    // zoomOut: function(event) {
-    //   console.log(event)
-    //   event.target.style.transform = "scale(1)";
-    //   event.target.style.zIndex = '-1';
-    //   event.target.style.transition = "all 0.5s";
-    //   event.target.style.webkitFilter = "blur(0px) brightness(100%)";
-    // }
-  }
 }
 </script>
 

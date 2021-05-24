@@ -9,13 +9,13 @@ User = get_user_model()
 class MovieListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ('id','title', 'movie_id', 'poster_path', 'clicked',)
+        fields = ('id','title', 'movie_id', 'poster_path', 'clicked', 'rank_average','release_date',)
 
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ('id','title','movie_id', 'overview', 'poster_path', 'vote_average', 'netflix', 'watcha', 'wavve', 'naver', 'clicked','release_date', 'trailer', 'like_users')
+        fields = ('id','title','movie_id', 'overview', 'poster_path', 'vote_average', 'netflix', 'watcha', 'wavve', 'naver', 'clicked','release_date', 'trailer', 'like_users', 'rank_average')
         read_only_fields = ('like_users',)
 
 
