@@ -78,6 +78,9 @@ export default new Vuex.Store({
     SET_PLATFORM: function(state, platform) {
       state.platformvalue = platform
     },
+    RESET_INPUT_VALUE: function (state) {
+      state.inputValue = ''
+    }
   },
   actions: {
     /* 인증 & 권한 */
@@ -221,6 +224,10 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    resetInputValue: function({commit}) {
+      commit('RESET_INPUT_VALUE')
+    },
+
     getPlatformMovies: function ({ commit }, platform) {
       axios({
         url: SERVER.URL + SERVER.ROUTES.getPlatformMovies + platform + '/',

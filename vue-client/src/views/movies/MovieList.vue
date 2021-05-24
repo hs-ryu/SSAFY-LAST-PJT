@@ -90,7 +90,7 @@ export default {
       'fetchMovies',
       'getPlatformMovies',
       'setPlatform',
-      'setInputValue',
+      'resetInputValue',
     ])
   },
   computed: {
@@ -114,7 +114,8 @@ export default {
     this.getAllMovies()
     this.getPopularMovies()
     this.getPlatformMovies(this.platformvalue)
-    this.setInputValue()
+    this.resetInputValue()
+    console.log(this.inputValue)
   },
 }
 </script>

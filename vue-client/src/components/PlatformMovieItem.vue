@@ -19,7 +19,7 @@
                 {{ platformMovie.title }}
               </p>
               <div class="caption_desc">
-                평점 : {{ platformMovie.rank_average }}<br>
+                평점 : {{ platformMovie.rank_average.toFixed(1) }}<br>
                 개봉일 : {{ platformMovie.release_date }}<br>
                 <br>
               </div>
