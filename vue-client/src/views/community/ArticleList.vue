@@ -1,31 +1,40 @@
 <template>
-  <div>
+  <div class="mx-auto" style="width: 1000px;">
     <h1>게시글 목록</h1>
+    <div class="my-2 d-flex justify-content-end">
+      <button class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateArticle">게시글 작성</button>
+    </div>
     <!-- {{ articles }} -->
-    <table style="width: 1000px;" class="table table-hover content-font">
-      <thead>
-        <tr class="text-center">
-          <th scope="col">글번호</th>
-          <th scope="col">글제목</th>
-          <th scope="col">글쓴이</th>
-          <th scope="col">날짜</th>
-          <th scope="col">좋아요</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(article, idx) in displayArticles" :key="idx">
-          <th class="text-center" scope="row">{{ article.id }}</th>
-          <td class="text-center" @click="goToArticleDetail(article.id)">
-            {{ article.title }}
-          </td>
-          <td class="text-center" @click="goToProfile(article.username)">
-            {{ article.username }}
-          </td>
-          <td class="text-center">{{ article.created_at.substring(0,10) }}</td>
-          <td class="text-center">{{ article.like_users.length }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div style="width: 1000px; height: 400px;" class="mx-auto">
+      <table class="table table-hover content-font">
+        <thead>
+          <tr class="text-center">
+            <th scope="col">글번호</th>
+            <th scope="col">말머리</th>
+            <th scope="col">글제목</th>
+            <th scope="col">글쓴이</th>
+            <th scope="col">날짜</th>
+            <th scope="col">좋아요</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(article, idx) in displayArticles" :key="idx">
+            <th class="text-center" scope="row">{{ article.id }}</th>
+            <td v-if="article.categories==1" class="text-center" scope="row">공지사항</td>
+            <td v-else-if="article.categories==2" class="text-center" scope="row">자유글</td>
+            <td v-else class="text-center" scope="row">건의사항</td>
+            <td class="text-center" @click="goToArticleDetail(article.id)">
+              {{ article.title }}
+            </td>
+            <td class="text-center" @click="goToProfile(article.username)">
+              {{ article.username }}
+            </td>
+            <td class="text-center">{{ article.created_at.substring(0,10) }}</td>
+            <td class="text-center">{{ article.like_users.length }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <li class="page-item">
@@ -39,7 +48,6 @@
         </li>
       </ul>
     </nav>
-    <button @click="goToCreateArticle">게시글 작성</button>
   </div>
 </template>
 

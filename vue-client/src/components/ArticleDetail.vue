@@ -1,17 +1,19 @@
 <template>
   <div>
-    <div>
-      {{ article }}
-      <h1>글 제목: {{ article.title }}</h1>
-      <p @click="goToProfile">작성자: {{ article.username }}</p>
-      <div v-if="article.categories=='1'">
-        <p>분류: 공지사항</p>
-      </div>
-      <div v-else-if="article.categories=='2'">
-        <p>분류: 건의사항</p>
-      </div>
-      <div v-else-if="article.categories=='3'">
-        <p>분류: 자유글</p>
+    <div class="mx-auto" style="width: 700px;">
+      <h1 style="text-align: left;" class="fw-bold">{{ article.title }}</h1>
+      <div style="text-align: left;">
+        <h4 class="d-inline" @click="goToProfile">{{ article.username }}</h4>
+        <h4 class="mx-3 d-inline">|</h4>
+        <div class="d-inline" v-if="article.categories=='1'">
+          <h4 class="d-inline">[공지사항]</h4>
+        </div>
+        <div class="d-inline" v-else-if="article.categories=='2'">
+          <h4 class="d-inline">[건의사항]</h4>
+        </div>
+        <div class="d-inline" v-else-if="article.categories=='3'">
+          <h4 class="d-inline">[자유글]</h4>
+        </div>
       </div>
       <p>글 내용: {{ article.content }}</p>
       <button @click="deleteArticle">삭제</button>
@@ -36,6 +38,7 @@
         @modify-activate="getArticleComments"
       />
     </div>
+    {{ article }}
   </div>
 </template>
 
