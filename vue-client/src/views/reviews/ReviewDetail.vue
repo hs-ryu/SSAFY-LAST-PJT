@@ -29,7 +29,7 @@
       </div>
     </div>
     <div>
-    <div style="width: 900px;" class="mx-auto">
+    <div style="width: 850px;" class="mx-auto">
       <hr>
       <div v-if="comments.length">
         <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
@@ -46,8 +46,10 @@
       <div v-else>
         <p>댓글이 아직 없어요. 첫번째 댓글을 쓸 수 있는 절호의 찬스! 🤘</p>
       </div>
-      <input style="width: 500px" v-model="commentContent" type="text" name="comment" id="comment" placeholder="댓글을 작성해주세요">
-      <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+      <div class="mt-5">
+        <input style="width: 750px" v-model="commentContent" type="text" name="comment" id="comment" placeholder="댓글을 작성해주세요">
+        <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+      </div>
     </div>
     </div>
   </div>

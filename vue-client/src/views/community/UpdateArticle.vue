@@ -1,9 +1,30 @@
 <template>
   <div>
-    <h1>글 수정</h1>
+    <h1 class="mb-4">게시글 수정</h1>
+    <div class="mx-auto" style="width: 600px;">
+      <div class="d-flex my-3">
+        <select :value="article.categories" @change="updateCategories" name="categories" id="categories">
+          <option disabled value="">말머리</option>
+          <option v-if="loginSuperStatus" value="1">공지</option>
+          <option value="2">건의</option>
+          <option value="3">일상</option>
+        </select>
+      </div>
+      <input class="mb-3" style="width: 600px;" :value="article.title" @change="updateTitle" type="text" name="title" id="title" placeholder="제목">
+      <br>
+      <!-- <input v-model.trim="content" type="text" name="content" id="content"> -->
+      <textarea :value="article.content" @change="updateContent" name="content" id="content" cols="70" rows="7" placeholder="내용"></textarea>
+      <br>
+      <div class="d-flex justify-content-end">
+        <input class="mx-2 btn main-color-background text-white" @click="updateArticle" type="submit" value="수정">
+        <input class="btn main-color-background text-white" @click="$router.go(-1)" type="submit" value="취소">
+      </div>
+    </div>
+
+    <!-- <h1>글 수정</h1>
     <label for="title">글 제목</label>
     <input :value="article.title" @change="updateTitle" type="text" name="title" id="title">
-    <label for="category">분류</label>
+    <label for="categories">분류</label>
     <select :value="article.categories" @change="updateCategories" name="categories" id="categories">
       <option disabled value="">분류를 선택해 주세요</option>
       <option value="1">공지사항</option>
@@ -12,7 +33,7 @@
     </select>
     <label for="content">글 내용</label>
     <input :value="article.content" @change="updateContent" type="text" name="content" id="content">
-    <input @click="updateArticle" type="submit" value="수정">
+    <input @click="updateArticle" type="submit" value="수정"> -->
   </div>
 </template>
 

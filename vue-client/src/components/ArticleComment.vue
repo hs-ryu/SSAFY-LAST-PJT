@@ -1,10 +1,24 @@
 <template>
   <div>
-    <p :class="{hide: modifyActivate}">{{ comment.content }}</p>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex">
+        <p class="fw-bold me-4">{{ comment.username }}</p>
+        <p :class="{hide: modifyActivate}">{{ comment.content }}</p>
+        <input style="width: 550px; height: 30px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
+      </div>
+      <div class="d-flex">
+        <p :class="{hide: modifyActivate}">(작성시각)</p>
+        <div v-if="loginedUser=(comment.username)">
+          <button class="mx-1 btn btn-sm main-color-background text-white" @click="updateMode">수정</button>
+          <button :class="{hide: modifyActivate}" class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button>
+        </div>
+      </div>
+    </div>
+    <!-- <p :class="{hide: modifyActivate}">{{ comment.content }}</p> -->
     <!-- <p>{{ comment.id }}</p> -->
-    <input :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
+    <!-- <input :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
     <button @click="updateMode">수정</button>
-    <button @click="deleteComment">삭제</button>
+    <button @click="deleteComment">삭제</button> -->
   </div>
 </template>
 

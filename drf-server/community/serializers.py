@@ -3,9 +3,10 @@ from .models import Article, Comment
 
 class ArticleListSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField()
+    comment_count = serializers.IntegerField(source='comments.count', read_only=True)
     class Meta:
         model = Article
-        fields = ('id', 'title', 'categories','like_users', 'username', 'created_at', 'updated_at')
+        fields = ('id', 'title', 'categories','like_users', 'username', 'created_at', 'updated_at', 'comment_count',)
         read_only_fields = ('like_users',)
 
 class CommentSerializer(serializers.ModelSerializer):

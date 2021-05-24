@@ -1,7 +1,26 @@
 <template>
   <div>
-    <h1>글 작성</h1>
-    <label for="title">글 제목</label>
+    <h1 class="mb-4">게시글 작성</h1>
+    <div class="mx-auto" style="width: 600px;">
+      <div class="d-flex my-3">
+        <select v-model="categories" name="categories" id="categories">
+          <option disabled value="">말머리</option>
+          <option v-if="loginSuperStatus" value="1">공지</option>
+          <option value="2">건의</option>
+          <option value="3">일상</option>
+        </select>
+      </div>
+      <input class="mb-3" style="width: 600px;" v-model.trim="title" type="text" name="title" id="title" placeholder="제목">
+      <br>
+      <!-- <input v-model.trim="content" type="text" name="content" id="content"> -->
+      <textarea v-model.trim="content" name="content" id="content" cols="70" rows="7" placeholder="내용"></textarea>
+      <br>
+      <div class="d-flex justify-content-end">
+        <input class="mx-2 btn main-color-background text-white" @click="createArticle" type="submit" value="작성">
+        <input class="btn main-color-background text-white" @click="$router.go(-1)" type="submit" value="취소">
+      </div>
+    </div>
+    <!-- <label for="title">글 제목</label>
     <input v-model.trim="title" type="text" name="title" id="title">
     <label for="categories">분류</label>
     <select v-model="categories" name="categories" id="categories">
@@ -12,14 +31,14 @@
     </select>
     <label for="content">글 내용</label>
     <input v-model.trim="content" type="text" name="content" id="content">
-    <input @click="createArticle" type="submit" value="작성">
+    <input @click="createArticle" type="submit" value="작성"> -->
   </div>
 </template>
 
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'CreateArticle',
@@ -33,7 +52,10 @@ export default {
   computed: {
     ...mapGetters([
       'config'
-    ])
+    ]),
+    ...mapState({
+      'loginSuperStatus': 'isSuperuser',
+    })
   },
   methods: {
     createArticle: function () {

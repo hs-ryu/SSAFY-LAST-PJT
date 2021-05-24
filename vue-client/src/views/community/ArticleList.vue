@@ -14,23 +14,23 @@
             <th scope="col">글제목</th>
             <th scope="col">글쓴이</th>
             <th scope="col">날짜</th>
-            <th scope="col">좋아요</th>
+            <!-- <th scope="col">좋아요</th> -->
           </tr>
         </thead>
         <tbody>
           <tr v-for="(article, idx) in displayArticles" :key="idx">
             <th class="text-center" scope="row">{{ article.id }}</th>
-            <td v-if="article.categories==1" class="text-center" scope="row">공지사항</td>
-            <td v-else-if="article.categories==2" class="text-center" scope="row">자유글</td>
-            <td v-else class="text-center" scope="row">건의사항</td>
-            <td class="text-center" @click="goToArticleDetail(article.id)">
-              {{ article.title }}
+            <td v-if="article.categories==1" class="text-center" scope="row">공지</td>
+            <td v-else-if="article.categories==2" class="text-center" scope="row">일상</td>
+            <td v-else class="text-center" scope="row">건의</td>
+            <td class="text-start" @click="goToArticleDetail(article.id)">
+              {{ article.title }} <p v-if="article.comment_count>0" class="d-inline">({{ article.comment_count }})</p>
             </td>
             <td class="text-center" @click="goToProfile(article.username)">
               {{ article.username }}
             </td>
             <td class="text-center">{{ article.created_at.substring(0,10) }}</td>
-            <td class="text-center">{{ article.like_users.length }}</td>
+            <!-- <td class="text-center">{{ article.like_users.length }}</td> -->
           </tr>
         </tbody>
       </table>
@@ -48,6 +48,7 @@
         </li>
       </ul>
     </nav>
+    <!-- {{ articles }} -->
   </div>
 </template>
 

@@ -3,27 +3,66 @@
     <div class="mx-auto" style="width: 700px;">
       <h1 style="text-align: left;" class="fw-bold">{{ article.title }}</h1>
       <div style="text-align: left;">
-        <h4 class="d-inline" @click="goToProfile">{{ article.username }}</h4>
-        <h4 class="mx-3 d-inline">|</h4>
         <div class="d-inline" v-if="article.categories=='1'">
-          <h4 class="d-inline">[공지사항]</h4>
+          <h5 class="d-inline">[공지]</h5>
         </div>
         <div class="d-inline" v-else-if="article.categories=='2'">
-          <h4 class="d-inline">[건의사항]</h4>
+          <h5 class="d-inline">[건의]</h5>
         </div>
         <div class="d-inline" v-else-if="article.categories=='3'">
-          <h4 class="d-inline">[자유글]</h4>
+          <h5 class="d-inline">[일상]</h5>
         </div>
+        <h5 class="mx-2 d-inline">|</h5>
+        <h5 class="d-inline" @click="goToProfile">{{ article.username }}</h5>
+        <h5 class="mx-2 d-inline">|</h5>
+        <h5 class="d-inline">{{ article.created_at }}</h5>
       </div>
-      <p>글 내용: {{ article.content }}</p>
-      <button @click="deleteArticle">삭제</button>
-      <button @click="goToUpdateArticle">수정</button>
+      <hr>
+      <h4 class="mb-5" style="text-align: left">{{ article.content }}</h4>
+      <div class="d-flex justify-content-between">
+        <div>
+          <button class="btn d-inline" v-if="article.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
+          <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
+          <p class="d-inline">{{ article.like_users.length }}명이 이 글을 좋아합니다.</p>
+        </div>
+        <div v-if="loginedUser=(article.username)">
+          <button class="mx-2 btn main-color-background text-white" @click="goToUpdateArticle">수정</button>
+          <button class="btn main-color-background text-white" @click="deleteArticle">삭제</button>
+        </div>
+        <!-- <button class="btn main-color-background text-white" @click="deleteArticle">삭제</button>   -->
+      </div>
+      <hr>
     </div>
+
+    <div style="width: 700px;" class="mx-auto">
+      <div v-if="article.comments.length">
+        <h5 style="text-align: left" class="my-3">댓글 ({{ article.comments.length }})</h5>
+        <ArticleComment
+        v-for="(comment, idx) in article.comments"
+        :key="idx"
+        :comment="comment"
+        :articleId="articleId"
+        @comment-deleted="getArticleComments"
+        @modify-activate="getArticleComments"
+        />
+      </div>
+      <div v-else>
+        <p>댓글이 아직 없어요. 첫번째 댓글을 쓸 수 있는 절호의 찬스! 🤘</p>
+      </div>
+      <div class="mt-5">
+        <input style="width: 600px" v-model="commentContent" type="text" name="comment" id="comment" @keypress.enter="createComment" placeholder="댓글을 작성해주세요">
+        <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+      </div>
+    </div>
+
+
+      <!-- <button @click="deleteArticle">삭제</button>
+      <button @click="goToUpdateArticle">수정</button>
     <div>
       <p>{{ article.like_users.length }}명이 좋아합니다.</p>
       <button v-if="article.like_users.includes(userId)" @click="getLikeStatus">좋아요취소</button>
       <button v-else @click="getLikeStatus">좋아요</button>
-    </div>
+    </div> -->
     <div>
       <h2>댓글목록</h2>
       <label for="comment">댓글작성</label>
@@ -38,6 +77,7 @@
         @modify-activate="getArticleComments"
       />
     </div>
+    {{ article.comments }}
     {{ article }}
   </div>
 </template>
@@ -65,9 +105,10 @@ export default {
     ...mapGetters([
       'config'
     ]),
-    ...mapState([
-      'userId'
-    ])
+    ...mapState({
+      'userId': 'userId',
+      'loginedUser': 'userName',
+    }),
   },
   methods: {
     // path('articles/<int:article_pk>/', views.getarticle, name='getarticle'),
@@ -165,7 +206,7 @@ export default {
     this.getArticleDetail()
     // 현선 추가
     this.getArticleComments()
-  }
+  },
 }
 </script>
 
