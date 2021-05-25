@@ -445,13 +445,14 @@ def deletevote(request, movie_pk, vote_pk):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def createvotecomment(request, movie_pk, vote_pk):
+    print(request.data)
     vote = get_object_or_404(Vote, pk=vote_pk)
     serializer = VoteCommentSerializer(data=request.data)
     # 여기에, 투표 횟수 추가해주는 로직 필요.
     # request.data.choice = 0 이면 one 증가 어떤값 올라올지 은교랑 상의
     # 아니면 two 증가
     # print(request.data)
-    if request.data.choice:
+    if request.data['choice']:
         vote.option_two_count += 1
     else:
         vote.option_one_count += 1
@@ -460,13 +461,23 @@ def createvotecomment(request, movie_pk, vote_pk):
         serializer.save(vote = vote, user=request.user)
         return Response(serializer.data)
 
+
+# 리뷰의 댓글 불러오기
+@api_view(['GET'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getcomments(request, movie_pk, review_pk):
+    comments = Comment.objects.filter(review_id=review_pk)
+    serializer = CommentSerializer(comments, many=True)
+    return Response(serializer.data)
+
 # 투표 댓글 목록 불러오기.
 @api_view(['GET'])
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def getvotecomments(request, movie_pk, vote_pk):
-    votes = Vote.objects.filter(movie_id=movie_pk)
-    serializer = VoteCommentSerializer(votes, many=True)
+    votecomments = VoteComment.objects.filter(vote_id=vote_pk)
+    serializer = VoteCommentSerializer(votecomments, many=True)
     return Response(serializer.data)
 
 

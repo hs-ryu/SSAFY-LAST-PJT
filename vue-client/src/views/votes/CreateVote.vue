@@ -56,7 +56,6 @@ export default {
           headers,
         })
         .then(() => {
-          
           this.title = ''
           this.optionone = ''
           this.optiontwo = ''

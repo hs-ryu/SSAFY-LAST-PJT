@@ -3,10 +3,33 @@
     <p>{{vote}}</p>
     <h2>{{vote.title}}</h2>
     <div class="progress" style="height: 30px;">
-      <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">{{ vote.option_one_count }}%</div>
-      <div class="progress-bar bg-dark" role="progressbar" style="width: 50%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">{{ vote.option_two_count }}%</div>
+      <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">{{ vote.option_one }} : {{ vote.option_one_count }}%</div>
+      <div class="progress-bar bg-dark" role="progressbar" style="width: 50%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">{{ vote.option_two }} : {{ vote.option_two_count }}%</div>
     </div>
     <input class="btn main-color-background text-white" @click="deleteVote" type="submit" value="삭제">
+    <div style="width: 850px;" class="mx-auto">
+      <hr>
+      <div v-if="comments.length">
+        <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
+        <VoteComment
+          v-for="(comment,idx) in comments"
+          :key="idx"
+          :comment="comment"
+          :movieId="movieId"
+          :voteId="voteId"
+          @comment-deleted="getVoteComments"
+        />
+      </div>
+      <div v-else>
+        <p>당신의 의견을 기다리고 있어요 🤘</p>
+      </div>
+      <div class="mt-5">
+        <input class="mx-1 btn btn-sm main-color-background text-white" @click="choiceOne" type="submit" value="왼쪽!">
+        <input style="width: 500px" v-model="commentContent" type="text" name="comment" id="comment" placeholder="당신의 생각은?">
+        <input class="mx-1 btn btn-sm main-color-background text-white" @click="choiceTwo" type="submit" value="오른쪽!">
+      </div>
+      <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+    </div>
   </div>
 </template>
 
@@ -14,9 +37,13 @@
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import {mapGetters} from 'vuex'
+import VoteComment from '@/components/VoteComment'
 
 export default {
   name: 'VoteDetail',
+  components: {
+    VoteComment,
+  },
   computed: {
     ...mapGetters([
       'config'
@@ -29,8 +56,9 @@ export default {
       movieId: this.$route.params.movieId,
       voteId: this.$route.params.voteId,
       comments: [],
+      chioce: 0,
+      commentContent: '',
       // comments: [],
-      // commentContent: '',
       // likeCount: 0,
       // likeStatus: false,
       // likeStatus: this.review.like_users.includes('userId'),
@@ -84,37 +112,36 @@ export default {
       })
     },
     // //여기서부터 다시
-    // createComment: function () {
-    //   const headers = this.config
-    //   const commentItem = {
-    //     content: this.commentContent,
-    //     choice =
-    //   }
-    //   if (commentItem.content) {
-    //     axios({
-    //       url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/createcomment/`,
-    //       method: 'post',
-    //       data: commentItem,
-    //       headers,
-    //     })
-    //     .then(() => {
-    //       this.commentContent = ''
-    //       this.getReviewComments()
-    //       // this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-    //   }
-    // },
-
-
-
+    createComment: function () {
+      const headers = this.config
+      const commentItem = {
+        content: this.commentContent,
+        choice : this.chioce,
+      }
+      if (commentItem.content && commentItem.choice) {
+        axios({
+          url: SERVER.URL + SERVER.ROUTES.votes + `${this.movieId}/votes/${this.voteId}/createvotecomment/`,
+          method: 'post',
+          data: commentItem,
+          headers,
+        })
+        .then(() => {
+          this.commentContent = ''
+          this.getReviewComments()
+          this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, voteId: this.voteId }})
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    },
+    choiceOne: function () {
+      this.choice = 1
+    },
+    choiceTwo: function () {
+      this.choice = 2
+    },
   },
-
-
-
-
   created: function () {
     this.getVoteDetail()
     this.getVoteComments()
