@@ -24,6 +24,10 @@ export default new Vuex.Store({
     // 플랫폼 영화
     platformvalue: 'netflix',
     platformMovies : [],
+
+    //투표 댓글
+    // choice: 0,
+
   },
   getters: {
     // 로그인상태 확인 boolean 값
@@ -80,7 +84,7 @@ export default new Vuex.Store({
     },
     RESET_INPUT_VALUE: function (state) {
       state.inputValue = ''
-    }
+    },
   },
   actions: {
     /* 인증 & 권한 */
@@ -243,6 +247,9 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+
+
+
   },
   modules: {
   }

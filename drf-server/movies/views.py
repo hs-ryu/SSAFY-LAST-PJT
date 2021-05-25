@@ -486,7 +486,7 @@ def getvotecomments(request, movie_pk, vote_pk):
 @authentication_classes([JSONWebTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def deletevotecomment(request, movie_pk, vote_pk, votecomment_pk):
-    if not request.user.votecomments.filter(pk=votecomment_pk).exists():
+    if not request.user.vote_comments.filter(pk=votecomment_pk).exists():
         return Response({'detail': '권한이 없습니다.'}, status=status.HTTP_403_FORBIDDEN)
     votecomment = get_object_or_404(VoteComment, pk=votecomment_pk)
     votecomment.delete()
@@ -495,4 +495,5 @@ def deletevotecomment(request, movie_pk, vote_pk, votecomment_pk):
         vote.option_two_count -= 1
     else:
         vote.option_two_count -= 1
+    vote.save()
     return Response({ 'id': votecomment_pk})
