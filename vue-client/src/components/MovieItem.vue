@@ -13,22 +13,24 @@
         </div>
       </div>
     </div> -->
-
-    <div class="mb-1" @click="goToDetail">
-      <div class="card text-center mt-1 border-light">
+    <div  @click="goToDetail">
+      <div class="card text-center ">
         <div class="card-body p-0" >
           <div class="hover_effect_box hover_effect_1">
             <div class="content_bg" >
-              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="width: 200px;  height: 300px; object-fit: cover;  z-index: 0;" class="card-img-top rounded mx-auto d-block" alt="">
+              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="width: 167px;  height: 250px; object-fit: cover;  z-index: 0;" class="card-img-top rounded d-block" alt="">
             </div>
             <div class="caption">
               <p class="caption_title">
-                <br>
                 {{ movie.title }}
               </p>
+              <br v-if="movie.title.length <= 10">
               <div class="caption_desc">
-                평점 : {{ movie.rank_average.toFixed(1) }}<br>
-                개봉일 : {{ movie.release_date }}<br>
+                <p></p>
+                <br>
+                평점 : {{ movie.rank_average ? movie.rank_average.toFixed(1)  + '★': '-'}}<br>
+                개봉일 <br>
+                {{ movie.release_date }}<br>
                 <br>
               </div>
             </div>
@@ -36,9 +38,6 @@
         </div>
       </div>
     </div>
-
-
-
   </div>
 </template>
 
@@ -60,7 +59,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .hover_effect_box {
   /* width: 400px;
    overflow: hidden; */
@@ -74,8 +73,8 @@ export default {
   box-sizing: initial;
 }
 .hover_effect_box .caption {
-  width: 200px;
-  height: 300px;
+  width: 167px;
+  height: 250px;
   position: absolute;
   overflow: hidden;
   top: 0;
@@ -90,14 +89,14 @@ export default {
   color: #fff;
   text-align: center;
   position: relative;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
   padding: 10px;
   /* background: rgba(0, 0, 0, 0.8); */
   margin: 20px 0 0 0;
 }
 .hover_effect_box .caption_desc {
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: bold;
     line-height: 1.5;
     position: relative;

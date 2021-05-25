@@ -15,10 +15,6 @@
     <div style="width: 850px;" class="mx-auto">
       <hr>
 
-
-
-
-
       <div v-if="comments.length">
         <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
         <VoteComment

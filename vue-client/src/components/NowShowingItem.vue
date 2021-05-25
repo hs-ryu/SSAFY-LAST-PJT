@@ -42,10 +42,10 @@ export default {
 </script>
 
 <style>
-.hover_effect_box {
+/* .hover_effect_box { */
   /* width: 400px;
    overflow: hidden; */
-  position: relative;
+  /* position: relative;
   text-align: center;
   -webkit-box-shadow: 1px 1px 2px #e6e6e6;
   -moz-box-shadow: 1px 1px 2px #e6e6e6;
@@ -73,9 +73,9 @@ export default {
   position: relative;
   font-size: 22px;
   font-weight: bold;
-  padding: 10px;
+  padding: 10px; */
   /* background: rgba(0, 0, 0, 0.8); */
-  margin: 20px 0 0 0;
+  /* margin: 20px 0 0 0;
 }
 .hover_effect_box .caption_desc {
     font-size: 0.9em;
@@ -151,13 +151,13 @@ export default {
   -ms-transition: all 0.2s linear;
   transition: all 0.2s linear;
 }
-.hover_effect_1:hover .content_bg {
+.hover_effect_1:hover .content_bg { */
   /* -webkit-transform: scale(1.1,1.1);
   -moz-transform: scale(1.1,1.1);
   -o-transform: scale(1.1,1.1);
   -ms-transform: scale(1.1,1.1);
   transform: scale(1.1,1.1); */
-}
+/* }
 .hover_effect_1 .caption_link {
   -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
@@ -198,5 +198,5 @@ export default {
   -o-transition-delay: 0.2s;
   -ms-transition-delay: 0.2s;
   transition-delay: 0.2s;
-}
+} */
 </style>
