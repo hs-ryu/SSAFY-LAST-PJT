@@ -215,11 +215,11 @@ export default {
     },
     goToVoteDetail: function (voteId) {
       const movieId = this.movieId
-      this.$router.push({ name: 'VoteDetail', params: { movieId: movieId, voteId: voteId }})
+      this.$router.push({ name: 'VoteDetail', params: { movieId: movieId, voteId: voteId }, query: { movieTitle: this.movie.title }})
       // console.log(movieId)
     },
     goToCreateVote: function () {
-      this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }})
+      this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }, query: { movieTitle: this.movie.title }})
     },
   },
   created: function () {

@@ -27,7 +27,10 @@
         </div>
         <div v-if="loginedUser==(article.username)">
           <button class="mx-2 btn main-color-background text-white" @click="goToUpdateArticle">수정</button>
-          <button class="btn main-color-background text-white" @click="deleteArticle">삭제</button>
+          <!-- <button class="btn main-color-background text-white" @click="deleteArticle">삭제</button> -->
+          <button type="button" class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#articleDeleteModal">
+              삭제
+            </button>
         </div>
         <!-- <button class="btn main-color-background text-white" @click="deleteArticle">삭제</button>   -->
       </div>
@@ -52,6 +55,24 @@
       <div class="mt-5">
         <input style="width: 600px" v-model="commentContent" type="text" name="comment" id="comment" @keypress.enter="createComment" placeholder="댓글을 작성해주세요">
         <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+      </div>
+    </div>
+
+    <div class="modal fade" id="articleDeleteModal" tabindex="-1" aria-labelledby="articleDeleteModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="articleDeleteModal">알림</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            정말로 삭제하시겠습니까?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn main-color-background text-white" data-bs-dismiss="modal" @click="deleteArticle">삭제</button>
+          </div>
+        </div>
       </div>
     </div>
 

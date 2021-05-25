@@ -1,9 +1,10 @@
 <template>
   <div>
     <p>{{vote}}</p>
-    <h2>{{vote.title}}</h2>
+    <h5>[{{ movieTitle }}]</h5>
+    <h1 class="fw-bold">{{vote.title}}</h1>
     <br>
-    <p> 총 {{vote.option_one_count + vote.option_two_count}}명 참여했습니다</p>
+    <p> 총 {{vote.option_one_count + vote.option_two_count}}명 참여중!</p>
     <div class="d-flex justify-content-center">
       <div class="progress my-2" style="height: 40px; width: 700px">
         <div class="progress-bar bg-primary" role="progressbar" :style="{width: scoreone + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_one }}  :  {{scoreone}}% ({{vote.option_one_count}} 명)</div>
@@ -11,7 +12,10 @@
       </div>
     </div>
     <br>
-    <input v-if="vote.username==decoded.username" class="btn main-color-background text-white" @click="deleteVote" type="submit" value="투표삭제">
+    <!-- <input v-if="vote.username==decoded.username" class="btn main-color-background text-white" @click="deleteVote" type="submit" value="투표삭제"> -->
+    <button v-if="vote.username==decoded.username" type="button" class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#voteDeleteModal">
+      투표삭제
+    </button>
     <div style="width: 850px;" class="mx-auto">
       <hr>
       <div v-if="comments.length">
@@ -34,6 +38,24 @@
         <input class="mx-1 btn btn-sm btn-primary" @click="createCommentOne" type="submit" value="왼쪽!">
         <input style="width: 500px; height: 30px;" v-model="commentContent" type="text" name="comment" id="comment" placeholder="당신의 생각은?">
         <input class="mx-1 btn btn-sm btn-danger" @click="createCommentTwo" type="submit" value="오른쪽!">
+      </div>
+    </div>
+
+    <div class="modal fade" id="voteDeleteModal" tabindex="-1" aria-labelledby="voteDeleteModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="voteDeleteModal">알림</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            정말로 삭제하시겠습니까?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn main-color-background text-white" data-bs-dismiss="modal" @click="deleteVote">삭제</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -68,6 +90,7 @@ export default {
       commentContent: '',
       scoreone: 0,
       scoretwo: 0,
+      movieTitle: this.$route.query.movieTitle
 
       // comments: [],
       // likeCount: 0,

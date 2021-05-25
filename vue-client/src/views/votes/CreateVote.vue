@@ -1,16 +1,19 @@
 <template>
   <div>
     <div class="mx-auto" style="width: 600px;">
-      <label for="title">제목</label>
-      <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title">
-      <br>
-      <label for="optionone">첫번째</label>
-      <input style="width: 500px;" v-model.trim="optionone" type="text" name="optionone" id="optionone">
-      <br>
-      <label for="optiontwo">두번째</label>
+      <h1>투표 생성</h1>
+      <!-- <label for="title">제목</label> -->
+      <input type="text" v-model.trim="title" class="my-2 form-control" id="title" name="title" placeholder="주제">
+      <!-- <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title"> -->
+      <input type="text" v-model.trim="optionone" class="my-2 form-control" name="optionone" id="optionone" placeholder="옵션1">
+      <input type="text" v-model.trim="optiontwo" class="my-2 form-control" name="optiontwo" id="optiontwo" placeholder="옵션2">
+      <!-- <label for="optionone">첫번째</label>
+      <input style="width: 500px;" v-model.trim="optionone" type="text" name="optionone" id="optionone"> -->
+      <!-- <br> -->
+      <!-- <label for="optiontwo">두번째</label>
       <input style="width: 500px;" v-model.trim="optiontwo" type="text" name="optiontwo" id="optiontwo">
-      <br>
-      <div class="d-flex justify-content-end">
+      <br> -->
+      <div class="d-flex justify-content-center">
         <input class="mx-2 btn main-color-background text-white" @click="createVote(title, optionone, optiontwo)" type="submit" value="작성">
         <input class="btn main-color-background text-white" @click="$router.go(-1)" type="submit" value="취소">
       </div>
@@ -32,6 +35,7 @@ export default {
       optionone: '',
       optiontwo:'',
       movieId: this.$route.params.movieId,
+      movieTitle: this.$route.query.movieTitle,
     }
   },
   computed: {
@@ -60,7 +64,7 @@ export default {
           this.optionone = ''
           this.optiontwo = ''
           // '/:movieId/vote/:voteId'
-          this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, voteId: res.data.id }})
+          this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, voteId: res.data.id }, query: { movieTitle: this.movieTitle }})
         })
         .catch((err) => {
           console.log(err)

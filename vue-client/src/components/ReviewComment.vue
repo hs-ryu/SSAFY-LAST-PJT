@@ -1,16 +1,38 @@
 <template>
-  <div>
+  <div class="my-1">
     <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex">
-        <p class="fw-bold me-4">{{ comment.username }}</p>
-        <p :class="{hide: modifyActivate}">{{ comment.content }}</p>
+      <div class="d-flex align-items-center">
+        <span class="fw-bold me-4">{{ comment.username }}</span>
+        <span :class="{hide: modifyActivate}">{{ comment.content }}</span>
         <input style="width: 700px; height: 30px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
+        <span class="fw-bold mx-2" :class="{hide: !modifyActivate}" @click="updateMode">수정</span>
       </div>
-      <div class="d-flex">
-        <p :class="{hide: modifyActivate}">(작성시각)</p>
-        <div v-if="loginedUser==(comment.username)">
-          <button class="mx-1 btn btn-sm main-color-background text-white" @click="updateMode">수정</button>
-          <button :class="{hide: modifyActivate}" class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button>
+      <div class="d-flex align-items-center">
+        <span :class="{hide: modifyActivate}">(작성시각)</span>
+        <div class="d-flex" v-if="decoded.username==comment.username">
+          <span class="fw-bold mx-1" :class="{hide: modifyActivate}" @click="updateMode">수정</span>
+          <span :class="{hide: modifyActivate}" class="fw-bold mx-1">|</span>
+          <span class="fw-bold mx-1" :class="{hide: modifyActivate}" data-bs-toggle="modal" data-bs-target="#reviewCommentDeleteModal">삭제</span>
+          <!-- <button class="mx-1 btn btn-sm main-color-background text-white" @click="updateMode">수정</button> -->
+          <!-- <button :class="{hide: modifyActivate}" class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="reviewCommentDeleteModal" tabindex="-1" aria-labelledby="reviewCommentDeleteModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reviewCommentDeleteModal">알림</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            정말로 삭제하시겠습니까?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn main-color-background text-white" data-bs-dismiss="modal" @click="deleteComment">삭제</button>
+          </div>
         </div>
       </div>
     </div>
@@ -59,9 +81,9 @@ export default {
     ...mapGetters([
       'config'
     ]),
-    ...mapState({
-      'loginedUser': 'username'
-    }),
+    ...mapState([
+      'decoded'
+    ]),
   },
   methods: {
     getReviewComments: function () {
