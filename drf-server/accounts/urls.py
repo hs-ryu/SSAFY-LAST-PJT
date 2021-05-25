@@ -11,4 +11,5 @@ urlpatterns = [
     path('verify-user/', views.verify_user),
     path('<username>/', views.profile, name='profile'),
     path('userinfo/<int:user_id>/', views.userinfo),
+    path('deleteaccount/<int:user_id>/', views.deleteaccount)
 ]

@@ -185,3 +185,14 @@ def profile(request, username):
         'favorite_genre': favorite_genre,
     }
     return JsonResponse(user_info)
+
+
+@api_view(['DELETE'])
+@authentication_classes([JSONWebTokenAuthentication])
+@permission_classes([IsAuthenticated])
+def deleteaccount(request, user_id):
+    user = get_object_or_404(get_user_model(), pk=user_id)
+    if user.id == request.user.id:
+        user.delete()
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BADREQUEST)

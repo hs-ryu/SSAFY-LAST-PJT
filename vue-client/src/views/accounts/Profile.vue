@@ -111,14 +111,16 @@
       </div>
     </div>
     
-    <!-- {{userProfile}} -->
+    <!-- 회원탈퇴 -->
+    <button class="btn main-color-background text-white" @click="deleteAccount">회원탈퇴</button>
+
   </div>
 </template>
 
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Profile',
@@ -164,6 +166,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions ([
+      'logout',
+    ]),
     getUserProfile: function () {
       axios({
         // path('<int:user_id>/', views.profile, name='profile'),
@@ -172,6 +177,7 @@ export default {
       })
       .then((res) => {
         this.userProfile = res.data
+        console.log(this.userProfile)
       })
     },
     updateFollowStatus: function () {
@@ -216,6 +222,25 @@ export default {
       let from = (articlesPage * articlesPerPage) - articlesPerPage;
       let to = (articlesPage * articlesPerPage)
       return articles.slice(from, to)
+    },
+    deleteAccount: function () {
+      const userId = this.userProfile.user_id
+      const headers = this.config
+      axios({
+        // path('deleteaccount/<int:user_id>/', views.deleteaccount)
+        url: SERVER.URL + `/accounts/deleteaccount/${userId}/`,
+        method: 'delete',
+        headers,
+      })
+      .then((res) => {
+        const credentials = {
+          username : res.data.username,
+          password : res.data.password
+        }
+        this.logout(credentials)
+        // this.$router.push({ name: 'MovieList' })
+      })
+
     }
   },
   created: function () {
