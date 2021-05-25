@@ -1,13 +1,13 @@
 <template>
-  <swiper-slide><img :src="nowShowingMovie.image_path" alt=""></swiper-slide>
+  <swiper-slide><img style="height: 250px;" :src="'http://image.tmdb.org/t/p/w200/' + popularMovie.poster_path" alt=""></swiper-slide>
 </template>
 
 <script>
 import { SwiperSlide } from 'vue-awesome-swiper'
 export default {
-  name: 'NowShowingItem2',
+  name: 'PopularMovieItem2',
   props: {
-    nowShowingMovie: {
+    popularMovie: {
       type: Object,
     },
   },
