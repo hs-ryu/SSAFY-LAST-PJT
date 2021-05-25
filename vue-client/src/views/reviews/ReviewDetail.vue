@@ -12,7 +12,7 @@
         <!-- <p>{{ review }}</p> -->
         <hr style="border-style: dotted">
         <div style="height: 300px;">
-          <p>{{ review.content }}</p>
+          <p style="white-space: pre;">{{ review.content }}</p>
         </div>
         <!-- {{ review }} -->
         <div class="d-flex justify-content-between">
@@ -21,36 +21,56 @@
             <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
             <p v-if="review.like_users" class="d-inline">{{ review.like_users.length }}명이 이 리뷰를 좋아합니다.</p>
           </div>
-          <div v-if="loginedUser==(review.username)">
+          <div v-if="decoded.username==review.username">
             <button class="mx-2 btn main-color-background text-white" @click="goToUpdate">수정</button>
             <button class="btn main-color-background text-white" @click="deleteReview">삭제</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewDeleteModal">
+              Launch demo modal
+            </button>
           </div>
         </div>
       </div>
     </div>
     <div>
-    <div style="width: 850px;" class="mx-auto">
-      <hr>
-      <div v-if="comments.length">
-        <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
-        <ReviewComment
-          v-for="(comment, idx) in comments"
-          :key="idx"
-          :comment="comment"
-          :movieId="movieId"
-          :reviewId="reviewId"
-          @comment-deleted="getReviewComments"
-          @modify-activate="getReviewComments"
-        />
-      </div>
-      <div v-else>
-        <p>댓글이 아직 없어요. 첫번째 댓글을 쓸 수 있는 절호의 찬스! 🤘</p>
-      </div>
-      <div class="mt-5">
-        <input style="width: 750px" v-model="commentContent" type="text" name="comment" id="comment" placeholder="댓글을 작성해주세요">
-        <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+      <div style="width: 850px;" class="mx-auto">
+        <hr>
+        <div v-if="comments.length">
+          <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
+          <ReviewComment
+            v-for="(comment, idx) in comments"
+            :key="idx"
+            :comment="comment"
+            :movieId="movieId"
+            :reviewId="reviewId"
+            @comment-deleted="getReviewComments"
+            @modify-activate="getReviewComments"
+          />
+        </div>
+        <div v-else>
+          <p>댓글이 아직 없어요. 첫번째 댓글을 쓸 수 있는 절호의 찬스! 🤘</p>
+        </div>
+        <div class="mt-5">
+          <input style="width: 750px" v-model="commentContent" type="text" name="comment" id="comment" placeholder="댓글을 작성해주세요">
+          <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+        </div>
       </div>
     </div>
+    <div class="modal fade" id="reviewDeleteModal" tabindex="-1" aria-labelledby="reviewDeleteModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reviewDeleteModal">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -189,7 +209,7 @@ export default {
     this.getReviewDetail()
     this.getReviewComments() // 댓글목록 가져오는 함수
     // this.updateLikeStatus()
-    console.log(this.review.like_users)
+    // console.log(this.review.like_users)
   },
 }
 </script>

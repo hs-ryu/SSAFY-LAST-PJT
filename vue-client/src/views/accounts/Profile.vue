@@ -6,7 +6,7 @@
       </div>
       <div class="d-flex">
         <h5>팔로워 {{ userProfile.followers.length }} | 팔로잉 {{ userProfile.followings.length }}</h5>
-        <div class="ms-3" v-if="userProfile.user_id!==loginedUserId">
+        <div class="ms-3" v-if="userProfile.user_id!==decoded.user_id">
           <button class="mx-2 btn main-color-background text-white" v-if="userProfile.followers.includes(loginedUserId)" @click="updateFollowStatus">unfollow</button>
           <button class="mx-2 btn main-color-background text-white" v-else @click="updateFollowStatus">follow</button>
         </div>
@@ -137,6 +137,7 @@ export default {
   computed: {
     ...mapState({
       'loginedUserId': 'userId',
+      'decoded': 'decoded',
     }),
     ...mapGetters([
       'config',

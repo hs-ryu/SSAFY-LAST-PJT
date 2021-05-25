@@ -159,12 +159,15 @@ export default {
           data: reviewItem,
           headers,
         })
-        .then(() => {
+        .then((res) => {
           // console.log(this.movieId)
+          console.log(res.data)
           this.title = ''
           this.rank = 0
           this.content = ''
-          this.$router.push({ name: 'MovieDetail', params: { movieId: this.movieId}})
+          // '/movie/:movieId/reviews/:reviewId',
+          console.log(this.moviePosterPath)
+          this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: res.data.id}, query: { moviePosterPath: this.moviePosterPath }})
         })
         .catch((err) => {
           console.log(err)

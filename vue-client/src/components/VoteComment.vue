@@ -2,8 +2,8 @@
   <div class="my-1">
     <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex justify-content-center align-items-center">
-        <button v-if="comment.choice" class="btn btn-danger me-4" type="button" disabled>반대</button>
-        <button v-else class="btn btn-primary me-4" type="button" disabled>찬성</button>
+        <button v-if="comment.choice" class="btn btn-danger me-4" type="button" disabled></button>
+        <button v-else class="btn btn-primary me-4" type="button" disabled></button>
         <div class="justify-content-center me-3">
           <p align="center" class="fw-bold m-0 ">{{ comment.username }}</p>
         </div>
@@ -73,7 +73,9 @@ export default {
       })
       .then(() => {
         // this.getReviewComments()
-        this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
+        // this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
+        this.$emit('comment-deleted')
+        this.$emit('plz-update-detail')
       })
     },
   }
