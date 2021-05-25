@@ -1,12 +1,17 @@
 <template>
   <div>
     <div class="mx-auto" style="width: 600px;">
-      <h1>투표 생성</h1>
+      <h5 class="fw-bold">[{{ movieTitle }}]</h5>
+      <h1 class="fw-bold">투표 생성</h1>
       <!-- <label for="title">제목</label> -->
-      <input type="text" v-model.trim="title" class="my-2 form-control" id="title" name="title" placeholder="주제">
-      <!-- <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title"> -->
-      <input type="text" v-model.trim="optionone" class="my-2 form-control" name="optionone" id="optionone" placeholder="옵션1">
-      <input type="text" v-model.trim="optiontwo" class="my-2 form-control" name="optiontwo" id="optiontwo" placeholder="옵션2">
+      <div class="my-3">
+        <input style="width: 100%;" type="text" v-model.trim="title" class="my-3 form-control" id="title" name="title" placeholder="주제">
+        <!-- <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title"> -->
+        <div class="row g-2">
+          <input type="text" v-model.trim="optionone" class="col m-1 form-control" name="optionone" id="optionone" placeholder="옵션1">
+          <input type="text" v-model.trim="optiontwo" class="col m-1 form-control" name="optiontwo" id="optiontwo" placeholder="옵션2">
+        </div>
+      </div>
       <!-- <label for="optionone">첫번째</label>
       <input style="width: 500px;" v-model.trim="optionone" type="text" name="optionone" id="optionone"> -->
       <!-- <br> -->

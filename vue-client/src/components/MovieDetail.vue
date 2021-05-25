@@ -130,6 +130,7 @@ export default {
       naver: '',
       reviews: [],
       votes: [],
+      genres: [],
     }
   },
   computed: {
@@ -221,11 +222,25 @@ export default {
     goToCreateVote: function () {
       this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }, query: { movieTitle: this.movie.title }})
     },
+    getGenreList: function () {
+      axios({
+        // 'getgenre/<int:movie_pk>/'
+        url: SERVER.URL + '/movies/getgenre/' + `${this.movieId}/`,
+        method: 'get',
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
   },
   created: function () {
     this.getMovieDetail()
     this.getReviews()
     this.getVotes()
+    this.getGenreList()
   }
 
 }
