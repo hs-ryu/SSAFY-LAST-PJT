@@ -5,6 +5,8 @@ import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import router from '../router'
 
+import jwt_decode from 'jwt-decode'
+
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
@@ -15,6 +17,7 @@ export default new Vuex.Store({
     username: '손님',
     isSuperuser: false,
     userId: -1,
+    decoded: '',
     today: new Date(),
 
     // 검색
@@ -53,11 +56,31 @@ export default new Vuex.Store({
   mutations: {
     SET_TOKEN: function (state, token) {
       state.authToken = token
-      localStorage.setItem('jwt', token)
+      state.decoded = localStorage.setItem('jwt', token)
     },
     REMOVE_TOKEN: function (state) {
       localStorage.removeItem('jwt')
       state.authToken = ''
+      state.decoded = ''
+      state.username = ''
+    },
+    // token 디코딩하여 username 가져오기
+    GET_USERNAME: function (state) {
+      state.decoded = jwt_decode(state.authToken)
+      // 로그인 되어 있으면 디코딩해서 넣고, 아니면 손님으로
+      if (state.authToken) {
+        state.username = state.decoded.username
+        state.userId = state.decoded.user_id
+        // console.log(state.decoded)
+      } else {
+        state.decoded = ''
+        state.username = '손님'
+        state.userId = -1
+      }
+    },
+    GET_USER_INFO: function (state, issuperuser, userid) {
+      state.isSuperuser = issuperuser
+      state.userId = userid
     },
     GET_ALL_MOVIES: function (state, allmovies) {
       state.allMovies = allmovies
@@ -88,7 +111,10 @@ export default new Vuex.Store({
   },
   actions: {
     /* 인증 & 권한 */
-    login: function ({ commit }, credentials) {
+    getUserName: function ({ commit }) {
+      commit('GET_USERNAME')
+    },
+    login: function ({ commit, dispatch }, credentials) {
       axios({
         url: SERVER.URL + SERVER.ROUTES.login,
         method: 'post',
@@ -105,47 +131,48 @@ export default new Vuex.Store({
         })
         .then((res) => {
           console.log(res.data)
-          const username = res.data.username ? res.data.username : '손님'
-          const userId = res.data.user_id ? res.data.user_id : null
-          const issuperuser = res.data.issuperuser ? res.data.issuperuser : false
-          this.state.username = username
-          this.state.userId = userId
-          this.state.isSuperuser = issuperuser
-          // console.log(this.state.username)
+          dispatch('get_user_info')
+          // const userId = res.data.user_id
+          // const issuperuser = res.data.issuperuser
+          this.state.userId = res.data.user_id
+          this.state.isSuperuser = res.data.issuperuser
           // console.log(this.state.userId)
           // console.log(this.state.isSuperuser)
+          // console.log(this.state.username)
         })
         router.push({ name: 'MovieList' })
       })
       .catch((err) => {
-        console.log(err)
+        alert(err)
       })
     },
-    get_user_info: function () {
-      console.log(this.state)
+    get_user_info: function ({ state, commit }) {
+      if (state.authToken) {
         axios({
           url: SERVER.URL + SERVER.ROUTES.verify_user,
           method: 'post',
           data: {
-            token: this.state.authToken,
+            token: state.authToken,
           }
         })
         .then((res) => {
-          console.log(res.data)
-          const username = res.data.username ? res.data.username : '손님'
-          const userId = res.data.user_id ? res.data.user_id : null
-          const issuperuser = res.data.issuperuser ? res.data.issuperuser : false
-          this.state.username = username
-          this.state.userId = userId
-          this.state.isSuperuser = issuperuser
-          console.log(this.state.username)
-          console.log(this.state.userId)
-          console.log(this.state.isSuperuser)
+          // console.log(res.data)
+          commit('GET_USER_INFO', res.data.issuperuser, res.data.user_id)
+          // const username = res.data.username ? res.data.username : '손님'
+          // const userId = res.data.user_id ? res.data.user_id : null
+          // const issuperuser = res.data.issuperuser ? res.data.issuperuser : false
+          // this.state.username = username
+          // this.state.userId = userId
+          // this.state.isSuperuser = issuperuser
+          // console.log(this.state.username)
+          // console.log(this.state.userId)
+          // console.log(this.state.isSuperuser)
         })
+      }
     },
     logout: function ({ commit }, credentials) {
       commit('REMOVE_TOKEN')
-      console.log(credentials)
+      // console.log(credentials)
       credentials.username = ''
       credentials.password = ''
       router.push({ name: 'MovieList' })
@@ -160,7 +187,11 @@ export default new Vuex.Store({
         router.push({ name: 'Login' })
       })
       .catch((err) => {
-        console.log(err)
+        if (err.response.status==401) {
+          alert('비밀번호가 일치하지 않습니다.')
+        } else {
+          alert('이미 존재하는 아이디 입니다.')
+        }
       })
     },
     /* 전체 영화 조회 */

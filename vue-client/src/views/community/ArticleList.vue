@@ -55,7 +55,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-
+import { mapState } from 'vuex'
 
 export default { 
   name: 'ArticleList',
@@ -114,7 +114,11 @@ export default {
   computed: {
     displayArticles () {
       return this.paginate(this.articles);
-    }
+    },
+    ...mapState([
+      'username',
+      'userId',
+    ])
   },
   watch: {
     articles () {
@@ -123,6 +127,7 @@ export default {
   },
   created: function () {
     this.getAllArticles()
+    console.log(this.username)
   }
 }
 </script>

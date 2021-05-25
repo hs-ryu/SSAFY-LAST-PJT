@@ -17,11 +17,11 @@
         <!-- {{ review }} -->
         <div class="d-flex justify-content-between">
           <div>
-            <button class="btn d-inline" v-if="review.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
+            <button class="btn d-inline" v-if="review.like_users && review.like_users.includes(decoded.user_id)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
             <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
-            <p class="d-inline">{{ review.like_users.length }}명이 이 리뷰를 좋아합니다.</p>
+            <p v-if="review.like_users" class="d-inline">{{ review.like_users.length }}명이 이 리뷰를 좋아합니다.</p>
           </div>
-          <div v-if="loginedUser=(review.username)">
+          <div v-if="loginedUser==(review.username)">
             <button class="mx-2 btn main-color-background text-white" @click="goToUpdate">수정</button>
             <button class="btn main-color-background text-white" @click="deleteReview">삭제</button>
           </div>
@@ -72,7 +72,8 @@ export default {
     ]),
     ...mapState({
       'userId': 'userId',
-      'loginedUser': 'userName'
+      'loginedUser': 'username',
+      'decoded': 'decoded',
     }),
   },
   data: function () {
@@ -188,6 +189,7 @@ export default {
     this.getReviewDetail()
     this.getReviewComments() // 댓글목록 가져오는 함수
     // this.updateLikeStatus()
+    console.log(this.review.like_users)
   },
 }
 </script>

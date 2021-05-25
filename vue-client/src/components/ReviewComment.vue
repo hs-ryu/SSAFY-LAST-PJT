@@ -8,7 +8,7 @@
       </div>
       <div class="d-flex">
         <p :class="{hide: modifyActivate}">(작성시각)</p>
-        <div v-if="loginedUser=(comment.username)">
+        <div v-if="loginedUser==(comment.username)">
           <button class="mx-1 btn btn-sm main-color-background text-white" @click="updateMode">수정</button>
           <button :class="{hide: modifyActivate}" class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button>
         </div>
@@ -60,7 +60,7 @@ export default {
       'config'
     ]),
     ...mapState({
-      'loginedUser': 'userName'
+      'loginedUser': 'username'
     }),
   },
   methods: {

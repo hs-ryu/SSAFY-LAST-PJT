@@ -21,7 +21,7 @@ def signup(request):
 
     # 패스워드 일치 여부 체크
     if password != password_confirmation:
-        return Response({'error': '비밀번호가 일치하지 않습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': '비밀번호가 일치하지 않습니다.'}, status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = UserSerializer(data=request.data)
 

@@ -106,7 +106,7 @@ export default {
       credentials: {
         username: '',
         password: '',
-      }
+      },
     }
   },
   methods: {
@@ -114,6 +114,7 @@ export default {
       'logout',
       'get_user_info',
       'login',
+      'getUserName',
     ]),
   },
   computed: {
@@ -121,16 +122,24 @@ export default {
       'isLoggedIn',
     ]),
     ...mapState([
-      'username',
       'userId',
       'isSuperuser',
+      'username',
+      'decoded',
     ])
   },
   created: function () {
-    // this.get_user_info()
+    this.getUserName()
+    this.get_user_info()
   },
-  updated: function () {
-    // this.get_user_info()
+  mounted: function () {
+    this.getUserName()
+    this.get_user_info()
+    console.log(this.username)
+    // console.log(this.username)
+    // console.log(this.userId)
+    // console.log(this.isSuperuser)
+    // console.log(this.decoded)
   }
 }
 </script>

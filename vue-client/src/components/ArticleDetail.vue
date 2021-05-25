@@ -21,11 +21,11 @@
       <h4 class="mb-5" style="text-align: left">{{ article.content }}</h4>
       <div class="d-flex justify-content-between">
         <div>
-          <button class="btn d-inline" v-if="article.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
+          <button class="btn d-inline" v-if="article.like_users && article.like_users.includes(decoded.user_id)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
           <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
-          <p class="d-inline">{{ article.like_users.length }}명이 이 글을 좋아합니다.</p>
+          <p v-if="article.like_users" class="d-inline">{{ article.like_users.length }}명이 이 글을 좋아합니다.</p>
         </div>
-        <div v-if="loginedUser=(article.username)">
+        <div v-if="loginedUser==(article.username)">
           <button class="mx-2 btn main-color-background text-white" @click="goToUpdateArticle">수정</button>
           <button class="btn main-color-background text-white" @click="deleteArticle">삭제</button>
         </div>
@@ -106,7 +106,8 @@ export default {
     ]),
     ...mapState({
       'userId': 'userId',
-      'loginedUser': 'userName',
+      'loginedUser': 'username',
+      'decoded': 'decoded',
     }),
   },
   methods: {
@@ -206,6 +207,7 @@ export default {
     this.getArticleDetail()
     // 현선 추가
     this.getArticleComments()
+    // console.log(this.decoded)
   },
 }
 </script>
