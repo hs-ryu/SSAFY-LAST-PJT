@@ -1,15 +1,21 @@
 <template>
-  <div>
+  <div class="my-1">
     <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex">
-        <p class="fw-bold me-4">{{ comment.username }}</p>
-        <p :class="{hide: modifyActivate}">{{ comment.content }}</p>
+      <div class="d-flex justify-content-center align-items-center">
+        <button v-if="comment.choice" class="btn btn-danger me-4" type="button" disabled>반대</button>
+        <button v-else class="btn btn-primary me-4" type="button" disabled>찬성</button>
+        <div class="justify-content-center me-3">
+          <p align="center" class="fw-bold m-0 ">{{ comment.username }}</p>
+        </div>
+        <div>
+          <p align="center" class="m-0">{{ comment.content }}</p>
+        </div>
       </div>
       <div class="d-flex">
-        <p :class="{hide: modifyActivate}">(작성시각)</p>
         <button class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -67,8 +73,7 @@ export default {
       })
       .then(() => {
         // this.getReviewComments()
-        this.$emit('comment-deleted')
-        // this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
+        this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, reviewId: this.reviewId }})
       })
     },
   }

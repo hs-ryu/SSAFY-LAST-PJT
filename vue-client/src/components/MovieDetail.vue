@@ -81,13 +81,13 @@
           <thead>
             <tr>
               <th scope="col">제목</th>
-              <th scope="col">진행상황</th>
+              <th scope="col">당신의 선택은?</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(vote, idx) in votes" :key="idx +'2'">
               <td @click="goToVoteDetail(vote.id)">{{ vote.title }}</td>
-              <td>{{ vote.option_one_count + vote.option_two_count }}</td>
+              <td>{{ vote.option_one }}   VS   {{ vote.option_two }}</td>
             </tr>
           </tbody>
         </table>

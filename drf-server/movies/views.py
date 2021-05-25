@@ -452,7 +452,7 @@ def createvotecomment(request, movie_pk, vote_pk):
     # request.data.choice = 0 이면 one 증가 어떤값 올라올지 은교랑 상의
     # 아니면 two 증가
     # print(request.data)
-    if request.data['choice']:
+    if request.data['choice'] == 1:
         vote.option_two_count += 1
     else:
         vote.option_one_count += 1
@@ -491,9 +491,9 @@ def deletevotecomment(request, movie_pk, vote_pk, votecomment_pk):
     votecomment = get_object_or_404(VoteComment, pk=votecomment_pk)
     votecomment.delete()
     vote = get_object_or_404(Vote, pk=vote_pk)
-    if votecomment.choice:
+    if votecomment.choice == 1:
         vote.option_two_count -= 1
     else:
-        vote.option_two_count -= 1
+        vote.option_one_count -= 1
     vote.save()
     return Response({ 'id': votecomment_pk})
