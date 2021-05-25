@@ -1,24 +1,19 @@
 <template>
   <div>
-    <!-- <p>{{vote}}</p> -->
+    <p>{{vote}}</p>
     <h2>{{vote.title}}</h2>
     <br>
     <p> 총 {{vote.option_one_count + vote.option_two_count}}명 참여했습니다</p>
     <div class="d-flex justify-content-center">
-      <div class="progress" style="height: 30px; width: 700px">
+      <div class="progress my-2" style="height: 40px; width: 700px">
         <div class="progress-bar bg-primary" role="progressbar" :style="{width: scoreone + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_one }}  :  {{scoreone}}% ({{vote.option_one_count}} 명)</div>
         <div class="progress-bar bg-danger" role="progressbar" :style="{width: scoretwo + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_two }}  :  {{ scoretwo }}% ({{vote.option_two_count}} 명)</div>
       </div>
     </div>
     <br>
-    <input class="btn main-color-background text-white" @click="deleteVote" type="submit" value="삭제">
+    <input v-if="vote.username==decoded.username" class="btn main-color-background text-white" @click="deleteVote" type="submit" value="투표삭제">
     <div style="width: 850px;" class="mx-auto">
       <hr>
-
-
-
-
-
       <div v-if="comments.length">
         <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
         <VoteComment
@@ -27,16 +22,18 @@
           :comment="comment"
           :movieId="movieId"
           :voteId="voteId"
+          @comment-deleted="getVoteComments"
+          @plz-update-detail="getVoteDetail"
         />
       </div>
 
       <div v-else>
         <p>당신의 의견을 기다리고 있어요 🤘</p>
       </div>
-      <div class="my-5">
-        <input class="mx-1 btn btn-sm main-color-background text-white" @click="createCommentOne" type="submit" value="왼쪽!">
-        <input style="width: 500px" v-model="commentContent" type="text" name="comment" id="comment" placeholder="당신의 생각은?">
-        <input class="mx-1 btn btn-sm main-color-background text-white" @click="createCommentTwo" type="submit" value="오른쪽!">
+      <div class="my-5 d-flex align-items-center justify-content-center">
+        <input class="mx-1 btn btn-sm btn-primary" @click="createCommentOne" type="submit" value="왼쪽!">
+        <input style="width: 500px; height: 30px;" v-model="commentContent" type="text" name="comment" id="comment" placeholder="당신의 생각은?">
+        <input class="mx-1 btn btn-sm btn-danger" @click="createCommentTwo" type="submit" value="오른쪽!">
       </div>
     </div>
   </div>
@@ -45,7 +42,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-import { mapGetters} from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import VoteComment from '@/components/VoteComment'
 
 export default {
@@ -57,6 +54,9 @@ export default {
     ...mapGetters([
       'config'
     ]),
+    ...mapState([
+      'decoded',
+    ])
   },
   data: function () {
     return {

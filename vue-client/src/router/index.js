@@ -35,12 +35,12 @@ const routes = [
     component: ReviewDetail
   },
   {
-    path: '/:movieId/reviews/create',
+    path: '/movie/:movieId/reviews/create',
     name: 'CreateReview',
     component: CreateReview
   },
   {
-    path: '/:movieId/reviews/:reviewId/update',
+    path: '/movie/:movieId/reviews/:reviewId/update',
     name: 'UpdateReview',
     component: UpdateReview
   },
@@ -50,17 +50,17 @@ const routes = [
     component: ArticleList
   },
   {
-    path: '/community/createarticle',
+    path: '/community/articles/create',
     name: 'CreateArticle',
     component: CreateArticle,
   },
   {
-    path: '/community/:articleId',
+    path: '/community/articles/:articleId',
     name: 'ArticleDetail',
     component: ArticleDetail
   },
   {
-    path: '/community/:articleId/update',
+    path: '/community/articles/:articleId/update',
     name: 'UpdateArticle',
     component: UpdateArticle
   },
@@ -80,12 +80,12 @@ const routes = [
     component: Profile,
   },
   {
-    path: '/:movieId/:voteId',
+    path: '/movies/:movieId/vote/:voteId',
     name: 'VoteDetail',
     component: VoteDetail,
   },
   {
-    path: '/movies/:movieId/votes',
+    path: '/movies/:movieId/votes/create',
     name: 'CreateVote',
     component: CreateVote,
   }

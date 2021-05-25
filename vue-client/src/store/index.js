@@ -142,8 +142,8 @@ export default new Vuex.Store({
         })
         router.push({ name: 'MovieList' })
       })
-      .catch((err) => {
-        alert(err)
+      .catch(() => {
+        alert('비밀번호가 틀렸습니다.')
       })
     },
     get_user_info: function ({ state, commit }) {

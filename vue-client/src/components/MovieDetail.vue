@@ -7,16 +7,16 @@
         <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
       </div>
       <div class="mx-4" style="width: 500px; text-align: left;">
-        <div v-if="movie.trailer">
-          <iframe class="m-2" :src="'https://www.youtube.com/embed/' + movie.trailer" frameborder="0" style="width:100%; height:100%;"></iframe>
+        <div class="video-container" v-if="movie.trailer">
+          <iframe width="560" height="315" class="m-2" :src="'https://www.youtube.com/embed/' + movie.trailer" frameborder="0" allowfullscreen></iframe>
         </div>
         <br>
-        <p>{{ movie.overview }}</p>
-        <p>개봉일: {{ movie.release_date.substring(0, 4) }}년 {{ movie.release_date.substring(5, 7) }}월 {{ movie.release_date.substring(8, 10) }}일</p>
+        <p style="font-size: 14px;">{{ movie.overview }}</p>
+        <p>개봉일: {{ movie.release_date }}</p>
         <p>평점: {{ movie.rank_average.toFixed(1) }}⭐</p>
 
         <div class="d-inline" v-if="isLoggedIn">
-          <button class="btn d-inline" v-if="movie.like_users.includes(userId)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
+          <button class="btn d-inline" v-if="movie.like_users && movie.like_users.includes(decoded.user_id)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
           <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
         </div>
         <div class="d-inline" v-else>
@@ -39,6 +39,7 @@
         </div>
       </div>
     </div>
+    <hr>
     <div style="width: 1000px;" class="mx-auto">
       <div class="m-2" v-if="reviews.length">
         <table class="table">
@@ -74,7 +75,7 @@
       </div>
     </div>
 
-
+    <hr>
     <div style="width: 1000px;" class="mx-auto">
       <div class="m-2" v-if="votes.length">
         <table class="table">
@@ -138,6 +139,7 @@ export default {
     ]),
     ...mapState([
       'userId',
+      'decoded',
     ])
   },
   methods: {
@@ -231,11 +233,23 @@ export default {
 
 <style>
 .img-container {
-  max-width: 350px;
+  max-width: 380px;
 }
 img {
   width: 100%;
 }
+.video-container {
+  position: relative;
+  height: 0;
+  padding-bottom: 56.25%;
+}
 
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
 </style>

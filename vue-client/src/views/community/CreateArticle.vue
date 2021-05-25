@@ -74,9 +74,10 @@ export default {
           data: articleItem,
           headers,
         })
-        .then(() => {
+        .then((res) => {
           // console.log(res)
-          this.$router.push({ name: 'ArticleList' })
+          // '/community/articles/:articleId',
+          this.$router.push({ name: 'ArticleDetail', params: { articleId: res.data.id } })
         })
         .catch((err) => {
           console.log(err)

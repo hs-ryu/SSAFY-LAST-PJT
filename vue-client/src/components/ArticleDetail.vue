@@ -18,7 +18,7 @@
         <h5 class="d-inline">{{ article.created_at }}</h5>
       </div>
       <hr>
-      <h4 class="mb-5" style="text-align: left">{{ article.content }}</h4>
+      <p class="mb-5" style="text-align: left; white-space: pre;">{{ article.content }}</p>
       <div class="d-flex justify-content-between">
         <div>
           <button class="btn d-inline" v-if="article.like_users && article.like_users.includes(decoded.user_id)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>

@@ -55,11 +55,12 @@ export default {
           data: VoteItem,
           headers,
         })
-        .then(() => {
+        .then((res) => {
           this.title = ''
           this.optionone = ''
           this.optiontwo = ''
-          this.$router.push({ name: 'MovieDetail', params: { movieId: this.movieId}})
+          // '/:movieId/vote/:voteId'
+          this.$router.push({ name: 'VoteDetail', params: { movieId: this.movieId, voteId: res.data.id }})
         })
         .catch((err) => {
           console.log(err)
