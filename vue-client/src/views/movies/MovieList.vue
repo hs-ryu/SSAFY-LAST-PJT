@@ -20,7 +20,7 @@
       <swiper class="swiper" :options="swiperOption">
         <NowShowingItem2
           v-for="(nowShowingMovie, idx) in nowShowingMovies"
-          :key="idx + '1'"
+          :key="idx + '8'"
           :nowShowingMovie="nowShowingMovie"
         />
         <div class="swiper-pagination" slot="pagination"></div>
@@ -106,9 +106,10 @@ export default {
   data: function () {
     return {
       swiperOption: {
-        slidesPerView: 10,
+        slidesPerView: 'auto',
         spaceBetween: 0,
-        slidesPerGroup: 2,
+        slidesPerGroup: 4,
+        loopedSlides: 4,
         // autoplay: {
         //   delay: 2500,
         //   disableOnInteraction: false

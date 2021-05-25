@@ -28,14 +28,14 @@
               </li>
             </span>
             <span v-if="isLoggedIn">
-              <router-link @click.native="logout" to="#" class="mx-2">Logout</router-link>
+              <router-link @click.native="logout(credentials)" to="#" class="mx-2">Logout</router-link>
               <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2">Mypage</router-link>
               <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/" class="mx-2">SYSTEM</a>
             </span>
             <span v-else>
               <router-link :to="{ name: 'Signup' }" class="mx-2">Signup</router-link>
               <router-link :to="{ name: 'Login' }" class="mx-2">Login</router-link>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button type="button" class="mx-2 btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 로그인
               </button>
             </span>
@@ -51,8 +51,8 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">로그인</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="fw-bold modal-title mx-auto" id="exampleModalLabel">로그인</h5>
+              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
               <form>
@@ -66,14 +66,14 @@
                     id="password"
                     placeholder="비밀번호" 
                     v-model="credentials.password"
-                    @keypress.enter="login(credentials)"
                   >
                 </div>
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">회원가입</button>
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="login(credentials)">로그인</button>
+              <!-- <button @click.native="this.$router.push({ name: 'Signup' })" type="button" class="btn btn-secondary" data-bs-dismiss="modal">회원가입</button> -->
+              <button type="button" class="text-center btn main-color-background text-white" data-bs-dismiss="modal" @click="login(credentials)">로그인</button>
+              <!-- <p @click.native="this.$router.push({ name: 'Signup' })" class="ms-4" style="font-size: 14px;" data-bs-dismiss="modal">아직 회원이 아니신가요?</p> -->
             </div>
           </div>
         </div>
@@ -115,16 +115,6 @@ export default {
       'get_user_info',
       'login',
     ]),
-    resetModal: function () {
-      const modal = document.querySelector('#exampleModal')
-      modal.addEventListener('hidden.bs.modal', function () {
-        this.credentials.username = ''
-        this.credentials.password = ''
-        // console.log('모달 닫힘')
-        // console.log(document.forms[0])
-        document.forms[0].reset()
-      })
-    },
   },
   computed: {
     ...mapGetters([
@@ -140,7 +130,6 @@ export default {
     // this.get_user_info()
   },
   updated: function () {
-    this.resetModal()
     // this.get_user_info()
   }
 }

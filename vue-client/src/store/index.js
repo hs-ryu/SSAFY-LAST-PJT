@@ -139,8 +139,11 @@ export default new Vuex.Store({
           console.log(this.state.isSuperuser)
         })
     },
-    logout: function ({ commit }) {
+    logout: function ({ commit }, credentials) {
       commit('REMOVE_TOKEN')
+      console.log(credentials)
+      credentials.username = ''
+      credentials.password = ''
       router.push({ name: 'MovieList' })
     },
     signup: function (context, credentials) {
