@@ -15,7 +15,7 @@
         <h5 class="mx-2 d-inline">|</h5>
         <h5 class="d-inline" @click="goToProfile">{{ article.username }}</h5>
         <h5 class="mx-2 d-inline">|</h5>
-        <h5 class="d-inline">{{ article.created_at }}</h5>
+        <h5 class="d-inline">{{$moment(article.created_at).format('YYYY.MM.DD h:mm a')}}</h5>
       </div>
       <hr>
       <p class="mb-5" style="text-align: left; white-space: pre;">{{ article.content }}</p>

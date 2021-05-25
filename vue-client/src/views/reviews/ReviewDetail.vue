@@ -8,7 +8,7 @@
         <h2 class="d-inline">{{ review.username }}님의 리뷰 📝</h2>
         <!-- <button class="d-inline mx-2 btn btn-sm main-color-background text-white" @click="goToProfile" type="submit" value="작성">프로필</button> -->
         <button style="border-color: #CE93D8" class="ms-2 d-inline btn btn-sm main-color-content" @click="goToProfile">프로필</button>
-        <h4 class="my-2">{{ review.title }} | 작성시각 | {{ review.rank }} ⭐</h4>
+        <h4 class="my-2">{{ review.title }} | {{$moment(review.created_at).format('YYYY.MM.DD h:mm a')}} | {{ review.rank }} ⭐</h4>
         <!-- <p>{{ review }}</p> -->
         <hr style="border-style: dotted">
         <div style="height: 300px;">
@@ -80,6 +80,8 @@ import SERVER from '@/api/drf.js'
 import axios from 'axios'
 import ReviewComment from '@/components/ReviewComment'
 import { mapGetters, mapState } from 'vuex'
+
+
 
 export default {
   name: 'ReviewDetail',

@@ -8,7 +8,7 @@
         <span class="fw-bold mx-2" :class="{hide: !modifyActivate}" @click="updateMode">수정</span>
       </div>
       <div class="d-flex align-items-center">
-        <span :class="{hide: modifyActivate}">(작성시각)</span>
+        <span class="mx-2">{{$moment(comment.created_at).format('YYYY.MM.DD h:mm a')}}</span>
         <div class="d-flex" v-if="decoded.username==comment.username">
           <span class="fw-bold mx-1" :class="{hide: modifyActivate}" @click="updateMode">수정</span>
           <span :class="{hide: modifyActivate}" class="fw-bold mx-1">|</span>

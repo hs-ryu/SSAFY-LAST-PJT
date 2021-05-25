@@ -4,6 +4,9 @@ import router from './router'
 import store from './store'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
+import VueMoment from 'vue-moment'
+
+Vue.use(VueMoment)
 Vue.use(VueAwesomeSwiper)
 
 Vue.config.productionTip = false

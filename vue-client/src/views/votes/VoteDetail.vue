@@ -3,6 +3,7 @@
     <p>{{vote}}</p>
     <h5>[{{ movieTitle }}]</h5>
     <h1 class="fw-bold">{{vote.title}}</h1>
+    <p style="font-size:11px;">{{$moment(vote.created_at).format('YYYY.MM.DD h:mm a')}}</p>
     <br>
     <p> 총 {{vote.option_one_count + vote.option_two_count}}명 참여중!</p>
     <div class="d-flex justify-content-center">
