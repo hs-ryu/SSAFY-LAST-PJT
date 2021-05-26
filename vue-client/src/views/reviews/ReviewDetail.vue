@@ -163,7 +163,11 @@ export default {
       const commentItem = {
         content: this.commentContent,
       }
-      if (commentItem.content) {
+      // 모델 변경 후 길이 수정 필요
+      if (commentItem.content.length > 10) {
+        alert("댓글의 제목이 너무 길어요!")
+      }
+      else if (commentItem.content) {
         axios({
           url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/createcomment/`,
           method: 'post',
@@ -178,6 +182,9 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+      }
+      else {
+        alert('댓글의 내용을 적어주세요!')
       }
     },
     // path('<int:movie_pk>/reviews/<int:review_pk>/likes/', views.likereview, name='likereview'),

@@ -56,7 +56,11 @@ export default {
         option_one: optionone,
         option_two: optiontwo,
       }
-      if (VoteItem.title && VoteItem.option_one && VoteItem.option_two) {
+      // 모델 변경 후 길이 수정 필요
+      if (VoteItem.title.length > 10){
+        alert("투표의 제목이 너무 길어요!")
+      }
+      else if (VoteItem.title && VoteItem.option_one && VoteItem.option_two) {
         // path('<int:movie_pk>/createvote/', views.createvote, name='createvote'),
         axios({
           url: SERVER.URL + SERVER.ROUTES.votes + `${this.movieId}/createvote/`,
@@ -74,6 +78,15 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+      }
+      else {
+        if (!VoteItem.title) {
+          alert("만드실 투표의 제목을 입력해주세요!!")
+        } else if (!VoteItem.optionone) {
+          alert("만드실 투표의 첫번째 주제를 적어주세요!!")
+        } else if (!VoteItem.optiontwo) {
+          alert("만드실 투표의 두번째 주제를 적어주세요!!")
+        }
       }
     }
   }

@@ -185,7 +185,10 @@ export default {
       const commentItem = {
         content: this.commentContent,
       }
-      if (commentItem.content) {
+      if (commentItem.commentContent.length > 10){
+        alert("댓글의 내용이 너무 길어요!")
+      }
+      else if (commentItem.content) {
         const headers = this.config
         axios({
           // path('articles/<int:article_pk>/createcomment/', views.createcomment, name='createcomment'),

@@ -66,7 +66,11 @@ export default {
         content: this.content,
       }
       // console.log(articleItem)
-      if (articleItem.title && articleItem.categories && articleItem.content) {
+      // 모델 변경 후 길이 수정 필요
+      if (articleItem.title.length > 10){
+          alert("글의 제목이 너무 길어요!")
+      }
+      else if (articleItem.title && articleItem.categories && articleItem.content) {
         // path('createarticle/', views.createarticle, name='createarticle'),
         axios({
           url: SERVER.URL + '/community/createarticle/',
@@ -83,6 +87,16 @@ export default {
           console.log(err)
         })
       }
+      else{
+        if (!articleItem.title) {
+          alert("글의 제목을 입력해주세요!")
+        } else if (!articleItem.categories) {
+          alert("카테고리를 입력해주세요!")
+        } else if (!articleItem.content) {
+          alert("글의 내용을 입력해 주세요!")
+        }
+      }
+    
     }
   }
 }

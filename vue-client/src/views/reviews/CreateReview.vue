@@ -152,7 +152,11 @@ export default {
         rank: parseFloat(rank),
         content,
       }
-      if (reviewItem.title && reviewItem.rank && reviewItem.content) {
+      // 모델 변경 후 길이 수정 필요
+      if (reviewItem.title.length > 10){
+          alert("리뷰의 제목이 너무 길어요!")
+      }
+      else if (reviewItem.title && reviewItem.rank && reviewItem.content) {
         axios({
           url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/createreview/`,
           method: 'post',
@@ -172,6 +176,15 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+      }
+      else {
+        if (!reviewItem.title) {
+          alert("리뷰의 제목을 입력해주세요!")
+        } else if (!reviewItem.rank) {
+          alert("이 영화의 평점을 정해주세요!!")
+        } else if (!reviewItem.content) {
+          alert("리뷰의 내용을 입력해 주세요!")
+        }
       }
     },
   }

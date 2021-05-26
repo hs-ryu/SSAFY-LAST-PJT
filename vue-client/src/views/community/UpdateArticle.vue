@@ -81,7 +81,11 @@ export default {
         content: content,
       }
       // console.log(articleItem)
-      if (articleItem.title && articleItem.categories && articleItem.content) {
+      // 모델 변경 후 길이 수정 필요
+      if (articleItem.title.length > 10){
+          alert("글의 제목이 너무 길어요!")
+      }
+      else if (articleItem.title && articleItem.categories && articleItem.content) {
         axios({
           // path('articles/<int:article_pk>/updatearticle/', views.updatearticle, name='updatearticle'),
           url: SERVER.URL + `/community/articles/${articleId}/updatearticle/`,
@@ -96,8 +100,8 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-      }
-    }
+      } 
+    }   
   }
 }
 </script>
