@@ -25,7 +25,7 @@ class Movie(models.Model):
     poster_path = models.CharField(max_length=200)
     # directors = models.ManyToManyField(Director)
     # actors = models.ManyToManyField(Actor)
-    vote_average = models.FloatField()
+    vote_average = models.FloatField(default=0)
     rank_total = models.FloatField(default=0)
     rank_average = models.FloatField(default=0)
     trailer = models.TextField()

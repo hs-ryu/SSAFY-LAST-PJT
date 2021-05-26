@@ -19,6 +19,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from urllib import parse
+
+from decouple import config
 # 중요한것 하나. API로 영화 정보들을 불러와서 json 파일에 저장할때,
 # model이라는 필드를 추가해 우리가 정의한 모델 이름과 같도록 만들기 (ex- "model":"movies.genre" 이러면 장르 모델로 저장이 됨.)
 # fields는 우리가 정의한 모델의 테이블 이름에 맞게 들어가야함
@@ -34,7 +36,7 @@ from urllib import parse
 # @authentication_classes([JSONWebTokenAuthentication])
 # @permission_classes([IsAuthenticated])
 def savegenre(request):
-    TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
+    TMDB_API_KEY = config("TMDB_API_KEY")
     URL = f'https://api.themoviedb.org/3/genre/movie/list?api_key={TMDB_API_KEY}&language=ko-KR'
     response = requests.get(URL).json()
     get_genres = response['genres']
@@ -53,8 +55,8 @@ def savegenre(request):
 def savemovies(request):
     # 전체 영화 (test : TMDB top rated 20개)
     just_watch = JustWatch(country = 'KR')
-    for i in range(1,2):
-        TMDB_API_KEY = '0ca69f265e9245060dace2ea98e1e056'
+    for i in range(3,6):
+        TMDB_API_KEY = config("TMDB_API_KEY")
         URL = f'https://api.themoviedb.org/3/movie/popular?api_key={TMDB_API_KEY}&language=ko-KR&page={i}'
         response = requests.get(URL).json()
         get_movies = response['results']
@@ -85,6 +87,7 @@ def savemovies(request):
                     movie.save()
             except:
                 continue
+            movie.save()
             for genre in genres:
                 targets = Genre.objects.filter(id=genre)
                 movie.genres.add(targets[0])
@@ -127,7 +130,7 @@ def savemovies(request):
 # @authentication_classes([JSONWebTokenAuthentication])
 # @permission_classes([IsAuthenticated])
 def savenowshowing(request):
-    KOBIS_API_KEY = '351749075a99330b8e539beb9afaf302'
+    KOBIS_API_KEY = config("KOBIS_API_KEY")
     yesterday = timezone.now()- datetime.timedelta(days=2)
     year = yesterday.strftime("%Y")
     month = yesterday.strftime("%m")
@@ -136,15 +139,15 @@ def savenowshowing(request):
     URL = f'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key={KOBIS_API_KEY}&targetDt={today}'
     response = requests.get(URL).json()
     get_movies = response['boxOfficeResult']['dailyBoxOfficeList']
-    ClientID = 'k35V4NgZQkjVVQAZ8FtS'
-    ClientSecret = 'w1d2eYndo3'
+    NAVER_CLIENT_ID = config("NAVER_CLIENT_ID")
+    NAVER_CLIENT_SECRET = config("NAVER_CLIENT_SECRET")
     for get_movie in get_movies:
         movie = NowShowingMovie()
         movie.movieNm = get_movie['movieNm']
         movie.openDt = get_movie['openDt']
         movie.audiAcc = get_movie['audiAcc']
         NAVER_URL = f'https://openapi.naver.com/v1/search/movie.json?query={movie.movieNm}'
-        NAVER_response = requests.get(NAVER_URL,headers={"X-Naver-Client-Id":ClientID,"X-Naver-Client-Secret":ClientSecret}).json()
+        NAVER_response = requests.get(NAVER_URL,headers={"X-Naver-Client-Id":NAVER_CLIENT_ID,"X-Naver-Client-Secret":NAVER_CLIENT_SECRET}).json()
         # print(NAVER_response)
         movie.image_path = NAVER_response['items'][0]['image']
         movie.userRating = NAVER_response['items'][0]['userRating']
