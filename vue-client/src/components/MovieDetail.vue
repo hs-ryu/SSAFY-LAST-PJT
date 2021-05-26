@@ -270,7 +270,12 @@ export default {
       const result = this.displayReviews.find((review) => {
         return review.username === this.decoded.username
       })
-      return result.id
+      if (result){
+        return result.id
+      }
+      else {
+        return false
+      }
     },
   },
   methods: {
