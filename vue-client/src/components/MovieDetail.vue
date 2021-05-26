@@ -101,10 +101,10 @@
       <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
     </div> -->
 
-    <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
-    <div class="my-2 d-flex justify-content-center">
+    <!-- <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button> -->
+    <div class="my-2 d-flex justify-content-around">
       <div>
-        <h2 class="fw-bold" style="text-align: left;">작성한 리뷰</h2>
+        <h3 class="fw-bold" style="text-align: left;">리뷰 목록</h3>
         <div class="m-2" v-if="reviews.length">
           <table style="width: 450px;" class="table">
             <thead>
@@ -151,12 +151,13 @@
           <p>리뷰가 아직 없어요. 첫번째 글을 쓸 수 있는 절호의 찬스! 🤘</p>
         </div>
         <div class="d-flex justify-content-center">
-          <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
+          <button v-if="reviewExist" class="mx-2 btn btn-sm main-color-background text-white" @click="$router.push({ name: 'ReviewDetail', params: { movieId: movie.id, reviewId: reviewExist }, query: { moviePosterPath: movie.poster_path, movieTitle: movie.title } })">내 리뷰 보러가기</button>
+          <button v-else class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
         </div>
       </div>
       
       <div>
-        <h2 class="fw-bold" style="text-align: left;">작성한 투표</h2>
+        <h3 class="fw-bold" style="text-align: left;">투표 목록</h3>
         <div class="m-2" v-if="votes.length">
           <table style="width: 450px;" class="table">
             <thead>
@@ -192,10 +193,12 @@
           <p>투표가 아직 없어요. 첫번째 투표를 등록해 보세요! 🤘</p>
         </div>
         <div class="d-flex justify-content-center">
-          <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
+          <button class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
         </div>
       </div>
     </div>
+
+    <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
       
   
   
@@ -262,7 +265,13 @@ export default {
     },
     Votes () {
       return this.votes
-    }
+    },
+    reviewExist: function () {
+      const result = this.displayReviews.find((review) => {
+        return review.username === this.decoded.username
+      })
+      return result.id
+    },
   },
   methods: {
     getMovieDetail: function() {
