@@ -27,23 +27,24 @@
         </div>
         <p class="d-inline">{{ movie.like_users.length }}명이 이 영화를 좋아합니다.</p>
         <div class="d-flex">
-          <div v-if="netflix" class="m-1" style="max-width: 35px;">
-            <a v-if="netflix" :href="netflix"><img img style="width: 100%" src="@/assets/netflix_logo.png" alt="netflix logo"></a>
+          <div v-if="netflix" class="m-1" style="max-width: 35px; ">
+            <a v-if="netflix" :href="netflix"><img img class="rounded" style="width: 100%" src="@/assets/netflix_logo.png" alt="netflix logo"></a>
           </div>
           <div v-if="watcha" class="m-1" style="max-width: 35px;">
-            <a v-if="watcha" :href="watcha"><img img style="width: 100%" src="@/assets/watcha_logo.png" alt="watcha logo"></a>
+            <a v-if="watcha" :href="watcha"><img img class="rounded" style="width: 100%" src="@/assets/watcha_logo.png" alt="watcha logo"></a>
           </div>
           <div v-if="wavve" class="m-1" style="max-width: 35px;">
-            <a v-if="wavve" :href="wavve"><img img style="width: 100%" src="@/assets/wavve_logo.png" alt="wavve logo"></a>
+            <a v-if="wavve" :href="wavve"><img img class="rounded" style="width: 100%" src="@/assets/wavve_logo.png" alt="wavve logo"></a>
           </div>
           <div v-if="naver" class="m-1" style="max-width: 35px;">
-            <a v-if="naver" :href="naver"><img style="width: 100%" src="@/assets/naver_logo.png" alt="naver logo"></a>
+            <a v-if="naver" :href="naver"><img class="rounded" style="width: 100%" src="@/assets/naver_logo.png" alt="naver logo"></a>
           </div>
         </div>
       </div>
     </div>
-    <hr>
-    <div style="width: 1000px;" class="mx-auto">
+      <hr>
+    
+    <!-- <div style="width: 1000px;" class="mx-auto">
       <div class="m-2" v-if="reviews.length">
         <table class="table">
           <thead>
@@ -59,13 +60,6 @@
               <td @click="goToReviewDetail(review.id)" v-else>{{ review.title }}</td>
               <td>{{ review.rank }}</td>
               <td>{{ review.username }}</td>
-              <!-- <ReviewItem
-                v-for="(review, idx) in reviews"
-                :key="idx"
-                :review="review"
-                :movieId="movieId"
-                :movieTitle="movie.title"
-              /> -->
             </tr>
           </tbody>
         </table>
@@ -76,9 +70,9 @@
       <div class="d-flex justify-content-center">
         <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
       </div>
-    </div>
+    </div> -->
 
-    <hr>
+    <!-- <hr>
     <div style="width: 1000px;" class="mx-auto">
       <div class="m-2" v-if="votes.length">
         <table class="table">
@@ -105,12 +99,96 @@
         <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
       </div>
       <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
+    </div> -->
+
+    <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
+    <div class="my-2 d-flex justify-content-center">
+      <div>
+        <h2 class="fw-bold" style="text-align: left;">작성한 리뷰</h2>
+        <div class="m-2" v-if="reviews.length">
+          <table style="width: 450px;" class="table">
+            <thead>
+              <tr>
+                <th scope="col">글제목</th>
+                <th scope="col">평점</th>
+                <th scope="col">작성자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(review, idx) in displayReviews" :key="idx +'1'">
+                <td @click="goToReviewDetail(review.id)" v-if="review.title.length > 15">{{ review.title.substr(0,15) + '...'}}</td>
+                <td @click="goToReviewDetail(review.id)" v-else>{{ review.title }}</td>
+                <td>{{ review.rank }}</td>
+                <td>{{ review.username }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button type="button" class="text-dark page-link" v-if="reviewsPage != 1" @click="reviewsPage--"> Previous </button>
+              </li>
+              <li class="text-dark page-item" v-for="(pageNumber,idx) in reviewsPages.slice(reviewsPage-1, reviewsPage+5)" :key=idx>
+                <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
+              </li>
+              <li class="page-item">
+                <button type="button" @click="reviewsPage++" v-if="reviewsPage < reviewsPages.length" class="text-dark page-link"> Next </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div v-else class="my-5">
+          <p>리뷰가 아직 없어요. 첫번째 글을 쓸 수 있는 절호의 찬스! 🤘</p>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
+        </div>
+      </div>
+      
+      <div>
+        <h2 class="fw-bold" style="text-align: left;">작성한 투표</h2>
+        <div class="m-2" v-if="votes.length">
+          <table style="width: 450px;" class="table">
+            <thead>
+              <tr>
+                <th scope="col">제목</th>
+                <th scope="col">당신의 선택은?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(vote, idx) in displayVotes" :key="idx +'2'">
+                <td @click="goToVoteDetail(vote.id)" v-if="vote.title.length > 15">{{ vote.title.substr(0,15) + '...' }}</td>
+                <td @click="goToVoteDetail(vote.id)" v-else>{{ vote.title }}</td>
+                <td v-if="vote.option_one.length + vote.option_two.length > 20">{{ vote.option_one.substr(0,10) + '...' }}   VS   {{ vote.option_two.substr(0,10) + '...' }}</td>
+                <td v-else>{{ vote.option_one }}   VS   {{ vote.option_two }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button type="button" class="text-dark page-link" v-if="votesPage != 1" @click="votesPage--"> Previous </button>
+              </li>
+              <li class="page-item" v-for="(pageNumber,idx) in votesPages.slice(votesPage-1, votesPage+5)" :key=idx>
+                <button type="button" class="text-dark page-link"  @click="votesPage=pageNumber">{{ pageNumber }}</button>
+              </li>
+              <li class="page-item">
+                <button type="button" @click="votesPage++" v-if="votesPage < votesPages.length" class="text-dark page-link"> Next </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div v-else class="my-5">
+          <p>투표가 아직 없어요. 첫번째 투표를 등록해 보세요! 🤘</p>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
+        </div>
+      </div>
     </div>
-
-    
+      
   
-
-
+  
   </div>
 </template>
 
@@ -137,6 +215,21 @@ export default {
       reviews: [],
       votes: [],
       genres: [],
+
+      reviewsPage: 1,
+      votesPage: 1,
+			reviewsPerPage: 6,
+			votesPerPage: 6,
+			reviewsPages: [],	
+			votesPages: [],	
+    }
+  },
+  watch: {
+    Reviews () {
+      this.setReviewPages()
+    },
+    Votes () {
+      this.setVotePages()
     }
   },
   computed: {
@@ -147,7 +240,19 @@ export default {
     ...mapState([
       'userId',
       'decoded',
-    ])
+    ]),
+    displayReviews () {
+      return this.reviewPaginate(this.reviews)
+    },
+    displayVotes () {
+      return this.votePaginate(this.votes)
+    },
+    Reviews () {
+      return this.reviews
+    },
+    Votes () {
+      return this.votes
+    }
   },
   methods: {
     getMovieDetail: function() {
@@ -177,6 +282,36 @@ export default {
       .catch((err) => {
         console.log(err)
       })
+    },
+
+
+    setReviewPages: function () {
+      let numberOfPages = Math.ceil(this.reviews.length / this.reviewsPerPage)
+      for (let index=1; index <= numberOfPages; index++)
+      {
+        this.reviewsPages.push(index)
+      }
+    },
+    setVotePages: function () {
+      let numberOfPages = Math.ceil(this.votes.length / this.votesPerPage)
+      for (let index=1; index <= numberOfPages; index++)
+      {
+        this.votesPages.push(index)
+      }
+    },
+    reviewPaginate: function (reviews) {
+      let reviewsPage = this.reviewsPage
+      let reviewsPerPage = this.reviewsPerPage
+      let from = (reviewsPage * reviewsPerPage) - reviewsPerPage
+      let to = (reviewsPage * reviewsPerPage)
+      return reviews.slice(from, to)
+    },
+    votePaginate: function (votes) {
+      let votesPage = this.votesPage
+      let votesPerPage = this.votesPerPage
+      let from = (votesPage * votesPerPage) - votesPerPage
+      let to = (votesPage * votesPerPage)
+      return votes.slice(from, to)
     },
 
     goToCreateReview: function () {

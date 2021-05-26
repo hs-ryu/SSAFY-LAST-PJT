@@ -273,7 +273,7 @@ def platformmovies(request, platform):
 # 해당 영화의 전체 리뷰 조회
 @api_view(['GET'])
 def getallreviews(request, movie_pk):
-    reviews = Review.objects.filter(movie_id=movie_pk)
+    reviews = Review.objects.filter(movie_id=movie_pk).order_by('-pk')
     serializer = ReviewListSerializer(reviews, many=True)
     return Response(serializer.data)
 
@@ -413,7 +413,7 @@ def updatecomment(request, movie_pk, review_pk, comment_pk):
 # 투표 전부 조회
 @api_view(['GET'])
 def getallvotes(request, movie_pk):
-    votes = Vote.objects.filter(movie_id=movie_pk)
+    votes = Vote.objects.filter(movie_id=movie_pk).order_by('-pk')
     serializer = VoteListSerializer(votes, many=True)
     return Response(serializer.data)
 
