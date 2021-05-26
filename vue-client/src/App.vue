@@ -191,4 +191,13 @@ export default {
   background-color: #CE93D8;
   color: white;
 }
+
+.custom-button-reverse:hover {
+  color: #CE93D8;
+}
+
+.mini-button {
+  cursor: pointer;
+}
+
 </style>

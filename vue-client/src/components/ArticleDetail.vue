@@ -76,6 +76,8 @@
       </div>
     </div>
 
+    <button style="border-color: #CE93D8" class="my-4 btn main-color-content custom-button-reverse" @click="$router.push({ name: 'ArticleList' })">목록</button>
+
 
       <!-- <button @click="deleteArticle">삭제</button>
       <button @click="goToUpdateArticle">수정</button>

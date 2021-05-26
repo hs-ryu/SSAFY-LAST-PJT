@@ -378,4 +378,14 @@ export default {
   -ms-transition-delay: 0.2s;
   transition-delay: 0.2s;
 }
+
+.swiper-button-prev {
+  color: white;
+  opacity: 0.5;
+}
+
+.swiper-button-next {
+  color: white;
+  opacity: 0.5;
+}
 </style>
