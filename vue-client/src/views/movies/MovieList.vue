@@ -36,7 +36,7 @@
           <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
         <br>
-        <h2>실시간 인기 영화</h2>
+        <h2>{{ today.getHours() }}시의 인기 영화</h2>
         <swiper class="swiper" :options="swiperOption">
           <PopularMovieItem2
           v-for="(popularMovie, idx) in popularMovies"
@@ -65,66 +65,74 @@
           <div class="swiper-button-prev" slot="button-prev"></div>
           <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
+        <!-- <h2>전체영화목록</h2> -->
+        <div class="d-flex justify-content-center card-group row row-cols-6">
+          <MovieItem
+            v-for="(movie, idx) in allMovies"
+            :key="idx + '3'"
+            :movie="movie"
+          />
+        </div>
       </div>
 
 
       <!-- 원래 nowshowing -->
-      <div class="card-group">
+      <!-- <div class="card-group">
         <NowShowingItem
           v-for="(nowShowingMovie, idx) in nowShowingMovies"
           :key="idx + '1'"
           :nowShowingMovie="nowShowingMovie"
         />
-      </div>
-      <h2>{{ today.getHours() }}시의 인기영화</h2>
+      </div> -->
+      <!-- <h2>{{ today.getHours() }}시의 인기영화</h2> -->
       <!-- <p>{{ popularMovies }}</p> -->
-      <div class="card-group">
+      <!-- <div class="card-group">
         <PopularMovieItem
           v-for="(popularMovie, idx) in popularMovies"
           :key="idx + '2'"
           :popularMovie="popularMovie"
         />
-      </div>
+      </div> -->
       <!-- 플랫폼상영 -->
-      <h2>현재 {{ platformvalue }}에서 상영중인 영화입니다</h2>
-      <div>
+      <!-- <h2>현재 {{ platformvalue }}에서 상영중인 영화입니다</h2> -->
+      <!-- <div>
         <div>
           <p class="d-inline mx-3" @click="setPlatform('netflix')">netflix</p>
           <p class="d-inline mx-3" @click="setPlatform('watcha')">watcha</p>
           <p class="d-inline mx-3" @click="setPlatform('wavve')">wavve</p>
           <p class="d-inline mx-3" @click="setPlatform('naver')">naver</p>
         </div>
-      </div>
-      <div class="card-group">
+      </div> -->
+      <!-- <div class="card-group">
         <PlatformMovieItem
           v-for="(platformMovie, idx) in platformMovies"
           :key="idx + '3'"
           :platformMovie="platformMovie"
         />
-      </div>
+      </div> -->
       
 
 
-      <h2>전체영화목록</h2>
-      <div class="card-group">
+      <!-- <h2>전체영화목록</h2> -->
+      <!-- <div class="card-group">
         <MovieItem
           v-for="(movie, idx) in allMovies"
           :key="idx + '3'"
           :movie="movie"
         />
-      </div>
+      </div> -->
     </div>
       
   </div>
 </template>
 <script>
 import MovieItem from '@/components/MovieItem'
-import PopularMovieItem from '@/components/PopularMovieItem'
+// import PopularMovieItem from '@/components/PopularMovieItem'
 import PopularMovieItem2 from '@/components/PopularMovieItem2'
-import NowShowingItem from '@/components/NowShowingItem'
+// import NowShowingItem from '@/components/NowShowingItem'
 import NowShowingItem2 from '@/components/NowShowingItem2'
 import SearchMovieItem from '@/components/SearchMovieItem'
-import PlatformMovieItem from '@/components/PlatformMovieItem'
+// import PlatformMovieItem from '@/components/PlatformMovieItem'
 import PlatformMovieItem2 from '@/components/PlatformMovieItem2'
 import { mapActions, mapState, mapGetters } from 'vuex'
 // SwiperSlide 
@@ -136,12 +144,12 @@ export default {
   name: 'MovieList',
   components: {
     MovieItem,
-    PopularMovieItem,
+    // PopularMovieItem,
     PopularMovieItem2,
-    NowShowingItem,
+    // NowShowingItem,
     NowShowingItem2,
     SearchMovieItem,
-    PlatformMovieItem,
+    // PlatformMovieItem,
     PlatformMovieItem2,
     Swiper,
     // SwiperSlide,
@@ -210,6 +218,9 @@ export default {
 
 <style lang="scss" scoped>
   // @import './base.scss';
+  .row {
+    --bs-gutter-x: 0 !important; 
+  }
   .hover_effect_box {
   width: 400px;
   overflow: hidden;

@@ -23,8 +23,8 @@
             </ul>
             <span class="d-flex">
               <li class="mb-0 nav-item px-2 justify-content-end" style="list-style:none;">
-                <p class="mb-0" v-if="isLoggedIn">{{ decoded.username }}님, 환영합니다!</p>
-                <p class="mb-0" v-else>손님, 환영합니다!</p>
+                <p class="mb-0" v-if="isLoggedIn">{{ decoded.username }}님, 오늘 영화 한 편 어떠세요? 🍿</p>
+                <p class="mb-0" v-else>로그인 하시면 더 많은 기능을 이용할 수 있어요! 😉</p>
               </li>
             </span>
             <span v-if="isLoggedIn">

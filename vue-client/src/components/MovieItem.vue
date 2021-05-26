@@ -1,5 +1,4 @@
 <template>
-  <div>
     <!-- 원래 코드 -->
     <!-- 그냥 'http://image.tmdb.org/t/p/w500/'을 함께 DB에 넣는 방식이 나을듯. -->
     <!-- <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" alt="" @click="goToDetail"> -->
@@ -13,26 +12,25 @@
         </div>
       </div>
     </div> -->
-    <div  @click="goToDetail">
-      <div class="card text-center ">
-        <div class="card-body p-0" >
-          <div class="hover_effect_box hover_effect_1">
-            <div class="content_bg" >
-              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="width: 167px;  height: 250px; object-fit: cover;  z-index: 0;" class="card-img-top rounded d-block" alt="">
-            </div>
-            <div class="caption">
-              <p class="caption_title">
-                {{ movie.title }}
-              </p>
-              <br v-if="movie.title.length <= 10">
-              <div class="caption_desc">
-                <p></p>
-                <br>
-                평점 : {{ movie.rank_average ? movie.rank_average.toFixed(1)  + '★': '-'}}<br>
-                개봉일 <br>
-                {{ movie.release_date }}<br>
-                <br>
-              </div>
+  <div class="col" @click="goToDetail">
+    <div class="card text-center">
+      <div class="card-body p-0" >
+        <div class="hover_effect_box hover_effect_1">
+          <div class="content_bg" >
+            <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="width: 167px;  height: 250px; object-fit: cover;  z-index: 0;" class="card-img-top rounded d-block" alt="">
+          </div>
+          <div class="caption">
+            <p class="caption_title">
+              {{ movie.title }}
+            </p>
+            <br v-if="movie.title.length <= 10">
+            <div class="caption_desc">
+              <p></p>
+              <br>
+              평점 : {{ movie.rank_average ? movie.rank_average.toFixed(1)  + '★': '-'}}<br>
+              개봉일 <br>
+              {{ movie.release_date }}<br>
+              <br>
             </div>
           </div>
         </div>

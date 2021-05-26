@@ -12,7 +12,10 @@
         </div>
         <br>
         <p style="font-size: 14px;">{{ movie.overview }}</p>
-        <p>개봉일: {{ movie.release_date }}</p>
+        <span>개봉일: {{ movie.release_date }} / 장르: </span>
+        <span v-for="(genre, idx) in genres" :key="'genre'+ idx">
+          <span> {{ genre }}</span>
+        </span>
         <p>평점: {{ movie.rank_average.toFixed(1) }}⭐</p>
 
         <div class="d-inline" v-if="isLoggedIn">
@@ -72,7 +75,6 @@
       </div>
       <div class="d-flex justify-content-center">
         <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
-        <button style="border-color: #CE93D8" class="btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
       </div>
     </div>
 
@@ -102,6 +104,7 @@
       <div class="d-flex justify-content-center">
         <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
       </div>
+      <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
     </div>
 
     
