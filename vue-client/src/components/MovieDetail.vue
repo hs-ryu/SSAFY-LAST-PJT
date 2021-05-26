@@ -101,10 +101,10 @@
       <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
     </div> -->
 
-    <!-- <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button> -->
-    <div class="my-2 d-flex justify-content-around">
+    <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
+    <div class="my-2 d-flex justify-content-center">
       <div>
-        <h3 class="fw-bold" style="text-align: left;">리뷰 목록</h3>
+        <h2 class="fw-bold" style="text-align: left;">작성한 리뷰</h2>
         <div class="m-2" v-if="reviews.length">
           <table style="width: 450px;" class="table">
             <thead>
@@ -118,7 +118,17 @@
               <tr v-for="(review, idx) in displayReviews" :key="idx +'1'">
                 <td @click="goToReviewDetail(review.id)" v-if="review.title.length > 15">{{ review.title.substr(0,15) + '...'}}</td>
                 <td @click="goToReviewDetail(review.id)" v-else>{{ review.title }}</td>
-                <td>{{ review.rank }}</td>
+                <!-- <td>{{ review.rank }}</td> -->
+                <td v-if="review.rank === 0.5"><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 1"><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 1.5"><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 2"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 2.5"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 3"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 3.5"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 4"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 4.5"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
                 <td>{{ review.username }}</td>
               </tr>
             </tbody>
@@ -141,13 +151,12 @@
           <p>리뷰가 아직 없어요. 첫번째 글을 쓸 수 있는 절호의 찬스! 🤘</p>
         </div>
         <div class="d-flex justify-content-center">
-          <button v-if="reviewExist" class="mx-2 btn btn-sm main-color-background text-white" @click="$router.push({ name: 'ReviewDetail', params: { movieId: movie.id, reviewId: reviewExist }, query: { moviePosterPath: movie.poster_path, movieTitle: movie.title } })">내 리뷰 보러가기</button>
-          <button v-else class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
+          <button class="mx-2 btn main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
         </div>
       </div>
       
       <div>
-        <h3 class="fw-bold" style="text-align: left;">투표 목록</h3>
+        <h2 class="fw-bold" style="text-align: left;">작성한 투표</h2>
         <div class="m-2" v-if="votes.length">
           <table style="width: 450px;" class="table">
             <thead>
@@ -183,16 +192,12 @@
           <p>투표가 아직 없어요. 첫번째 투표를 등록해 보세요! 🤘</p>
         </div>
         <div class="d-flex justify-content-center">
-          <button class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
+          <button class="mx-2 btn main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
         </div>
       </div>
     </div>
-
-    <button style="border-color: #CE93D8" class="my-4 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
       
-    <!-- {{ displayReviews }} -->
-    <!-- {{ reviewExist }} -->
-    <!-- {{ movie }} -->
+  
   
   </div>
 </template>
@@ -257,12 +262,6 @@ export default {
     },
     Votes () {
       return this.votes
-    },
-    reviewExist: function () {
-      const result = this.displayReviews.find((review) => {
-        return review.username === this.decoded.username
-      })
-      return result.id
     }
   },
   methods: {
@@ -399,6 +398,11 @@ export default {
 </script>
 
 <style>
+
+.star {
+  color : gold;
+}
+
 .img-container {
   max-width: 380px;
 }
