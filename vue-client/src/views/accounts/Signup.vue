@@ -1,24 +1,13 @@
 <template>
-  <div>
-    <h1>회원가입</h1>
-    <div>
-      <label for="username">사용자 이름: </label>
-      <input type="text" id="username" v-model="credentials.username">
+  <div class="mx-auto" style="width: 300px;">
+    <h1 class="fw-bold my-5">회원가입</h1>
+    <div class="my-3">
+      <!-- <label for="username">사용자 이름: </label> -->
+      <input style="width: 100%;" type="text" v-model="credentials.username" class="my-3 form-control" id="username" name="username" placeholder="아이디">
+      <input style="width: 100%;" type="password" v-model="credentials.password" class="my-3 form-control" id="password" name="password" placeholder="비밀번호">
+      <input style="width: 100%;" type="password" v-model="credentials.passwordConfirmation" @keypress.enter="signup(credentials)" class="my-3 form-control" id="password" name="password" placeholder="비밀번호 확인">
+      <button style="width: 100%;" class="btn main-color-background text-white" @click="signup(credentials)">회원가입</button>
     </div>
-    <div>
-      <label for="password">비밀번호: </label>
-      <input type="password" id="password" v-model="credentials.password">
-    </div>
-    <div>
-      <label for="passwordConfirmation">비밀번호 확인: </label>
-      <input 
-        type="password" 
-        id="passwordConfirmation" 
-        v-model="credentials.passwordConfirmation"
-        @keypress.enter="signup(credentials)"
-      >
-    </div>
-    <button @click="signup(credentials)">회원가입</button>
   </div>
 </template>
 

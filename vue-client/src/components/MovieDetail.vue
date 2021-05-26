@@ -235,7 +235,7 @@ export default {
         method: 'get',
       })
       .then((res) => {
-        console.log(res)
+        this.genres = res.data.genres
       })
       .catch((err) => {
         console.log(err)
