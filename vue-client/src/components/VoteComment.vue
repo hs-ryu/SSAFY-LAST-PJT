@@ -5,16 +5,16 @@
         <button v-if="comment.choice" class="btn btn-danger me-4" type="button" disabled></button>
         <button v-else class="btn btn-primary me-4" type="button" disabled></button>
         <div class="justify-content-center me-3">
-          <p align="center" class="fw-bold m-0 ">{{ comment.username }}</p>
+          <p style="width: 100px;" align="left" class="fw-bold m-0 ">{{ comment.username }}</p>
         </div>
         <div>
           <p align="center" class="m-0">{{ comment.content }}</p>
         </div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex align-items-center">
         <!-- <button class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button> -->
-        <span>{{$moment(comment.created_at).format('YYYY.MM.DD h:mm a')}}</span>
-        <span class="fw-bold mx-1" data-bs-toggle="modal" data-bs-target="#voteCommentDeleteModal">삭제</span>
+        <span class="me-1">({{$moment(comment.created_at).format('YYYY.MM.DD h:mm a')}})</span>
+        <span v-if="decoded.username==comment.username" class="fw-bold mx-1" data-bs-toggle="modal" data-bs-target="#voteCommentDeleteModal">삭제</span>
       </div>
     </div>
     <div class="modal fade" id="voteCommentDeleteModal" tabindex="-1" aria-labelledby="voteCommentDeleteModal" aria-hidden="true">
@@ -41,7 +41,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: "VoteComment",
@@ -64,6 +64,9 @@ export default {
     ...mapGetters([
       'config'
     ]),
+    ...mapState([
+      'decoded',
+    ])
   },
   methods: {
     getVoteComments: function () {

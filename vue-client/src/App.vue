@@ -28,31 +28,27 @@
               </li>
             </span>
             <span v-if="isLoggedIn">
-              <router-link @click.native="logout(credentials)" to="#" class="mx-2">Logout</router-link>
+              <span class="fw-bold" data-bs-toggle="modal" data-bs-target="#logoutModal">로그아웃</span>
+              <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2"><i class="fas fa-user-circle"></i></router-link>
               <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2">Mypage</router-link>
               <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/" class="mx-2">SYSTEM</a>
             </span>
             <span v-else>
               <router-link :to="{ name: 'Signup' }" class="mx-2">Signup</router-link>
               <router-link :to="{ name: 'Login' }" class="mx-2">Login</router-link>
-              <button type="button" class="mx-2 btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button type="button" class="mx-2 btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#loginModal">
                 로그인
               </button>
             </span>
-            <!-- <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button style="color: white" class="btn main-color-background" type="submit">Search</button>
-            </form> -->
           </div>
         </div>
       </nav>
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <!-- login Modal -->
+      <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="fw-bold modal-title mx-auto" id="exampleModalLabel">로그인</h5>
-              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              <h4 class="my-3 fw-bold modal-title mx-auto" id="loginModalLabel">로그인</h4>
             </div>
             <div class="modal-body">
               <form>
@@ -71,26 +67,33 @@
               </form>
             </div>
             <div class="modal-footer">
-              <!-- <button @click.native="this.$router.push({ name: 'Signup' })" type="button" class="btn btn-secondary" data-bs-dismiss="modal">회원가입</button> -->
-              <button type="button" class="text-center btn main-color-background text-white" data-bs-dismiss="modal" @click="login(credentials)">로그인</button>
-              <!-- <p @click.native="this.$router.push({ name: 'Signup' })" class="ms-4" style="font-size: 14px;" data-bs-dismiss="modal">아직 회원이 아니신가요?</p> -->
+              <button type="button" style="width: 100%;" class="text-center btn main-color-background text-white" data-bs-dismiss="modal" @click="login(credentials)">로그인</button>
+              <div class="my-4 mx-auto">
+                <span class="mx-1">계정이 없으신가요?</span>
+                <span class="mx-1 main-color-content fw-bold" data-bs-dismiss="modal" @click="$router.push({ name: 'Signup' })">회원가입</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-        <!-- <p v-if="isLoggedIn">{{ username }}님 환영합니다!</p>
-        <p v-else>손님 환영합니다!</p>
-        <router-link :to="{ name: 'MovieList' }">Main</router-link> |
-        <router-link :to="{ name: 'ArticleList' }">Community</router-link> |
-      <span v-if="isLoggedIn">
-        <router-link @click.native="logout" to="#">Logout</router-link> |
-        <router-link :to="{ name: 'Profile', params: { username }}">Mypage</router-link>
-        <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/">SYSTEM</a>
-      </span>
-      <span v-else>
-        <router-link :to="{ name: 'Signup' }">Signup</router-link> |
-        <router-link :to="{ name: 'Login' }">Login</router-link>
-      </span> -->
+      <!-- logout Modal -->
+      <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="logoutModal">알림</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            로그아웃 하시겠습니까?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn main-color-background text-white" data-bs-dismiss="modal" @click="logout(credentials)">로그아웃</button>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
     <router-view/>
   </div>
@@ -98,6 +101,7 @@
 
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
+import SERVER from '@/api/drf.js'
 
 export default {
   name: 'App',
@@ -107,6 +111,7 @@ export default {
         username: '',
         password: '',
       },
+      adminPageURL: SERVER.URL + '/admin/'
     }
   },
   methods: {

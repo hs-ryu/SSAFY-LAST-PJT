@@ -7,6 +7,10 @@
       <input style="width: 100%;" type="password" v-model="credentials.password" class="my-3 form-control" id="password" name="password" placeholder="비밀번호">
       <input style="width: 100%;" type="password" v-model="credentials.passwordConfirmation" @keypress.enter="signup(credentials)" class="my-3 form-control" id="password" name="password" placeholder="비밀번호 확인">
       <button style="width: 100%;" class="btn main-color-background text-white" @click="signup(credentials)">회원가입</button>
+      <div class="my-4">
+        <span class="mx-1">이미 가입하셨나요?</span>
+        <span class="mx-1 main-color-content fw-bold" @click="$router.push({ name: 'Login' })">로그인</span>
+      </div>
     </div>
   </div>
 </template>

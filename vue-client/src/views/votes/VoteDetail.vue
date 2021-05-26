@@ -1,11 +1,16 @@
 <template>
   <div>
-    <p>{{vote}}</p>
+    <!-- <p>{{vote}}</p> -->
     <h5>[{{ movieTitle }}]</h5>
     <h1 class="fw-bold">{{vote.title}}</h1>
-    <p style="font-size:11px;">{{$moment(vote.created_at).format('YYYY.MM.DD h:mm a')}}</p>
+    <p style="font-size:13px;">{{$moment(vote.created_at).format('YYYY.MM.DD h:mm a')}}</p>
     <br>
-    <p> 총 {{vote.option_one_count + vote.option_two_count}}명 참여중!</p>
+    <div style="width: 600px;" class="mx-auto row">
+      <h3 class="col">{{ vote.option_one }}</h3>
+      <h3 class="col">vs</h3>
+      <h3 class="col">{{ vote.option_two }}</h3>
+    </div>
+    <p class="my-2"> 총 {{vote.option_one_count + vote.option_two_count}}명 참여중!</p>
     <div class="d-flex justify-content-center">
       <div class="progress my-2" style="height: 40px; width: 700px">
         <div class="progress-bar bg-primary" role="progressbar" :style="{width: scoreone + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_one }}  :  {{scoreone}}% ({{vote.option_one_count}} 명)</div>
@@ -13,12 +18,18 @@
       </div>
     </div>
     <br>
-    <!-- <input v-if="vote.username==decoded.username" class="btn main-color-background text-white" @click="deleteVote" type="submit" value="투표삭제"> -->
-    <button v-if="vote.username==decoded.username" type="button" class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#voteDeleteModal">
-      투표삭제
-    </button>
+    <div class="d-flex justify-content-center">
+      <!-- <button v-if="vote.username==decoded.username" type="button" class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#voteDeleteModal">
+        투표삭제
+      </button> -->
+      <span class="mx-1" v-if="vote.username==decoded.username" data-bs-toggle="modal" data-bs-target="#voteDeleteModal">삭제</span>
+      <span class="mx-1" v-if="vote.username==decoded.username">|</span>
+      <span class="mx-1" @click="$router.push({ name: 'MovieDetail', params: { movieId: movieId } })">목록</span>
+    </div>
     <div style="width: 850px;" class="mx-auto">
       <hr>
+      <!-- {{ comments }}
+      {{ CommentExist }} -->
       <div v-if="comments.length">
         <h3 style="text-align: left" class="my-3">{{ comments.length }}개의 댓글</h3>
         <VoteComment
@@ -37,7 +48,9 @@
       </div>
       <div class="my-5 d-flex align-items-center justify-content-center">
         <input class="mx-1 btn btn-sm btn-primary" @click="createCommentOne" type="submit" value="왼쪽!">
-        <input style="width: 500px; height: 30px;" v-model="commentContent" type="text" name="comment" id="comment" placeholder="당신의 생각은?">
+        <input v-if="CommentExist" style="width: 500px; height: 30px;" type="text" class="my-3 form-control" disabled readonly id="disabledComment" name="disabledComment" placeholder="투표는 한 번만 가능합니다.">
+        <input v-else style="width: 500px; height: 30px;" type="text" v-model="commentContent" class="my-3 form-control" id="comment" name="comment" placeholder="당신의 생각은?">
+        <!-- <input style="width: 500px; height: 30px;" v-model="commentContent" type="text" name="comment" id="comment" placeholder="당신의 생각은?"> -->
         <input class="mx-1 btn btn-sm btn-danger" @click="createCommentTwo" type="submit" value="오른쪽!">
       </div>
     </div>
@@ -79,7 +92,13 @@ export default {
     ]),
     ...mapState([
       'decoded',
-    ])
+    ]),
+    CommentExist: function () {
+      const result = this.comments.some((comment) => {
+        return comment.username === this.decoded.username
+      })
+      return result
+    }
   },
   data: function () {
     return {
