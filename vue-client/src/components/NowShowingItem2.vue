@@ -1,6 +1,6 @@
 <template>
   <swiper-slide>
-    <img :src="nowShowingMovie.image_path" alt="">
+    <img :src="nowShowingMovie.image_path" alt="" class="rounded">
     <a :href="'https://www.google.com/search?q=' + nowShowingMovie.movieNm" target="_blank">
       <div class="caption">
         <p class="caption_title">

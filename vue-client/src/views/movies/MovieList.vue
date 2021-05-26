@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h1>메인페이지</h1>
     <div class="d-flex justify-content-center">
-      <input @input="fetchMovies" class="form-control m-3 w-75" type="search" placeholder="Search" aria-label="Search">
+      <input @input="fetchMovies" class="form-control m-3" style="width: 1000px;" type="search" placeholder="보고싶은 영화를 검색해주세요" aria-label="Search">
     </div>
     <div v-if="inputValue">
       <div class="mx-auto" style="width: 1000px; height: 1000px;">
@@ -22,7 +21,7 @@
     </div>
     <div v-else>
       <div class="mx-auto" style="width: 1000px;">
-        <h2>NOW SHOWING</h2>
+        <h4 class="title-font" style="text-align: left;">Now Showing</h4>
         <!-- <p>{{ nowShowingMovies }}</p> -->
         <swiper class="swiper" :options="swiperOption">
           <NowShowingItem2
@@ -36,7 +35,7 @@
           <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
         <br>
-        <h2>{{ today.getHours() }}시의 인기 영화</h2>
+        <h4 class="title-font" style="text-align: left;">{{ today.getHours() }}시의 인기 영화</h4>
         <swiper class="swiper" :options="swiperOption">
           <PopularMovieItem2
           v-for="(popularMovie, idx) in popularMovies"
@@ -48,9 +47,9 @@
           <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
         <br>
-        <h2>{{ platformvalue }} 상영 영화</h2>
+        <h4 class="title-font" style="text-align: left;">{{ platformvalue.charAt(0).toUpperCase() + platformvalue.slice(1)}} 상영 영화</h4>
         <div>
-          <p class="d-inline mx-3" @click="setPlatform('netflix')">netflix</p>
+          <p class="d-inline mx-3" @click="setPlatform('netflix')">Netflix</p>
           <p class="d-inline mx-3" @click="setPlatform('watcha')">watcha</p>
           <p class="d-inline mx-3" @click="setPlatform('wavve')">wavve</p>
           <p class="d-inline mx-3" @click="setPlatform('naver')">naver</p>
@@ -65,7 +64,10 @@
           <div class="swiper-button-prev" slot="button-prev"></div>
           <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
+        <br>
+        
         <!-- <h2>전체영화목록</h2> -->
+        <h4 class="title-font" style="text-align: left;">전체 영화 목록</h4>
         <div class="d-flex justify-content-center card-group row row-cols-6">
           <MovieItem
             v-for="(movie, idx) in allMovies"

@@ -11,10 +11,10 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-between align-items-center">
               <span class="d-flex">
                 <li class="nav-item px-2">
-                  <router-link :to="{ name: 'MovieList' }">Main</router-link>
+                  <router-link :to="{ name: 'MovieList' }">홈</router-link>
                 </li>
                 <li class="nav-item px-2">
-                  <router-link :to="{ name: 'ArticleList' }">Community</router-link>
+                  <router-link :to="{ name: 'ArticleList' }">커뮤니티</router-link>
                 </li>
               </span>
             </ul>
@@ -198,6 +198,10 @@ export default {
 
 .mini-button {
   cursor: pointer;
+}
+
+.title-font {
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 </style>
