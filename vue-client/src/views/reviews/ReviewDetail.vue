@@ -8,10 +8,26 @@
         <h2 class="d-inline">{{ review.username }}님의 리뷰 📝</h2>
         <!-- <button class="d-inline mx-2 btn btn-sm main-color-background text-white" @click="goToProfile" type="submit" value="작성">프로필</button> -->
         <button style="border-color: #CE93D8" class="ms-2 d-inline btn btn-sm main-color-content" @click="goToProfile">프로필</button>
-        <h4 class="my-2">{{ review.title }} | {{$moment(review.created_at).format('YYYY.MM.DD h:mm a')}} | {{ review.rank }} ⭐</h4>
+        <div class="my-2">
+          <h5 class="d-inline">{{ review.title }}</h5>
+        </div>
+        <div>
+          <p class="d-inline">{{$moment(review.created_at).format('YYYY.MM.DD h:mm a')}} | </p>
+          <p v-if="review.rank === 0.5" class="d-inline"><i class="fas fa-star-half star fa-la"></i></p>
+          <p v-else-if="review.rank === 1" class="d-inline"><i class="fas fa-star star fa-la"></i></p>
+          <p v-else-if="review.rank === 1.5" class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></p>
+          <p v-else-if="review.rank === 2" class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></p>
+          <p v-else-if="review.rank === 2.5" class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></p>
+          <p v-else-if="review.rank === 3" class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></p>
+          <p v-else-if="review.rank === 3.5" class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></p>
+          <p v-else-if="review.rank === 4" class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></p>
+          <p v-else-if="review.rank === 4.5" class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></p>
+          <p v-else class="d-inline"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></p>
+
+        </div>
         <!-- <p>{{ review }}</p> -->
         <hr style="border-style: dotted">
-        <div style="height: 300px;">
+        <div style="height: 270px;">
           <p style="white-space: pre;">{{ review.content }}</p>
         </div>
         <!-- {{ review }} -->

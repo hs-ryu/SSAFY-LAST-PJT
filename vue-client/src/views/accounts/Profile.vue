@@ -21,7 +21,13 @@
           <div class="card text-center mt-1 border-light h-100" style="width: 170px;">
             <div class="card-body p-0" style="flex-grow: 0;">
               <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="object-fit: cover; height:250px" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
-              <p class="card-title m-0">{{ movie.title }}</p>
+              <!-- <p class="card-title m-0">{{ movie.title }}</p> -->
+              <p class="card-title m-0" v-if="movie.title.length > 8">
+                {{ movie.title.substr(0,8) + '...' }}
+              </p>
+              <p class="card-title m-0" v-else>
+                {{ movie.title }}
+              </p>
             </div>
           </div>
         </div>
@@ -33,7 +39,7 @@
       <div>
         <h2 class="fw-bold" style="text-align: left;">작성한 리뷰</h2>
         <div class="m-2" v-if="userProfile.create_reviews.length">
-          <table style="width: 450px; height: 275px;" class="table">
+          <table style="width: 450px;" class="table">
             <thead>
               <tr>
                 <th scope="col">영화</th>
@@ -43,9 +49,30 @@
             </thead>
             <tbody>
               <tr v-for="(review, idx) in displayReviews" :key="idx +'1'">
-                <td>{{ review.movie }}</td>
-                <td @click="goToReviewDetail(review.id)">{{ review.title }}</td>
-                <td>{{ review.rank }} ⭐</td>
+                <!-- <td>{{ review.movie }}</td> -->
+                <td class="text-start" v-if="review.movie.length > 8">
+                  <p>{{ review.movie.substr(0,8) + '...' }} </p>
+                </td>
+                <td class="text-start" v-else>
+                  {{ review.movie }}
+                </td>
+                <!-- <td @click="goToReviewDetail(review.id)">{{ review.title }}</td> -->
+                <td class="text-start" v-if="review.title.length > 8">
+                  <p>{{ review.title.substr(0,8) + '...' }} </p>
+                </td>
+                <td class="text-start" v-else>
+                  {{ review.title }}
+                </td>
+                <td v-if="review.rank === 0.5" class="text-start"><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 1" class="text-start"><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 1.5" class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 2" class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 2.5" class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 3" class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 3.5" class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else-if="review.rank === 4" class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
+                <td v-else-if="review.rank === 4.5" class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star-half star fa-la"></i></td>
+                <td v-else class="text-start"><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i><i class="fas fa-star star fa-la"></i></td>
               </tr>
             </tbody>
           </table>
@@ -55,7 +82,7 @@
                 <button type="button" class="text-dark page-link" v-if="reviewsPage != 1" @click="reviewsPage--"> Previous </button>
               </li>
               <li class="text-dark page-item" v-for="(pageNumber,idx) in reviewsPages.slice(reviewsPage-1, reviewsPage+5)" :key=idx>
-                <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
+                <button type="button" class="text-dark page-link"  @click="reviewsPage=pageNumber">{{ pageNumber }}</button>
               </li>
               <li class="page-item">
                 <button type="button" @click="reviewsPage++" v-if="reviewsPage < reviewsPages.length" class="text-dark page-link"> Next </button>
@@ -70,7 +97,7 @@
       <div>
         <h2 class="fw-bold" style="text-align: left;">작성한 게시글</h2>
         <div class="m-2" v-if="userProfile.create_articles.length">
-          <table style="width: 450px; height: 275px;" class="table">
+          <table style="width: 450px;" class="table">
             <thead>
               <tr>
                 <th scope="col">카테고리</th>
@@ -86,8 +113,13 @@
                 <td v-else>
                   건의사항
                 </td>
-                <td>{{ article.title }}</td>
-                <td>{{ article.created_at }}</td>
+                <td class="text-start" v-if="article.title.length > 8">
+                  <p>{{ article.title.substr(0,8) + '...' }} </p>
+                </td>
+                <td class="text-start" v-else>
+                  {{ article.title }}
+                </td>
+                <td>{{$moment(article.created_at).format('YYYY.MM.DD')}}</td>
               </tr>
             </tbody>
           </table>
