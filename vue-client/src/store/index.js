@@ -10,6 +10,10 @@ import jwt_decode from 'jwt-decode'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
+    clickedOne: true,
+    clickedTwo: false,
+    clickedThree: false,
+    clickedFour: false,
     allMovies: [],
     popularMovies: [],
     nowShowingMovies: [],
@@ -233,7 +237,7 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-    setPlatform: function ({ commit }, platform) {
+    setPlatform: function ({ commit, state }, platform) {
       commit('SET_PLATFORM', platform)
       axios({
         url: SERVER.URL + SERVER.ROUTES.getPlatformMovies + platform + '/',
@@ -245,6 +249,29 @@ export default new Vuex.Store({
       .catch((err) => {
         console.log(err)
       })
+
+      if (platform === "netflix") {
+        state.clickedOne = true
+        state.clickedTwo = false
+        state.clickedThree = false
+        state.clickedFour = false
+      } else if (platform === "watcha") {
+        state.clickedOne = false
+        state.clickedTwo = true
+        state.clickedThree = false
+        state.clickedFour = false
+      } else if (platform === "wavve") {
+        state.clickedOne = false
+        state.clickedTwo = false
+        state.clickedThree = true
+        state.clickedFour = false
+      } else {
+        state.clickedOne = false
+        state.clickedTwo = false
+        state.clickedThree = false
+        state.clickedFour = true
+      }
+
     },
 
     // 검색 

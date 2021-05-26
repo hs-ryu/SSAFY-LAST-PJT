@@ -7,17 +7,18 @@
         <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
       </div>
       <div class="mx-4" style="width: 500px; text-align: left;">
+        
         <div class="video-container" v-if="movie.trailer">
           <iframe width="560" height="315" class="m-2" :src="'https://www.youtube.com/embed/' + movie.trailer" frameborder="0" allowfullscreen></iframe>
         </div>
         <br>
+
         <p style="font-size: 14px;">{{ movie.overview }}</p>
         <span>개봉일: {{ movie.release_date }} / 장르: </span>
         <span v-for="(genre, idx) in genres" :key="'genre'+ idx">
           <span> {{ genre }}</span>
         </span>
         <p>평점: {{ movie.rank_average.toFixed(1) }}⭐</p>
-
         <div class="d-inline" v-if="isLoggedIn">
           <button class="btn d-inline" v-if="movie.like_users && movie.like_users.includes(decoded.user_id)" @click="getLikeStatus"><i class="fas fa-heart fa-lg" style="color:crimson;"></i></button>
           <button class="btn d-inline" v-else @click="getLikeStatus"><i class="far fa-heart fa-lg" style="color:crimson;"></i></button>
@@ -40,6 +41,7 @@
             <a v-if="naver" :href="naver"><img class="rounded" style="width: 100%" src="@/assets/naver_logo.png" alt="naver logo"></a>
           </div>
         </div>
+
       </div>
     </div>
       <hr>

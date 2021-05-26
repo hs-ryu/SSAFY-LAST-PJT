@@ -25,13 +25,17 @@
       </div>
     </div>
     <div v-else>
+
+
       <div class="mx-auto" style="width: 1000px;">
-        <h4 class="title-font" style="text-align: left; color: #363634;">{{ platformvalue.charAt(0).toUpperCase() + platformvalue.slice(1)}} 상영 영화</h4>
-        <div>
-          <p class="d-inline mx-3" @click="setPlatform('netflix')">Netflix</p>
-          <p class="d-inline mx-3" @click="setPlatform('watcha')">watcha</p>
-          <p class="d-inline mx-3" @click="setPlatform('wavve')">wavve</p>
-          <p class="d-inline mx-3" @click="setPlatform('naver')">naver</p>
+        <div class="d-flex justify-content-between">
+          <h4 class="title-font d-inline" style="text-align: left; color: #363634;">{{ platformvalue.charAt(0).toUpperCase() + platformvalue.slice(1)}} 상영 영화</h4>
+          <div class="d-flex align-items-end title-font">
+            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedOne, 'd-inline mx-3 mb-1 div2 gray' : clickedOne}" @click="setPlatform('netflix')">Netflix</p>
+            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedTwo, 'd-inline mx-3 mb-1 div2 gray' : clickedTwo}" @click="setPlatform('watcha')">Watcha</p>
+            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedThree, 'd-inline mx-3 mb-1 div2 gray' : clickedThree}" @click="setPlatform('wavve')">Wavve</p>
+            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedFour, 'd-inline mx-3 mb-1 div2 gray' : clickedFour}" @click="setPlatform('naver')">Naver</p>
+          </div>
         </div>
         <swiper class="swiper" :options="swiperOption">
           <PlatformMovieItem2
@@ -212,6 +216,10 @@ export default {
       'platformMovies',
       'platformvalue',
       'today',
+      'clickedOne',
+      'clickedTwo',
+      'clickedThree',
+      'clickedFour',
     ]),
     ...mapGetters([
       'movieLength',
@@ -231,6 +239,12 @@ export default {
 
 <style lang="scss" scoped>
   // @import './base.scss';
+  .black {
+    color: rgb(201, 195, 195);
+  }
+  .gray {
+    color: rgb(0, 0, 0);
+  }
   .row {
     --bs-gutter-x: 0 !important; 
   }
