@@ -5,7 +5,7 @@
         <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" :alt="movieTitle">
       </div>
       <div class="mx-4" style="width: 500px; text-align: left;">
-        <h4 class="pb-4">영화 '{{ movieTitle }}', 어떠셨나요?</h4>
+        <h4 class="pb-4 fw-bold">영화 '{{ movieTitle }}', 어떠셨나요?</h4>
         <div class="startRadio">
           <label class="startRadio__box">
             <input type="radio" name="star" id="" value="0.5" v-model="rank">
@@ -49,14 +49,15 @@
           </label>
         </div>
         <br>
-        <label for="title">제목</label>
-        <br>
-        <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title">
-        <br>
-        <label for="content">내용</label>
-        <br>
+        <!-- <label for="title">제목</label> -->
+        <!-- <br> -->
+        <input type="text" v-model.trim="title" class="my-3 form-control" id="title" name="title" placeholder="제목">
+        <!-- <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title"> -->
+        <!-- <label for="content">내용</label> -->
+        <!-- <br> -->
         <!-- <input v-model.trim="content" type="text" name="content" id="content"> -->
-        <textarea v-model.trim="content" name="content" id="content" cols="58" rows="7"></textarea>
+        <textarea v-model.trim="content" class="form-control" id="content" rows="8" placeholder="내용"></textarea>
+        <!-- <textarea v-model.trim="content" name="content" id="content" cols="58" rows="7"></textarea> -->
         <br>
         <div class="d-flex justify-content-end">
           <input class="mx-2 btn main-color-background text-white" @click="createReview(title, rank, content)" type="submit" value="작성">

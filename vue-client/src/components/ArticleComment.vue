@@ -1,18 +1,19 @@
 <template>
-  <div class="my-1">
+  <div class="my-2">
     <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center">
         <span class="fw-bold me-4">{{ comment.username }}</span>
         <span :class="{hide: modifyActivate}">{{ comment.content }}</span>
-        <input style="width: 550px; height: 30px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
-        <span class="fw-bold mx-2" :class="{hide: !modifyActivate}" @click="updateMode">수정</span>
+        <!-- <input style="width: 550px; height: 30px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text"> -->
+        <input type="text" style="width: 600px; height: 30px;" class="my-3 form-control" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent">
+        <span class="mx-2 mini-button mini-button-content" :class="{hide: !modifyActivate}" @click="updateMode">수정</span>
       </div>
       <div class="d-flex align-items-center">
-        <span :class="{hide: modifyActivate}">{{$moment(comment.created_at).format('YYYY.MM.DD h:mm a')}}</span>
+        <span :class="{hide: modifyActivate}">({{$moment(comment.created_at).format('YYYY.MM.DD h:mm a')}})</span>
         <div class="d-flex" v-if="decoded.username==comment.username">
-          <span class="fw-bold mx-1" :class="{hide: modifyActivate}" @click="updateMode">수정</span>
-          <span :class="{hide: modifyActivate}" class="fw-bold mx-1">|</span>
-          <span class="fw-bold mx-1" :class="{hide: modifyActivate}" data-bs-toggle="modal" data-bs-target="#articleCommentDeleteModal">삭제</span>
+          <span class="mx-1 mini-button mini-button-content" :class="{hide: modifyActivate}" @click="updateMode">수정</span>
+          <span :class="{hide: modifyActivate}" class="mx-1 mini-button mini-button-content">|</span>
+          <span class="mx-1 mini-button mini-button-content" :class="{hide: modifyActivate}" data-bs-toggle="modal" data-bs-target="#articleCommentDeleteModal">삭제</span>
         </div>
       </div>
     </div>
@@ -88,13 +89,13 @@ export default {
       })
     },
     updateMode: function () {
-      console.log(this.modifyActivate)
+      // console.log(this.modifyActivate)
       if (!this.modifyActivate) {
         this.modifyActivate = true // 수정창 열림
         this.$emit('modify-activate')
       } else {
         const commentContent = this.updatedContent ? this.updatedContent : this.comment.content
-        console.log(commentContent)
+        // console.log(commentContent)
         const commentItem = {
           content: commentContent,
         }

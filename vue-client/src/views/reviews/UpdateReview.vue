@@ -48,15 +48,15 @@
             <span class="startRadio__img"><span class="blind">별 5개</span></span>
           </label>
         </div>
-        <br>
-        <label for="title">제목</label>
-        <br>
-        <input style="width: 500px;" :value="review.title" @change="updateTitle" type="text" name="title" id="title">
-        <br>
-        <label for="content">내용</label>
-        <br>
+        <!-- <br>
+        <label for="title">제목</label> -->
+        <input type="text" :value="review.title" class="my-3 form-control" id="title" name="title" @change="updateTitle">
+        <!-- <input style="width: 500px;" :value="review.title" @change="updateTitle" type="text" name="title" id="title"> -->
+        <!-- <label for="content">내용</label> -->
+        <!-- <br> -->
         <!-- <input v-model.trim="content" type="text" name="content" id="content"> -->
-        <textarea :value="review.content" @change="updateContent" name="content" id="content" cols="58" rows="7"></textarea>
+        <textarea :value="review.content" class="form-control" id="content" rows="8" @change="updateContent"></textarea>
+        <!-- <textarea :value="review.content" @change="updateContent" name="content" id="content" cols="58" rows="7"></textarea> -->
         <br>
         <div class="d-flex justify-content-end">
           <input class="mx-2 btn main-color-background text-white" @click="updateReview" type="submit" value="수정">
@@ -120,12 +120,9 @@ export default {
         rank,
         content,
       }
-      console.log(reviewItem.title)
+      // console.log(reviewItem.title)
       // 모델 변경 후 길이 수정 필요
-      if (reviewItem.title.length > 10){
-        alert("리뷰의 제목이 너무 길어요!")
-      }
-      else if (reviewItem.title && reviewItem.rank && reviewItem.content) {
+      if (reviewItem.title && reviewItem.rank && reviewItem.content) {
         axios({
           url: SERVER.URL + SERVER.ROUTES.reviews + `${movieId}/reviews/${reviewId}/updatereview/`,
           method: 'put',
@@ -137,7 +134,7 @@ export default {
           this.title = ''
           this.rank = 0
           this.content = ''
-          this.$router.push({ name: 'MovieDetail', params: { movieId: movieId}})
+          this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: this.review.id}, query: { moviePosterPath: this.moviePosterPath }})
         })
         .catch((err) => {
           console.log(err)

@@ -10,11 +10,17 @@
       <h3 class="col">vs</h3>
       <h3 class="col">{{ vote.option_two }}</h3>
     </div>
-    <p class="my-2"> 총 {{vote.option_one_count + vote.option_two_count}}명 참여중!</p>
-    <div class="d-flex justify-content-center">
+    <p class="my-2"> 총 {{ vote.option_one_count + vote.option_two_count }}명 참여중!</p>
+    <div v-if="(vote.option_one_count+vote.option_two_count)" class="d-flex justify-content-center">
       <div class="progress my-2" style="height: 40px; width: 700px">
         <div class="progress-bar bg-primary" role="progressbar" :style="{width: scoreone + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_one }}  :  {{scoreone}}% ({{vote.option_one_count}} 명)</div>
         <div class="progress-bar bg-danger" role="progressbar" :style="{width: scoretwo + '%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_two }}  :  {{ scoretwo }}% ({{vote.option_two_count}} 명)</div>
+      </div>
+    </div>
+    <div v-else class="d-flex justify-content-center">
+      <div class="progress my-2" style="height: 40px; width: 700px">
+        <div class="progress-bar bg-primary" role="progressbar" :style="{width: 0}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_one }}  :  {{scoreone}}% ({{vote.option_one_count}} 명)</div>
+        <div class="progress-bar bg-danger" role="progressbar" :style="{width: 0}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ vote.option_two }}  :  {{ scoretwo }}% ({{vote.option_two_count}} 명)</div>
       </div>
     </div>
     <br>
@@ -22,9 +28,9 @@
       <!-- <button v-if="vote.username==decoded.username" type="button" class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#voteDeleteModal">
         투표삭제
       </button> -->
-      <span class="mx-1" v-if="vote.username==decoded.username" data-bs-toggle="modal" data-bs-target="#voteDeleteModal">삭제</span>
-      <span class="mx-1" v-if="vote.username==decoded.username">|</span>
-      <span class="mx-1" @click="$router.push({ name: 'MovieDetail', params: { movieId: movieId } })">목록</span>
+      <span class="mx-1 mini-button mini-button-content" v-if="vote.username==decoded.username" data-bs-toggle="modal" data-bs-target="#voteDeleteModal">삭제</span>
+      <span class="mx-1 mini-button-content" v-if="vote.username==decoded.username">|</span>
+      <span class="mx-1 mini-button mini-button-content" @click="$router.push({ name: 'MovieDetail', params: { movieId: movieId } })">목록</span>
     </div>
     <div style="width: 850px;" class="mx-auto">
       <hr>

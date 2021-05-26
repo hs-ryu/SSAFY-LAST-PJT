@@ -28,15 +28,15 @@
               </li>
             </span>
             <span v-if="isLoggedIn" class="d-flex align-items-center">
-              <span class="fw-bold" data-bs-toggle="modal" data-bs-target="#logoutModal">로그아웃</span>
+              <span class="fw-bold mini-button" data-bs-toggle="modal" data-bs-target="#logoutModal">로그아웃</span>
               <router-link :to="{ name: 'Profile', params: { username: decoded.username }}" class="mx-2"><h3 class="d-inline"><i class="fas fa-user-circle"></i></h3></router-link>
               <!-- <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2">Mypage</router-link> -->
               <a v-if="isSuperuser" :href="adminPageURL" class="mx-2"><h3 class="d-inline"><i class="fas fa-cog"></i></h3></a>
               <!-- <a v-if="isSuperuser" :href="adminPageURL" class="mx-2">SYSTEM</a> -->
             </span>
             <span v-else>
-              <router-link :to="{ name: 'Signup' }" class="mx-2">Signup</router-link>
-              <router-link :to="{ name: 'Login' }" class="mx-2">Login</router-link>
+              <router-link :to="{ name: 'Signup' }" class="mx-2">회원가입</router-link>
+              <router-link :to="{ name: 'Login' }" class="mx-2">로그인</router-link>
               <button type="button" class="mx-2 btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#loginModal">
                 로그인
               </button>
@@ -198,6 +198,10 @@ export default {
 
 .mini-button {
   cursor: pointer;
+}
+
+.mini-button-content {
+  color: gray;
 }
 
 .title-font {

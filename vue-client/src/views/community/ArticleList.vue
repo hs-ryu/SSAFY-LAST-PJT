@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto" style="width: 1000px;">
-    <h1>게시글 목록</h1>
+    <h1 class="fw-bold title-font">게시글 목록</h1>
     <div class="my-2 d-flex justify-content-end">
       <button class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateArticle">게시글 작성</button>
     </div>
@@ -26,10 +26,10 @@
             <td class="text-start" @click="goToArticleDetail(article.id)" v-if="article.title.length > 15">
               {{ article.title.substr(0,5) + '...' }} <p v-if="article.comment_count>0" class="d-inline">({{ article.comment_count }})</p>
             </td>
-            <td class="text-start" @click="goToArticleDetail(article.id)" v-else>
+            <td class="text-start mini-button" @click="goToArticleDetail(article.id)" v-else>
               {{ article.title }} <p v-if="article.comment_count>0" class="d-inline">({{ article.comment_count }})</p>
             </td>
-            <td class="text-center" @click="goToProfile(article.username)">
+            <td class="text-center mini-button" @click="goToProfile(article.username)">
               {{ article.username }}
             </td>
             <td class="text-center">{{ article.created_at.substring(0,10) }}</td>

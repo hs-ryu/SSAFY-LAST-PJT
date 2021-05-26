@@ -52,9 +52,10 @@
       <div v-else>
         <p>댓글이 아직 없어요. 첫번째 댓글을 쓸 수 있는 절호의 찬스! 🤘</p>
       </div>
-      <div class="mt-5">
-        <input style="width: 600px" v-model="commentContent" type="text" name="comment" id="comment" @keypress.enter="createComment" placeholder="댓글을 작성해주세요">
-        <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
+      <div class="mt-5 d-flex align-items-center">
+        <input type="text" style="width: 600px" v-model="commentContent" class="d-inline my-3 form-control" id="comment" name="comment" placeholder="댓글을 입력해주세요" @keypress.enter="createComment">
+        <!-- <input style="width: 600px" v-model="commentContent" type="text" name="comment" id="comment" @keypress.enter="createComment" placeholder="댓글을 작성해주세요"> -->
+        <input class="mx-1 btn main-color-background text-white d-inline" @click="createComment" type="submit" value="작성">
       </div>
     </div>
 
@@ -75,6 +76,8 @@
         </div>
       </div>
     </div>
+
+    <button style="border-color: #CE93D8" class="my-2 btn main-color-content custom-button-reverse" @click="$router.push({ name: 'ArticleList' })">목록</button>
 
 
       <!-- <button @click="deleteArticle">삭제</button>
@@ -156,7 +159,7 @@ export default {
         headers,
       })
       .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         this.comments = res.data
       })
       .catch((err) => {

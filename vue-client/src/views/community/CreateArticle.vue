@@ -1,19 +1,20 @@
 <template>
   <div>
-    <h1 class="mb-4">게시글 작성</h1>
+    <h1 class="mb-4 title-font">게시글 작성</h1>
     <div class="mx-auto" style="width: 600px;">
       <div class="d-flex my-3">
-        <select v-model="categories" name="categories" id="categories">
+        <select v-model="categories" name="categories" id="categories" class="form-select" aria-label="Default select example">
           <option disabled value="">말머리</option>
           <option v-if="loginSuperStatus" value="1">공지</option>
           <option value="2">건의</option>
           <option value="3">일상</option>
         </select>
       </div>
-      <input class="mb-3" style="width: 600px;" v-model.trim="title" type="text" name="title" id="title" placeholder="제목">
-      <br>
+      <input type="text" v-model.trim="title" class="my-3 form-control" id="title" name="title" placeholder="제목">
+      <!-- <input class="mb-3" style="width: 600px;" v-model.trim="title" type="text" name="title" id="title" placeholder="제목"> -->
       <!-- <input v-model.trim="content" type="text" name="content" id="content"> -->
-      <textarea v-model.trim="content" name="content" id="content" cols="70" rows="7" placeholder="내용"></textarea>
+      <textarea v-model.trim="content" class="form-control" id="content" rows="8" placeholder="내용"></textarea>
+      <!-- <textarea v-model.trim="content" name="content" id="content" cols="70" rows="7" placeholder="내용"></textarea> -->
       <br>
       <div class="d-flex justify-content-end">
         <input class="mx-2 btn main-color-background text-white" @click="createArticle" type="submit" value="작성">
@@ -67,10 +68,7 @@ export default {
       }
       // console.log(articleItem)
       // 모델 변경 후 길이 수정 필요
-      if (articleItem.title.length > 10){
-          alert("글의 제목이 너무 길어요!")
-      }
-      else if (articleItem.title && articleItem.categories && articleItem.content) {
+      if (articleItem.title && articleItem.categories && articleItem.content) {
         // path('createarticle/', views.createarticle, name='createarticle'),
         axios({
           url: SERVER.URL + '/community/createarticle/',
