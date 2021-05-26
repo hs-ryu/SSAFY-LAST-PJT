@@ -23,7 +23,10 @@
             <td v-if="article.categories==1" class="text-center" scope="row">공지</td>
             <td v-else-if="article.categories==2" class="text-center" scope="row">일상</td>
             <td v-else class="text-center" scope="row">건의</td>
-            <td class="text-start" @click="goToArticleDetail(article.id)">
+            <td class="text-start" @click="goToArticleDetail(article.id)" v-if="article.title.length > 15">
+              {{ article.title.substr(0,5) + '...' }} <p v-if="article.comment_count>0" class="d-inline">({{ article.comment_count }})</p>
+            </td>
+            <td class="text-start" @click="goToArticleDetail(article.id)" v-else>
               {{ article.title }} <p v-if="article.comment_count>0" class="d-inline">({{ article.comment_count }})</p>
             </td>
             <td class="text-center" @click="goToProfile(article.username)">

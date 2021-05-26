@@ -52,7 +52,8 @@
           </thead>
           <tbody>
             <tr v-for="(review, idx) in reviews" :key="idx +'1'">
-              <td @click="goToReviewDetail(review.id)">{{ review.title }}</td>
+              <td @click="goToReviewDetail(review.id)" v-if="review.title.length > 15">{{ review.title.substr(0,15) + '...'}}</td>
+              <td @click="goToReviewDetail(review.id)" v-else>{{ review.title }}</td>
               <td>{{ review.rank }}</td>
               <td>{{ review.username }}</td>
               <!-- <ReviewItem
@@ -87,8 +88,10 @@
           </thead>
           <tbody>
             <tr v-for="(vote, idx) in votes" :key="idx +'2'">
-              <td @click="goToVoteDetail(vote.id)">{{ vote.title }}</td>
-              <td>{{ vote.option_one }}   VS   {{ vote.option_two }}</td>
+              <td @click="goToVoteDetail(vote.id)" v-if="vote.title.length > 15">{{ vote.title.substr(0,15) + '...' }}</td>
+              <td @click="goToVoteDetail(vote.id)" v-else>{{ vote.title }}</td>
+              <td v-if="vote.option_one.length + vote.option_two.length > 20">{{ vote.option_one.substr(0,10) + '...' }}   VS   {{ vote.option_two.substr(0,10) + '...' }}</td>
+              <td v-else>{{ vote.option_one }}   VS   {{ vote.option_two }}</td>
             </tr>
           </tbody>
         </table>
