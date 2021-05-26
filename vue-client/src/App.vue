@@ -23,7 +23,7 @@
             </ul>
             <span class="d-flex">
               <li class="mb-0 nav-item px-2 justify-content-end" style="list-style:none;">
-                <p class="mb-0" v-if="isLoggedIn">{{ username }}님, 환영합니다!</p>
+                <p class="mb-0" v-if="isLoggedIn">{{ decoded.username }}님, 환영합니다!</p>
                 <p class="mb-0" v-else>손님, 환영합니다!</p>
               </li>
             </span>
@@ -128,9 +128,15 @@ export default {
       'decoded',
     ])
   },
+  watch: {
+    isLoggedIn: function () {
+      this.getUserName()
+    }
+  },
   created: function () {
     this.getUserName()
     this.get_user_info()
+    console.log(this.isLoggedIn)
   },
   mounted: function () {
     this.getUserName()
