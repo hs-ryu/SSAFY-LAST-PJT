@@ -21,17 +21,18 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end align-items-center">
 
             </ul>
-            <span class="d-flex">
+            <span class="d-flex align-items-center">
               <li class="mb-0 nav-item px-2 justify-content-end" style="list-style:none;">
                 <p class="mb-0" v-if="isLoggedIn">{{ decoded.username }}님, 오늘 영화 한 편 어떠세요? 🍿</p>
                 <p class="mb-0" v-else>로그인 하시면 더 많은 기능을 이용할 수 있어요! 😉</p>
               </li>
             </span>
-            <span v-if="isLoggedIn">
+            <span v-if="isLoggedIn" class="d-flex align-items-center">
               <span class="fw-bold" data-bs-toggle="modal" data-bs-target="#logoutModal">로그아웃</span>
-              <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2"><i class="fas fa-user-circle"></i></router-link>
-              <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2">Mypage</router-link>
-              <a v-if="isSuperuser" href="http://127.0.0.1:8000/admin/" class="mx-2">SYSTEM</a>
+              <router-link :to="{ name: 'Profile', params: { username: decoded.username }}" class="mx-2"><h3 class="d-inline"><i class="fas fa-user-circle"></i></h3></router-link>
+              <!-- <router-link :to="{ name: 'Profile', params: { username }}" class="mx-2">Mypage</router-link> -->
+              <a v-if="isSuperuser" :href="adminPageURL" class="mx-2"><h3 class="d-inline"><i class="fas fa-cog"></i></h3></a>
+              <!-- <a v-if="isSuperuser" :href="adminPageURL" class="mx-2">SYSTEM</a> -->
             </span>
             <span v-else>
               <router-link :to="{ name: 'Signup' }" class="mx-2">Signup</router-link>
