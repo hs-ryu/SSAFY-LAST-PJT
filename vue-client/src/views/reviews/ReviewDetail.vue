@@ -164,10 +164,7 @@ export default {
         content: this.commentContent,
       }
       // 모델 변경 후 길이 수정 필요
-      if (commentItem.content.length > 10) {
-        alert("댓글의 제목이 너무 길어요!")
-      }
-      else if (commentItem.content) {
+      if (commentItem.content) {
         axios({
           url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/createcomment/`,
           method: 'post',

@@ -99,10 +99,7 @@ export default {
           content: commentContent,
         }
         // 모델 변경 후 길이 수정 필요
-        if (commentItem.commentContent.length > 10){
-          alert("댓글의 내용이 너무 길어요!")
-        }
-        else if (commentItem.content) {
+        if (commentItem.content) {
           const commentId = this.comment.id
           const headers = this.config
           axios({

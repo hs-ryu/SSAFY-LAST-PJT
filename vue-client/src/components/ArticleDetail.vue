@@ -76,8 +76,6 @@
       </div>
     </div>
 
-    <button style="border-color: #CE93D8" class="my-4 btn main-color-content custom-button-reverse" @click="$router.push({ name: 'ArticleList' })">목록</button>
-
 
       <!-- <button @click="deleteArticle">삭제</button>
       <button @click="goToUpdateArticle">수정</button>
@@ -187,10 +185,8 @@ export default {
       const commentItem = {
         content: this.commentContent,
       }
-      if (commentItem.commentContent.length > 10){
-        alert("댓글의 내용이 너무 길어요!")
-      }
-      else if (commentItem.content) {
+      // 모델 변경 후 길이 수정 필요
+      if (commentItem.content) {
         const headers = this.config
         axios({
           // path('articles/<int:article_pk>/createcomment/', views.createcomment, name='createcomment'),
