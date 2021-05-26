@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="mx-auto" style="width: 600px;">
-      <h5 class="fw-bold">[{{ movieTitle }}]</h5>
-      <h1 class="fw-bold">투표 생성</h1>
+      <h5 class="fw-bold title-font">[{{ movieTitle }}]</h5>
+      <h1 class="fw-bold title-font">투표 생성</h1>
       <!-- <label for="title">제목</label> -->
       <div class="my-3">
         <input style="width: 100%;" type="text" v-model.trim="title" class="my-3 form-control" id="title" name="title" placeholder="주제">

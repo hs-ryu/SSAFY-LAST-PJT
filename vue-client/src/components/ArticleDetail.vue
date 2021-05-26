@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mx-auto" style="width: 700px;">
-      <h1 style="text-align: left;" class="fw-bold">{{ article.title }}</h1>
+      <h1 style="text-align: left;" class="fw-bold title-font">{{ article.title }}</h1>
       <div style="text-align: left;">
         <div class="d-inline" v-if="article.categories=='1'">
           <h5 class="d-inline">[공지]</h5>

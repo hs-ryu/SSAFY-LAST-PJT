@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mb-4">게시글 수정</h1>
+    <h1 class="mb-4 title-font">게시글 수정</h1>
     <div class="mx-auto" style="width: 600px;">
       <div class="d-flex my-3">
         <select :value="article.categories" @change="updateCategories" name="categories" id="categories">

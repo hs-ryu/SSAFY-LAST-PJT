@@ -5,7 +5,7 @@
         <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" :alt="movieTitle">
       </div>
       <div class="mx-4" style="width: 500px; text-align: left;">
-        <h4 class="pb-4 fw-bold">영화 '{{ movieTitle }}', 어떠셨나요?</h4>
+        <h4 class="pb-4 fw-bold title-font">영화 '{{ movieTitle }}', 어떠셨나요?</h4>
         <div class="startRadio">
           <label class="startRadio__box">
             <input type="radio" name="star" id="" value="0.5" v-model="rank">

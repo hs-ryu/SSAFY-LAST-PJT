@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto" style="width: 1000px;">
-    <h1 class="fw-bold title-font">게시글 목록</h1>
+    <h1 class="fw-bold title-font">커뮤니티</h1>
     <div class="my-2 d-flex justify-content-end">
       <button class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateArticle">게시글 작성</button>
     </div>
@@ -38,7 +38,7 @@
         </tbody>
       </table>
     </div>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="my-5">
       <ul class="pagination justify-content-center">
         <li class="page-item">
           <button type="button" class="text-dark page-link" v-if="page != 1" @click="page--"> Previous </button>

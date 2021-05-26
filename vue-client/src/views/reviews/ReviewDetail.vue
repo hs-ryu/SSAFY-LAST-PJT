@@ -5,7 +5,7 @@
         <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" :alt="movieTitle">
       </div>
       <div class="mx-4" style="width: 500px; height: 450px; text-align: left;">
-        <h2 class="d-inline">{{ review.username }}님의 리뷰 📝</h2>
+        <h2 class="d-inline title-font">{{ review.username }}님의 리뷰 📝</h2>
         <!-- <button class="d-inline mx-2 btn btn-sm main-color-background text-white" @click="goToProfile" type="submit" value="작성">프로필</button> -->
         <button style="border-color: #CE93D8" class="ms-2 d-inline btn btn-sm main-color-content" @click="goToProfile">프로필</button>
         <div class="my-2">

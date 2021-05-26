@@ -2,10 +2,10 @@
   <div style="width: 1000px" class="mx-auto">
     <div class="mb-3 d-flex justify-content-between">
       <div>
-        <h1 class="fw-bold" style="text-align: left">{{userProfile.username}}님의 프로필</h1>
+        <h1 class="fw-bold title-font" style="text-align: left">{{userProfile.username}}님의 프로필</h1>
       </div>
       <div class="d-flex">
-        <h5>팔로워 {{ userProfile.followers.length }} | 팔로잉 {{ userProfile.followings.length }}</h5>
+        <h5 class="title-font">팔로워 {{ userProfile.followers.length }} | 팔로잉 {{ userProfile.followings.length }}</h5>
         <div class="ms-3" v-if="userProfile.user_id!==decoded.user_id">
           <button class="mx-2 btn main-color-background text-white" v-if="userProfile.followers.includes(loginedUserId)" @click="updateFollowStatus">unfollow</button>
           <button class="mx-2 btn main-color-background text-white" v-else @click="updateFollowStatus">follow</button>
@@ -13,8 +13,8 @@
       </div>
     </div>
     <h3 v-if="userProfile.favorite_genre=='없음'" class="my-3 fw-bold" style="text-align: left;">💡 좋아하는 영화에 좋아요를 누르시면 선호 장르를 분석해드려요!</h3>
-    <h3 v-else class="my-3 fw-bold" style="text-align: left;">[선호 장르] {{ userProfile.favorite_genre }}</h3>
-    <h2 class="fw-bold" style="text-align: left;">좋아요 한 영화</h2>
+    <h3 v-else class="my-3 fw-bold title-font" style="text-align: left;">[선호 장르] {{ userProfile.favorite_genre }}</h3>
+    <h2 class="fw-bold title-font" style="text-align: left;">좋아요 한 영화</h2>
     <div v-if="userProfile.like_movies.length" class="card-group mb-5">
       <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'">
         <div class="mb-1">
@@ -37,7 +37,7 @@
 
     <div class="my-2 d-flex justify-content-between">
       <div>
-        <h2 class="fw-bold" style="text-align: left;">작성한 리뷰</h2>
+        <h2 class="fw-bold title-font" style="text-align: left;">작성한 리뷰</h2>
         <div class="m-2" v-if="userProfile.create_reviews.length">
           <table style="width: 450px;" class="table">
             <thead>
@@ -95,7 +95,7 @@
         </div>
       </div>
       <div>
-        <h2 class="fw-bold" style="text-align: left;">작성한 게시글</h2>
+        <h2 class="fw-bold title-font" style="text-align: left;">작성한 게시글</h2>
         <div class="m-2" v-if="userProfile.create_articles.length">
           <table style="width: 450px;" class="table">
             <thead>

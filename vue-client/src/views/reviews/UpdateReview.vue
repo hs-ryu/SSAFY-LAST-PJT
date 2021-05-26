@@ -5,7 +5,7 @@
         <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" :alt="movieTitle">
       </div>
       <div class="mx-4" style="width: 500px; text-align: left;">
-        <h4 class="fw-bold pb-4">리뷰 수정</h4>
+        <h3 class="fw-bold pb-4 title-font">리뷰 수정</h3>
         <div class="startRadio">
           <label class="startRadio__box">
             <input type="radio" name="star" id="" value="0.5" @change="updateRank">

@@ -1,7 +1,7 @@
 <template>
   <div style="text-align: center">
     <!-- {{ movie }} -->
-    <h1 class="m-4">{{ movie.title }}</h1>
+    <h1 class="m-4 title-font">{{ movie.title }}</h1>
     <div class="d-flex justify-content-center align-items-center">
       <div class="img-container">
         <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
@@ -105,7 +105,7 @@
     <div style="width: 1000px;" class="mx-auto">
       <div class="my-2 d-flex justify-content-around">
         <div>
-          <h3 class="fw-bold" style="text-align: left;">리뷰 목록</h3>
+          <h3 class="fw-bold title-font" style="text-align: left;">리뷰 목록</h3>
           <div class="m-2" v-if="reviews.length">
             <table style="width: 450px;" class="table">
               <thead>
@@ -158,7 +158,7 @@
         </div>
         
         <div>
-          <h3 class="fw-bold" style="text-align: left;">투표 목록</h3>
+          <h3 class="fw-bold title-font" style="text-align: left;">투표 목록</h3>
           <div class="m-2" v-if="votes.length">
             <table style="width: 450px;" class="table">
               <thead>

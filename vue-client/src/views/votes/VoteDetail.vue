@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- <p>{{vote}}</p> -->
-    <h5>[{{ movieTitle }}]</h5>
-    <h1 class="fw-bold">{{vote.title}}</h1>
+    <h5 class="title-font">[{{ movieTitle }}]</h5>
+    <h1 class="fw-bold title-font">{{vote.title}}</h1>
     <p style="font-size:13px;">{{$moment(vote.created_at).format('YYYY.MM.DD h:mm a')}}</p>
     <br>
     <div style="width: 600px;" class="mx-auto row">
