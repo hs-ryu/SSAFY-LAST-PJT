@@ -14,6 +14,7 @@ import CreateArticle from '@/views/community/CreateArticle'
 import Profile from '@/views/accounts/Profile'
 import VoteDetail from '@/views/votes/VoteDetail'
 import CreateVote from '@/views/votes/CreateVote'
+import PageNotFound from '@/components/PageNotFound'
 
 
 Vue.use(VueRouter)
@@ -88,6 +89,14 @@ const routes = [
     path: '/movies/:movieId/votes/create',
     name: 'CreateVote',
     component: CreateVote,
+  },
+  {
+    path: '*',
+    redirect: '/404'
+  },
+  {
+    path: '/404',
+    component: PageNotFound,
   }
 ]
 

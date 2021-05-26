@@ -1,26 +1,26 @@
 <template>
   <div style="width: 1000px" class="mx-auto">
-    <div class="mb-3 d-flex justify-content-between">
+    <div class="mb-3 d-flex justify-content-between align-items-center">
       <div>
-        <h1 class="fw-bold title-font" style="text-align: left">{{userProfile.username}}님의 프로필</h1>
+        <h2 class="fw-bold title-font" style="text-align: left">{{userProfile.username}}님의 프로필</h2>
       </div>
-      <div class="d-flex">
-        <h5 class="title-font">팔로워 {{ userProfile.followers.length }} | 팔로잉 {{ userProfile.followings.length }}</h5>
-        <div class="ms-3" v-if="userProfile.user_id!==decoded.user_id">
-          <button class="mx-2 btn main-color-background text-white" v-if="userProfile.followers.includes(loginedUserId)" @click="updateFollowStatus">unfollow</button>
+      <div class="d-flex justify-content-between">
+        <h5 class="title-font mx-3">팔로워 {{ userProfile.followers.length }} | 팔로잉 {{ userProfile.followings.length }}</h5>
+        <div class="mx-3" v-if="userProfile.user_id!==decoded.user_id">
+          <button class="mx-2 btn main-color-background text-white" v-if="userProfile.followers && userProfile.followers.includes(decoded.user_id)" @click="updateFollowStatus">unfollow</button>
           <button class="mx-2 btn main-color-background text-white" v-else @click="updateFollowStatus">follow</button>
         </div>
       </div>
     </div>
-    <h3 v-if="userProfile.favorite_genre=='없음'" class="my-3 fw-bold" style="text-align: left;">💡 좋아하는 영화에 좋아요를 누르시면 선호 장르를 분석해드려요!</h3>
-    <h3 v-else class="my-3 fw-bold title-font" style="text-align: left;">[선호 장르] {{ userProfile.favorite_genre }}</h3>
-    <h2 class="fw-bold title-font" style="text-align: left;">좋아요 한 영화</h2>
+    <h4 v-if="userProfile.favorite_genre=='없음'" class="my-3 title-font" style="text-align: left;">💡 좋아하는 영화에 좋아요를 누르시면 선호 장르를 분석해드려요!</h4>
+    <h4 v-else class="my-3 title-font" style="text-align: left;">[선호 장르] {{ userProfile.favorite_genre }}</h4>
+    <h4 class="title-font" style="text-align: left;">좋아요 한 영화</h4>
     <div v-if="userProfile.like_movies.length" class="card-group mb-5">
       <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'">
         <div class="mb-1">
           <div class="card text-center mt-1 border-light h-100" style="width: 170px;">
             <div class="card-body p-0" style="flex-grow: 0;">
-              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" style="object-fit: cover; height:250px" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
+              <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" @click="$router.push({ name: 'MovieDetail', params: {movieId: movie.id}})" style="object-fit: cover; height:250px" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
               <!-- <p class="card-title m-0">{{ movie.title }}</p> -->
               <p class="card-title m-0" v-if="movie.title.length > 8">
                 {{ movie.title.substr(0,8) + '...' }}
@@ -37,8 +37,8 @@
 
     <div class="my-2 d-flex justify-content-between">
       <div>
-        <h2 class="fw-bold title-font" style="text-align: left;">작성한 리뷰</h2>
-        <div class="m-2" v-if="userProfile.create_reviews.length">
+        <h4 class="fw-bold title-font" style="text-align: left;">작성한 리뷰</h4>
+        <div class="m-2" v-if="(userProfile.create_reviews || 0).length">
           <table style="width: 450px;" class="table">
             <thead>
               <tr>
@@ -76,6 +76,7 @@
               </tr>
             </tbody>
           </table>
+
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item">
@@ -95,8 +96,8 @@
         </div>
       </div>
       <div>
-        <h2 class="fw-bold title-font" style="text-align: left;">작성한 게시글</h2>
-        <div class="m-2" v-if="userProfile.create_articles.length">
+        <h4 class="fw-bold title-font" style="text-align: left;">작성한 게시글</h4>
+        <div class="m-2" v-if="(userProfile.create_articles||0).length">
           <table style="width: 450px;" class="table">
             <thead>
               <tr>
@@ -145,7 +146,26 @@
     
     <!-- 회원탈퇴 -->
     <button class="btn main-color-background text-white" @click="deleteAccount">회원탈퇴</button>
+    <button class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">회원탈퇴</button>
 
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteAccountModal">알림</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              정말로 탈퇴하시겠습니까? 😢
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="button" class="btn main-color-background text-white" data-bs-dismiss="modal" @click="deleteAccount">회원탈퇴</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- {{ userProfile }} -->
   </div>
 </template>
 
@@ -209,7 +229,7 @@ export default {
       })
       .then((res) => {
         this.userProfile = res.data
-        console.log(this.userProfile)
+        // console.log(this.userProfile)
       })
     },
     updateFollowStatus: function () {

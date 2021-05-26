@@ -8,7 +8,7 @@
       <button style="width: 100%;" class="btn main-color-background text-white" @click="login(credentials)">로그인</button>
       <div class="my-4">
         <span class="mx-1">계정이 없으신가요?</span>
-        <span class="mx-1 main-color-content fw-bold" @click="$router.push({ name: 'Signup' })">회원가입</span>
+        <span class="mx-1 main-color-content fw-bold mini-button" @click="$router.push({ name: 'Signup' })">회원가입</span>
       </div>
     </div>
   </div>

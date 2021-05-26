@@ -3,17 +3,18 @@
     <h1 class="mb-4 title-font">게시글 수정</h1>
     <div class="mx-auto" style="width: 600px;">
       <div class="d-flex my-3">
-        <select :value="article.categories" @change="updateCategories" name="categories" id="categories">
+        <select :value="article.categories" @change="updateCategories" name="categories" id="categories" class="form-select" aria-label="Default select example">
           <option disabled value="">말머리</option>
           <option v-if="loginSuperStatus" value="1">공지</option>
           <option value="2">건의</option>
           <option value="3">일상</option>
         </select>
       </div>
-      <input class="mb-3" style="width: 600px;" :value="article.title" @change="updateTitle" type="text" name="title" id="title" placeholder="제목">
-      <br>
+      <input type="text" :value="article.title" @change="updateTitle" class="my-3 form-control" id="title" name="title" placeholder="제목">
+      <!-- <input class="mb-3" style="width: 600px;" :value="article.title" @change="updateTitle" type="text" name="title" id="title" placeholder="제목"> -->
       <!-- <input v-model.trim="content" type="text" name="content" id="content"> -->
-      <textarea :value="article.content" @change="updateContent" name="content" id="content" cols="70" rows="7" placeholder="내용"></textarea>
+      <textarea :value="article.content" @change="updateContent" class="form-control" id="content" rows="8" placeholder="내용"></textarea>
+      <!-- <textarea :value="article.content" @change="updateContent" name="content" id="content" cols="70" rows="7" placeholder="내용"></textarea> -->
       <br>
       <div class="d-flex justify-content-end">
         <input class="mx-2 btn main-color-background text-white" @click="updateArticle" type="submit" value="수정">

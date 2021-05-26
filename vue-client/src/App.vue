@@ -26,8 +26,8 @@
             </ul>
             <span class="d-flex align-items-center mx-2">
               <li class="mb-0 nav-item px-2 justify-content-end" style="list-style:none; font-size: 13pt;">
-                <p class="mb-0 fw-bold " v-if="isLoggedIn">{{ decoded.username }}님, 오늘 영화 한 편 어떠세요? 🍿</p>
-                <p class="mb-0" v-else>로그인 하시면 더 많은 기능을 이용할 수 있어요! 😉</p>
+                <p class="mb-0 fw-bold" v-if="isLoggedIn">{{ decoded.username }}님, 오늘 영화 한 편 어떠세요? 🍿</p>
+                <p class="mb-0 fw-bold" v-else>로그인 하시면 더 많은 기능을 이용할 수 있어요! 😉</p>
               </li>
             </span>
             <span v-if="isLoggedIn" class="d-flex align-items-center">
@@ -37,12 +37,12 @@
               <a v-if="isSuperuser" :href="adminPageURL" class="mx-2"><h3 class="d-inline"><i class="fas fa-cog"></i></h3></a>
               <!-- <a v-if="isSuperuser" :href="adminPageURL" class="mx-2">SYSTEM</a> -->
             </span>
-            <span v-else>
+            <span v-else class="d-flex align-items-center">
               <router-link :to="{ name: 'Signup' }" class="mx-2">회원가입</router-link>
-              <router-link :to="{ name: 'Login' }" class="mx-2">로그인</router-link>
-              <button type="button" class="mx-2 btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#loginModal">
+              <!-- <router-link :to="{ name: 'Login' }" class="mx-2">로그인</router-link> -->
+              <span class="mx-2 fw-bold mini-button" style="font-size: 17px;" data-bs-toggle="modal" data-bs-target="#loginModal">
                 로그인
-              </button>
+              </span>
             </span>
           </div>
         </div>
@@ -82,22 +82,22 @@
       </div>
       <!-- logout Modal -->
       <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModal" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="logoutModal">알림</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            로그아웃 하시겠습니까?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-            <button type="button" class="btn main-color-background text-white" data-bs-dismiss="modal" @click="logout(credentials)">로그아웃</button>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="logoutModal">알림</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              로그아웃 하시겠습니까?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="button" class="btn main-color-background text-white" data-bs-dismiss="modal" @click="logout(credentials)">로그아웃</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
     <router-view/>
   </div>
@@ -140,17 +140,18 @@ export default {
   watch: {
     isLoggedIn: function () {
       this.getUserName()
+      this.get_user_info()
     }
   },
   created: function () {
     this.getUserName()
-    this.get_user_info()
-    console.log(this.isLoggedIn)
+    // this.get_user_info()
+    // console.log(this.isLoggedIn)
   },
   mounted: function () {
     this.getUserName()
-    this.get_user_info()
-    console.log(this.username)
+    // this.get_user_info()
+    // console.log(this.username)
     // console.log(this.username)
     // console.log(this.userId)
     // console.log(this.isSuperuser)

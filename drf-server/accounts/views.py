@@ -13,6 +13,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 import jwt
 
+from decouple import config
 
 @api_view(['POST'])
 def signup(request):
@@ -58,7 +59,8 @@ def follow(request, user_pk):
 
 @api_view(['POST'])
 def verify_user(request):
-    decoded = jwt.decode(request.data.get('token'), '7(y1dmoz!7jil1-$oqmlidjn&!h+@jef!!wccv@8f8xpy#d89s', algorithms=["HS256"])
+    SECRET_KEY = config("SECRET_KEY")
+    decoded = jwt.decode(request.data.get('token'), SECRET_KEY, algorithms=["HS256"])
     user_id = decoded.get('user_id')
     username = decoded.get('username')
     you = get_object_or_404(get_user_model(), pk=user_id)
@@ -195,4 +197,4 @@ def deleteaccount(request, user_id):
     if user.id == request.user.id:
         user.delete()
         return Response(status=status.HTTP_200_OK)
-    return Response(status=status.HTTP_400_BADREQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
