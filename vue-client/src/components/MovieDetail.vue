@@ -104,12 +104,12 @@
     </div> -->
 
     <!-- <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button> -->
-    <div style="width: 1000px;" class="mx-auto">
+    <div style="width: 1000px; height: 400px;" class="mx-auto">
       <div class="my-2 d-flex justify-content-around">
         <div>
           <h3 class="fw-bold title-font" style="text-align: left;">리뷰 목록</h3>
-          <div class="m-2" v-if="reviews.length">
-            <table style="width: 450px;" class="table">
+          <div class="m-2" style="height: 250px;" v-if="reviews.length">
+            <table style="width: 450px;" class="table table-hover content-font">
               <thead>
                 <tr>
                   <th scope="col">글제목</th>
@@ -136,23 +136,23 @@
                 </tr>
               </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center">
-                <li class="page-item">
-                  <button type="button" class="text-dark page-link" v-if="reviewsPage != 1" @click="reviewsPage--"> Previous </button>
-                </li>
-                <li class="text-dark page-item" v-for="(pageNumber,idx) in reviewsPages.slice(reviewsPage-1, reviewsPage+5)" :key=idx>
-                  <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
-                </li>
-                <li class="page-item">
-                  <button type="button" @click="reviewsPage++" v-if="reviewsPage < reviewsPages.length" class="text-dark page-link"> Next </button>
-                </li>
-              </ul>
-            </nav>
           </div>
           <div v-else class="my-5">
             <p>리뷰가 아직 없어요. 첫번째 글을 쓸 수 있는 절호의 찬스! 🤘</p>
           </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button type="button" class="text-dark page-link" v-if="reviewsPage != 1" @click="reviewsPage--"> Previous </button>
+              </li>
+              <li class="text-dark page-item" v-for="(pageNumber,idx) in reviewsPages.slice(reviewsPage-1, reviewsPage+5)" :key=idx>
+                <button type="button" class="text-dark page-link"  @click="page=pageNumber">{{ pageNumber }}</button>
+              </li>
+              <li class="page-item">
+                <button type="button" @click="reviewsPage++" v-if="reviewsPage < reviewsPages.length" class="text-dark page-link"> Next </button>
+              </li>
+            </ul>
+          </nav>
           <div class="d-flex justify-content-center">
             <button v-if="reviewExist" class="mx-2 btn btn-sm main-color-background text-white" @click="$router.push({ name: 'ReviewDetail', params: { movieId: movie.id, reviewId: reviewExist }, query: { moviePosterPath: movie.poster_path, movieTitle: movie.title } })">내 리뷰 보러가기</button>
             <button v-else class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateReview">리뷰 작성하기</button>
@@ -161,8 +161,8 @@
         
         <div>
           <h3 class="fw-bold title-font" style="text-align: left;">투표 목록</h3>
-          <div class="m-2" v-if="votes.length">
-            <table style="width: 450px;" class="table">
+          <div class="m-2" style="height: 250px;" v-if="votes.length">
+            <table style="width: 450px;" class="table table-hover content-font">
               <thead>
                 <tr>
                   <th scope="col">제목</th>
@@ -178,23 +178,23 @@
                 </tr>
               </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center">
-                <li class="page-item">
-                  <button type="button" class="text-dark page-link" v-if="votesPage != 1" @click="votesPage--"> Previous </button>
-                </li>
-                <li class="page-item" v-for="(pageNumber,idx) in votesPages.slice(votesPage-1, votesPage+5)" :key=idx>
-                  <button type="button" class="text-dark page-link"  @click="votesPage=pageNumber">{{ pageNumber }}</button>
-                </li>
-                <li class="page-item">
-                  <button type="button" @click="votesPage++" v-if="votesPage < votesPages.length" class="text-dark page-link"> Next </button>
-                </li>
-              </ul>
-            </nav>
           </div>
           <div v-else class="my-5">
             <p>투표가 아직 없어요. 첫번째 투표를 등록해 보세요! 🤘</p>
           </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button type="button" class="text-dark page-link" v-if="votesPage != 1" @click="votesPage--"> Previous </button>
+              </li>
+              <li class="page-item" v-for="(pageNumber,idx) in votesPages.slice(votesPage-1, votesPage+5)" :key=idx>
+                <button type="button" class="text-dark page-link"  @click="votesPage=pageNumber">{{ pageNumber }}</button>
+              </li>
+              <li class="page-item">
+                <button type="button" @click="votesPage++" v-if="votesPage < votesPages.length" class="text-dark page-link"> Next </button>
+              </li>
+            </ul>
+          </nav>
           <div class="d-flex justify-content-center">
             <button class="mx-2 btn btn-sm main-color-background text-white" @click="goToCreateVote">투표 만들기</button>
           </div>
@@ -235,8 +235,8 @@ export default {
 
       reviewsPage: 1,
       votesPage: 1,
-			reviewsPerPage: 6,
-			votesPerPage: 6,
+			reviewsPerPage: 5,
+			votesPerPage: 5,
 			reviewsPages: [],	
 			votesPages: [],	
     }
