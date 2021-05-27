@@ -54,7 +54,7 @@ class NowShowingMovie(models.Model):
 class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=15)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
     # 얘를 movie_pk로 해야하나.
     rank = models.FloatField()

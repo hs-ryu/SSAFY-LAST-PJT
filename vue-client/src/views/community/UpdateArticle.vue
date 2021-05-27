@@ -83,7 +83,7 @@ export default {
       }
       // console.log(articleItem)
       // 모델 변경 후 길이 수정 필요
-      if (articleItem.title.length > 10){
+      if (articleItem.title.length > 15){
           alert("글의 제목이 너무 길어요!")
       }
       else if (articleItem.title && articleItem.categories && articleItem.content) {
