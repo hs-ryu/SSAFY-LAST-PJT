@@ -2,7 +2,7 @@
   <div style="mx-auto">
     <div class="mt-5 d-flex justify-content-center align-items-center">
       <div style="max-width: 300px;">
-        <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" :alt="movieTitle">
+        <img style="width: 100%;" :src="'https://image.tmdb.org/t/p/w500' + moviePosterPath" alt="movieTitle">
       </div>
       <div class="mx-4" style="width: 500px; text-align: left;">
         <h3 class="fw-bold pb-4 title-font">리뷰 수정</h3>

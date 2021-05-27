@@ -29,16 +29,16 @@
         <p class="d-inline">{{ movie.like_users.length }}명이 이 영화를 좋아합니다.</p>
         <div class="d-flex">
           <div v-if="netflix" class="m-1" style="max-width: 35px; ">
-            <a v-if="netflix" :href="netflix"><img img class="rounded" style="width: 100%" src="@/assets/netflix_logo.png" alt="netflix logo"></a>
+            <a v-if="netflix" :href="netflix" target="_blank"><img img class="rounded" style="width: 100%" src="@/assets/netflix_logo.png" alt="netflix logo"></a>
           </div>
           <div v-if="watcha" class="m-1" style="max-width: 35px;">
-            <a v-if="watcha" :href="watcha"><img img class="rounded" style="width: 100%" src="@/assets/watcha_logo.png" alt="watcha logo"></a>
+            <a v-if="watcha" :href="watcha" target="_blank"><img img class="rounded" style="width: 100%" src="@/assets/watcha_logo.png" alt="watcha logo"></a>
           </div>
           <div v-if="wavve" class="m-1" style="max-width: 35px;">
-            <a v-if="wavve" :href="wavve"><img img class="rounded" style="width: 100%" src="@/assets/wavve_logo.png" alt="wavve logo"></a>
+            <a v-if="wavve" :href="wavve" target="_blank"><img img class="rounded" style="width: 100%" src="@/assets/wavve_logo.png" alt="wavve logo"></a>
           </div>
           <div v-if="naver" class="m-1" style="max-width: 35px;">
-            <a v-if="naver" :href="naver"><img class="rounded" style="width: 100%" src="@/assets/naver_logo.png" alt="naver logo"></a>
+            <a v-if="naver" :href="naver" target="_blank"><img class="rounded" style="width: 100%" src="@/assets/naver_logo.png" alt="naver logo"></a>
           </div>
         </div>
 

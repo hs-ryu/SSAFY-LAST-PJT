@@ -89,7 +89,7 @@ export default {
   methods: {
     getReviewComments: function () {
       axios({
-        url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/getcomments/`,
+        url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId * 1}/getcomments/`,
         method: 'get',
       })
       .then((res) => {
@@ -103,7 +103,7 @@ export default {
       const headers = this.config
       const commentId = this.comment.id
       axios({
-        url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/${commentId}/deletecomment/`,
+        url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId * 1}/${commentId}/deletecomment/`,
         method: 'delete',
         headers,
       })
@@ -129,7 +129,7 @@ export default {
           const headers = this.config
           const commentId = this.comment.id
           axios({
-            url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId}/${commentId}/updatecomment/`,
+            url: SERVER.URL + SERVER.ROUTES.reviews + `${this.movieId}/reviews/${this.reviewId * 1}/${commentId}/updatecomment/`,
             method: 'put',
             data: commentItem,
             headers,

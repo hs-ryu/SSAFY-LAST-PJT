@@ -15,14 +15,14 @@
     <h5 v-if="userProfile.favorite_genre=='없음'" class="my-3 title-font" style="text-align: left;">💡 좋아하는 영화에 '좋아요'를 누르시면 선호 장르를 분석해드려요!</h5>
     <h4 v-else class="my-3 title-font" style="text-align: left;">[선호 장르] {{ userProfile.favorite_genre }}</h4>
     <h4 class="title-font" style="text-align: left;">좋아요 한 영화</h4>
-    <div v-if="userProfile.like_movies != undefined && userProfile.like_movies.length" class="card-group mb-5">
+    <div v-if="userProfile.like_movies.length" class="card-group mb-5 row row-cols-6">
       <div v-for="(movie, idx) in userProfile.like_movies" :key="idx + 'movie'">
         <div class="mb-1">
           <div class="card text-center mt-1 border-light h-100" style="width: 170px;">
             <div class="card-body p-0" style="flex-grow: 0;">
               <img :src="'http://image.tmdb.org/t/p/w200/' + movie.poster_path" @click="$router.push({ name: 'MovieDetail', params: {movieId: movie.id}})" style="object-fit: cover; height:250px" class="card-img-top rounded mx-auto d-block" :alt="movie.title">
               <!-- <p class="card-title m-0">{{ movie.title }}</p> -->
-              <p class="card-title m-0" v-if="movie.title != undefined && movie.title.length > 8">
+              <p class="card-title m-0" v-if="movie.title.length > 8">
                 {{ movie.title.substr(0,8) + '...' }}
               </p>
               <p class="card-title m-0" v-else>
@@ -50,14 +50,14 @@
             <tbody>
               <tr v-for="(review, idx) in displayReviews" :key="idx +'1'">
                 <!-- <td>{{ review.movie }}</td> -->
-                <td class="text-start" v-if="review.movie != undefined && review.movie.length > 8">
+                <td class="text-start" v-if="review.movie.length > 8">
                   {{ review.movie.substr(0,8) + '...' }}
                 </td>
                 <td class="text-start" v-else>
                   {{ review.movie }}
                 </td>
                 <!-- <td @click="goToReviewDetail(review.id)">{{ review.title }}</td> -->
-                <td class="text-start" v-if="review.movie != undefined && review.title.length > 8">
+                <td class="text-start" v-if="review.title.length > 8">
                   {{ review.title.substr(0,8) + '...' }}
                 </td>
                 <td class="text-start" v-else>
@@ -114,7 +114,7 @@
                 <td v-else>
                   건의사항
                 </td>
-                <td class="text-start" v-if="article.title != undefined && article.title.length > 8">
+                <td class="text-start" v-if="article.title.length > 8">
                   {{ article.title.substr(0,8) + '...' }}
                 </td>
                 <td class="text-start" v-else>
