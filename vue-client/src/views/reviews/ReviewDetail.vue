@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    <button style="border-color: #CE93D8" class="my-2 custom-button-reverse btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
+    <button style="border-color: #CE93D8" class="my-2 custom-button-reverse btn main-color-content" @click="$router.push({ name: 'MovieList' })">메인으로</button>
   </div>
 </template>
 

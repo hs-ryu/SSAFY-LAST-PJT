@@ -11,7 +11,7 @@
     <div v-if="inputValue">
       <div class="mx-auto" style="width: 1000px; height: 1000px;">
         <div v-if="searchMovies.length">
-          <div class="card-group">
+          <div class="card-group row row-cols-6">
             <SearchMovieItem
               v-for="(searchMovie, idx) in searchMovies"
               :key="idx + '0'"
@@ -31,10 +31,10 @@
         <div class="d-flex justify-content-between">
           <h4 class="title-font d-inline" style="text-align: left; color: #363634;">{{ platformvalue.charAt(0).toUpperCase() + platformvalue.slice(1)}} 상영 영화</h4>
           <div class="d-flex align-items-end title-font">
-            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedOne, 'd-inline mx-3 mb-1 div2 gray' : clickedOne}" @click="setPlatform('netflix')">Netflix</p>
-            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedTwo, 'd-inline mx-3 mb-1 div2 gray' : clickedTwo}" @click="setPlatform('watcha')">Watcha</p>
-            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedThree, 'd-inline mx-3 mb-1 div2 gray' : clickedThree}" @click="setPlatform('wavve')">Wavve</p>
-            <p :class="{'d-inline mx-3 mb-1 div2 black': !clickedFour, 'd-inline mx-3 mb-1 div2 gray' : clickedFour}" @click="setPlatform('naver')">Naver</p>
+            <p class="mini-button" :class="{'d-inline mx-3 mb-1 div2 black': !clickedOne, 'd-inline mx-3 mb-1 div2 gray' : clickedOne}" @click="setPlatform('netflix')">Netflix</p>
+            <p class="mini-button" :class="{'d-inline mx-3 mb-1 div2 black': !clickedTwo, 'd-inline mx-3 mb-1 div2 gray' : clickedTwo}" @click="setPlatform('watcha')">Watcha</p>
+            <p class="mini-button" :class="{'d-inline mx-3 mb-1 div2 black': !clickedThree, 'd-inline mx-3 mb-1 div2 gray' : clickedThree}" @click="setPlatform('wavve')">Wavve</p>
+            <p class="mini-button" :class="{'d-inline mx-3 mb-1 div2 black': !clickedFour, 'd-inline mx-3 mb-1 div2 gray' : clickedFour}" @click="setPlatform('naver')">Naver</p>
           </div>
         </div>
         <swiper class="swiper" :options="swiperOption">
