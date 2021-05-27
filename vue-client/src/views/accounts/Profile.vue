@@ -51,14 +51,14 @@
               <tr v-for="(review, idx) in displayReviews" :key="idx +'1'">
                 <!-- <td>{{ review.movie }}</td> -->
                 <td class="text-start" v-if="review.movie.length > 8">
-                  <p>{{ review.movie.substr(0,8) + '...' }} </p>
+                  {{ review.movie.substr(0,8) + '...' }}
                 </td>
                 <td class="text-start" v-else>
                   {{ review.movie }}
                 </td>
                 <!-- <td @click="goToReviewDetail(review.id)">{{ review.title }}</td> -->
                 <td class="text-start" v-if="review.title.length > 8">
-                  <p>{{ review.title.substr(0,8) + '...' }} </p>
+                  {{ review.title.substr(0,8) + '...' }}
                 </td>
                 <td class="text-start" v-else>
                   {{ review.title }}
@@ -115,7 +115,7 @@
                   건의사항
                 </td>
                 <td class="text-start" v-if="article.title.length > 8">
-                  <p>{{ article.title.substr(0,8) + '...' }} </p>
+                  {{ article.title.substr(0,8) + '...' }}
                 </td>
                 <td class="text-start" v-else>
                   {{ article.title }}
