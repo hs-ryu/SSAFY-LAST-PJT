@@ -37,7 +37,7 @@
               <a v-if="isSuperuser" :href="adminPageURL" class="mx-2"><h3 class="d-inline"><i class="fas fa-cog"></i></h3></a>
               <!-- <a v-if="isSuperuser" :href="adminPageURL" class="mx-2">SYSTEM</a> -->
             </span>
-            <span v-else class="d-flex align-items-center">
+            <span v-else class="d-flex align-items-centercd u">
               <router-link :to="{ name: 'Signup' }" class="mx-2">회원가입</router-link>
               <!-- <router-link :to="{ name: 'Login' }" class="mx-2">로그인</router-link> -->
               <span class="mx-2 fw-bold mini-button" style="font-size: 17px;" data-bs-toggle="modal" data-bs-target="#loginModal">

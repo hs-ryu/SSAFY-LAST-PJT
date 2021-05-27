@@ -4,15 +4,16 @@
       <div class="d-flex align-items-center">
         <span class="fw-bold me-4">{{ comment.username }}</span>
         <span :class="{hide: modifyActivate}">{{ comment.content }}</span>
-        <input style="width: 700px; height: 30px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text">
-        <span class="fw-bold mx-2" :class="{hide: !modifyActivate}" @click="updateMode">수정</span>
+        <input type="text" style="width: 600px; height: 30px;" class="my-3 form-control" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent">
+        <!-- <input style="width: 700px; height: 30px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text"> -->
+        <span class="mini-button mini-button-content mx-2" :class="{hide: !modifyActivate}" @click="updateMode">수정</span>
       </div>
       <div class="d-flex align-items-center">
-        <span class="mx-2">{{$moment(comment.created_at).format('YYYY.MM.DD h:mm a')}}</span>
+        <span class="mx-2" :class="{hide: modifyActivate}">{{$moment(comment.created_at).format('YYYY.MM.DD h:mm a')}}</span>
         <div class="d-flex" v-if="decoded.username==comment.username">
-          <span class="fw-bold mx-1" :class="{hide: modifyActivate}" @click="updateMode">수정</span>
-          <span :class="{hide: modifyActivate}" class="fw-bold mx-1">|</span>
-          <span class="fw-bold mx-1" :class="{hide: modifyActivate}" data-bs-toggle="modal" data-bs-target="#reviewCommentDeleteModal">삭제</span>
+          <span class="mini-button mini-button-content mx-1" :class="{hide: modifyActivate}" @click="updateMode">수정</span>
+          <span :class="{hide: modifyActivate}" class="mini-button mini-button-content mx-1">|</span>
+          <span class="mini-button mini-button-content mx-1" :class="{hide: modifyActivate}" data-bs-toggle="modal" data-bs-target="#reviewCommentDeleteModal">삭제</span>
           <!-- <button class="mx-1 btn btn-sm main-color-background text-white" @click="updateMode">수정</button> -->
           <!-- <button :class="{hide: modifyActivate}" class="mx-1 btn btn-sm main-color-background text-white" @click="deleteComment">삭제</button> -->
         </div>

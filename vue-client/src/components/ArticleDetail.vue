@@ -13,9 +13,10 @@
           <h5 class="d-inline">[일상]</h5>
         </div>
         <h5 class="mx-2 d-inline">|</h5>
-        <h5 class="d-inline" @click="goToProfile">{{ article.username }}</h5>
+        <h5 class="d-inline">{{ article.username }}</h5>
         <h5 class="mx-2 d-inline">|</h5>
         <h5 class="d-inline">{{$moment(article.created_at).format('YYYY.MM.DD h:mm a')}}</h5>
+        <button style="border-color: #CE93D8" class="ms-2 d-inline btn btn-sm main-color-content custom-button-reverse" @click="goToProfile">프로필</button>
       </div>
       <hr>
       <div style="width: 700px; text-align: left; word-break: break-all;" class="mb-5">

@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto" style="width: 300px;">
-    <h1 class="fw-bold my-5">로그인</h1>
+    <h1 class="fw-bold title-font my-5">로그인</h1>
     <div class="my-3">
       <!-- <label for="username">사용자 이름: </label> -->
       <input style="width: 100%;" type="text" v-model="credentials.username" class="my-3 form-control" id="username" name="username" placeholder="아이디">

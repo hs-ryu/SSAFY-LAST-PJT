@@ -5,7 +5,7 @@
         <span class="fw-bold me-4">{{ comment.username }}</span>
         <span :class="{hide: modifyActivate}">{{ comment.content }}</span>
         <!-- <input style="width: 550px; height: 30px;" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent" type="text"> -->
-        <input type="text" style="width: 600px; height: 30px;" class="my-3 form-control" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent">
+        <input type="text" style="width: 500px; height: 30px;" class="my-3 form-control" :class="{hide: !modifyActivate}" :value="comment.content" @change="updateContent">
         <span class="mx-2 mini-button mini-button-content" :class="{hide: !modifyActivate}" @click="updateMode">수정</span>
       </div>
       <div class="d-flex align-items-center">

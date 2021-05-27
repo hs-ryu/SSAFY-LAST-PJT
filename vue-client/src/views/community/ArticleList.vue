@@ -58,7 +58,7 @@
 <script>
 import SERVER from '@/api/drf.js'
 import axios from 'axios'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default { 
   name: 'ArticleList',
@@ -87,10 +87,20 @@ export default {
       })
     },
     goToArticleDetail: function (articleId) {
-      this.$router.push({ name: 'ArticleDetail', params: { articleId }})
+      if (! this.isLoggedIn) {
+        alert('로그인이 필요합니다.')
+        this.$router.push({ name: 'Login' })
+      } else {
+        this.$router.push({ name: 'ArticleDetail', params: { articleId }})
+      }
     },
     goToCreateArticle: function () {
-      this.$router.push({ name: 'CreateArticle' })
+      if (! this.isLoggedIn) {
+        alert('로그인이 필요합니다.')
+        this.$router.push({ name: 'Login' })
+      } else {
+        this.$router.push({ name: 'CreateArticle' })
+      }
     },
     goToProfile: function (username) {
       console.log(username)
@@ -121,6 +131,9 @@ export default {
     ...mapState([
       'username',
       'userId',
+    ]),
+    ...mapGetters([
+      'isLoggedIn'
     ])
   },
   watch: {

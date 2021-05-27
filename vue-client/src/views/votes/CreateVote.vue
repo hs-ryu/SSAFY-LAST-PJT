@@ -9,7 +9,7 @@
         <!-- <input style="width: 500px;" v-model.trim="title" type="text" name="title" id="title"> -->
         <div class="row g-2">
           <input type="text" v-model.trim="optionone" class="col m-1 form-control" name="optionone" id="optionone" placeholder="옵션1">
-          <input type="text" v-model.trim="optiontwo" class="col m-1 form-control" name="optiontwo" id="optiontwo" placeholder="옵션2">
+          <input type="text" v-model.trim="optiontwo" class="col m-1 form-control" name="optiontwo" id="optiontwo" placeholder="옵션2" @keypress.enter="createVote(title, optionone, optiontwo)">
         </div>
       </div>
       <!-- <label for="optionone">첫번째</label>
@@ -57,7 +57,7 @@ export default {
         option_two: optiontwo,
       }
       // 모델 변경 후 길이 수정 필요
-      if (VoteItem.title.length > 10){
+      if (VoteItem.title.length > 15){
         alert("투표의 제목이 너무 길어요!")
       }
       else if (VoteItem.title && VoteItem.option_one && VoteItem.option_two) {

@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <h4 v-if="userProfile.favorite_genre=='없음'" class="my-3 title-font" style="text-align: left;">💡 좋아하는 영화에 좋아요를 누르시면 선호 장르를 분석해드려요!</h4>
+    <h5 v-if="userProfile.favorite_genre=='없음'" class="my-3 title-font" style="text-align: left;">💡 좋아하는 영화에 '좋아요'를 누르시면 선호 장르를 분석해드려요!</h5>
     <h4 v-else class="my-3 title-font" style="text-align: left;">[선호 장르] {{ userProfile.favorite_genre }}</h4>
     <h4 class="title-font" style="text-align: left;">좋아요 한 영화</h4>
     <div v-if="userProfile.like_movies.length" class="card-group mb-5">
@@ -145,8 +145,8 @@
     </div>
     
     <!-- 회원탈퇴 -->
-    <button class="btn main-color-background text-white" @click="deleteAccount">회원탈퇴</button>
-    <button class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">회원탈퇴</button>
+    <!-- <button class="btn main-color-background text-white" @click="deleteAccount">회원탈퇴</button> -->
+    <button v-if="userProfile.username==decoded.username" class="btn main-color-background text-white" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">회원탈퇴</button>
 
     <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModal" aria-hidden="true">
         <div class="modal-dialog">

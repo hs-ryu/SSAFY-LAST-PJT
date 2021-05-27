@@ -7,7 +7,7 @@
       <div class="mx-4" style="width: 500px; height: 450px; text-align: left;">
         <h2 class="d-inline title-font">{{ review.username }}님의 리뷰 📝</h2>
         <!-- <button class="d-inline mx-2 btn btn-sm main-color-background text-white" @click="goToProfile" type="submit" value="작성">프로필</button> -->
-        <button style="border-color: #CE93D8" class="ms-2 d-inline btn btn-sm main-color-content" @click="goToProfile">프로필</button>
+        <button style="border-color: #CE93D8" class="ms-2 d-inline btn btn-sm main-color-content custom-button-reverse" @click="goToProfile">프로필</button>
         <div class="my-2">
           <h5 class="d-inline">{{ review.title }}</h5>
         </div>
@@ -28,7 +28,7 @@
         <!-- <p>{{ review }}</p> -->
         <hr style="border-style: dotted">
         <div style="height: 270px;">
-          <p style="white-space: pre;">{{ review.content }}</p>
+          <p style="word-break: break-all;">{{ review.content }}</p>
         </div>
         <!-- {{ review }} -->
         <div class="d-flex justify-content-between">
@@ -66,7 +66,8 @@
           <p>댓글이 아직 없어요. 첫번째 댓글을 쓸 수 있는 절호의 찬스! 🤘</p>
         </div>
         <div class="mt-5">
-          <input style="width: 750px" @keypress.enter="createComment" v-model="commentContent" type="text" name="comment" id="comment" placeholder="댓글을 작성해주세요">
+          <input type="text" style="width: 600px" v-model="commentContent" class="d-inline my-3 form-control" id="comment" name="comment" placeholder="댓글을 입력해주세요" @keypress.enter="createComment">
+          <!-- <input style="width: 750px" @keypress.enter="createComment" v-model="commentContent" type="text" name="comment" id="comment" placeholder="댓글을 작성해주세요"> -->
           <input class="mx-1 btn btn-sm main-color-background text-white" @click="createComment" type="submit" value="작성">
         </div>
       </div>
@@ -88,6 +89,7 @@
         </div>
       </div>
     </div>
+    <button style="border-color: #CE93D8" class="my-2 custom-button-reverse btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
   </div>
 </template>
 
