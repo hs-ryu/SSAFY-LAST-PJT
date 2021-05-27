@@ -86,6 +86,7 @@ export default {
     return {
       review: this.$route.query.review,
       moviePosterPath: this.$route.query.moviePosterPath,
+      movieId: this.$route.params.movieId,
       title: '',
       rank: 0,
       content: '',
@@ -109,6 +110,7 @@ export default {
       this.content = event.target.value
     },
     updateReview: function () {
+      // params: { movieId: this.movieId, reviewId: this.reviewId }, query: { review: this.review, moviePosterPath: this.moviePosterPath }
       const movieId = this.$route.params.movieId
       const reviewId = this.$route.params.reviewId
       const title = this.title ? this.title : this.review.title

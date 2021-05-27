@@ -119,8 +119,8 @@
               </thead>
               <tbody>
                 <tr v-for="(review, idx) in displayReviews" :key="idx +'1'">
-                  <td @click="goToReviewDetail(review.id)" v-if="review.title.length > 15">{{ review.title.substr(0,15) + '...'}}</td>
-                  <td @click="goToReviewDetail(review.id)" v-else>{{ review.title }}</td>
+                  <td class="mini-button" @click="goToReviewDetail(review.id)" v-if="review.title.length > 15">{{ review.title.substr(0,15) + '...'}}</td>
+                  <td class="mini-button" @click="goToReviewDetail(review.id)" v-else>{{ review.title }}</td>
                   <!-- <td>{{ review.rank }}</td> -->
                   <td v-if="review.rank === 0.5"><i class="fas fa-star-half star fa-la"></i></td>
                   <td v-else-if="review.rank === 1"><i class="fas fa-star star fa-la"></i></td>
@@ -171,8 +171,8 @@
               </thead>
               <tbody>
                 <tr v-for="(vote, idx) in displayVotes" :key="idx +'2'">
-                  <td @click="goToVoteDetail(vote.id)" v-if="vote.title.length > 15">{{ vote.title.substr(0,15) + '...' }}</td>
-                  <td @click="goToVoteDetail(vote.id)" v-else>{{ vote.title }}</td>
+                  <td class="mini-button" @click="goToVoteDetail(vote.id)" v-if="vote.title.length > 15">{{ vote.title.substr(0,15) + '...' }}</td>
+                  <td class="mini-button" @click="goToVoteDetail(vote.id)" v-else>{{ vote.title }}</td>
                   <td v-if="vote.option_one.length + vote.option_two.length > 20">{{ vote.option_one.substr(0,10) + '...' }}   VS   {{ vote.option_two.substr(0,10) + '...' }}</td>
                   <td v-else>{{ vote.option_one }}   VS   {{ vote.option_two }}</td>
                 </tr>
@@ -202,7 +202,7 @@
       </div>
     </div>
 
-    <button style="border-color: #CE93D8" class="my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
+    <button style="border-color: #CE93D8" class="custom-button-reverse my-2 btn main-color-content" @click="$router.push({ name: 'MovieList' })">목록</button>
       
   
   
@@ -346,7 +346,12 @@ export default {
       const movieTitle = this.movie.title
       const moviePosterPath = this.movie.poster_path
       // console.log(moviePosterPath)
-      this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
+      if (! this.isLoggedIn) {
+        alert('로그인이 필요합니다.')
+        this.$router.push({ name: 'Login' })
+      } else {
+        this.$router.push({ name: 'CreateReview', params: { movieId: this.movieId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
+      }
     },
 
     getLikeStatus: function () {
@@ -365,8 +370,14 @@ export default {
       const movieTitle = this.movie.title
       const moviePosterPath = this.movie.poster_path
       // console.log(moviePosterPath)
-      this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: reviewId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
-      console.log(movieTitle)
+
+      if (! this.isLoggedIn) {
+        alert('로그인이 필요합니다.')
+        this.$router.push({ name: 'Login' })
+      } else {
+        this.$router.push({ name: 'ReviewDetail', params: { movieId: this.movieId, reviewId: reviewId }, query: { movieTitle: movieTitle, moviePosterPath: moviePosterPath }})
+      }
+      // console.log(movieTitle)
     },
 
     // 굳!!!!
@@ -385,11 +396,21 @@ export default {
     },
     goToVoteDetail: function (voteId) {
       const movieId = this.movieId
-      this.$router.push({ name: 'VoteDetail', params: { movieId: movieId, voteId: voteId }, query: { movieTitle: this.movie.title }})
+      if (! this.isLoggedIn) {
+        alert('로그인이 필요합니다.')
+        this.$router.push({ name: 'Login' })
+      } else {
+        this.$router.push({ name: 'VoteDetail', params: { movieId: movieId, voteId: voteId }, query: { movieTitle: this.movie.title }})
+      }
       // console.log(movieId)
     },
     goToCreateVote: function () {
-      this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }, query: { movieTitle: this.movie.title }})
+      if (! this.isLoggedIn) {
+        alert('로그인이 필요합니다.')
+        this.$router.push({ name: 'Login' })
+      } else {
+        this.$router.push({ name: 'CreateVote', params: { movieId: this.movieId }, query: { movieTitle: this.movie.title }})
+      }
     },
     getGenreList: function () {
       axios({

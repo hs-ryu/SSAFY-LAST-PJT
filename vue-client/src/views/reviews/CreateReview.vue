@@ -154,7 +154,7 @@ export default {
         content,
       }
       // 모델 변경 후 길이 수정 필요
-      if (reviewItem.title.length > 10){
+      if (reviewItem.title.length > 15){
           alert("리뷰의 제목이 너무 길어요!")
       }
       else if (reviewItem.title && reviewItem.rank && reviewItem.content) {
