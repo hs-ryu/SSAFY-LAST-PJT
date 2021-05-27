@@ -14,8 +14,8 @@ from pathlib import Path
 import os
 from decouple import config
 
-import _locale
-_locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
+# import _locale
+# _locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
 
 import datetime
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -140,3 +140,8 @@ JWT_AUTH = {
     'JWT_DECODE_HANDLER':
     'rest_framework_jwt.utils.jwt_decode_handler',
 }
+
+import sys 
+import io 
+sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
